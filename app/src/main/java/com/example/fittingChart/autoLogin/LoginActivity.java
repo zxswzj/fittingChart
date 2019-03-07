@@ -12,7 +12,7 @@ import com.example.fittingChart.R;
 
 /**
  * 登录页面，git测试
- * create by linbin
+ * create by seanz
  */
 public class LoginActivity extends Activity {
     /**
@@ -28,13 +28,13 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
         initViews();
     }
 
     private void initViews() {
-        edt_username = (EditText) findViewById(R.id.userName);
-        edt_password = (EditText) findViewById(R.id.password);
+        edt_username = (EditText) findViewById(R.id.edit_userName);
+        edt_password = (EditText) findViewById(R.id.edit_password);
         findViewById(R.id.btn_login).setOnClickListener(mOnClickListener);
     }
 
