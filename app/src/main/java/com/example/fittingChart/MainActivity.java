@@ -12,9 +12,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fittingChart.autoLogin.DBHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.example.fittingChart.R;
 
@@ -25,19 +28,23 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private LineChart mLineChart;
-    SQLiteDatabase db;
+    private DBHelper db;
     Toast toast;
     List<Fragment> mFragments;
     //private Toolbar mToolbar;
     private int lastIndex;
 
-    private Button btn_update_info;
+    private void initCtrl(){
+
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initCtrl();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         //init Fragment
         //setSupportActionBar(mToolbar);
-        mFragments = new ArrayList<>();
+        mFragments = new List<>();
         mFragments.add(new Fragment_user());
         mFragments.add(new Fragment_activity());
         mFragments.add(new Fragment_blank());
@@ -80,9 +87,33 @@ public class MainActivity extends AppCompatActivity {
         //尝试从SQLite中加载用户数据
         //SQLite
         //create/open Database
-        db=openOrCreateDatabase("UserDB", Context.MODE_PRIVATE, null);
+        Users u = new Users(1,"le","sdfds");
+//        u.setID(1);
+//        u.setUsername("乐乐啊");
+//        u.setSlogan("我要回家");
+        db = new DBHelper(this);
+        if(db.getUserCount() == 0)
+        {
+            db.addUser(u);
+        }
+        else
+        {
+            u = db.getUser(1);
+            String str1 = u.getUsername();
+//            et_username.setText("aaa");
+//            et_slogan.setText("def");
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString("username",u.getUsername());
+        bundle.putString("slogan",u.getSlogan());
+        Fragment_user fu = mFragments.get(0);
+        //Users u = db.getUser(0);
+        //et_username.setText(u.getUsername());
+        //et_slogan.setText(u.getSlogan());
+
+
         //create table
-        db.execSQL("CREATE TABLE IF NOT EXISTS user(username VARCHAR,slogan VARCHAR);");
+        //db.execSQL("CREATE TABLE IF NOT EXISTS user(username VARCHAR,slogan VARCHAR);");
  /*
         mLineChart = findViewById(R.id.chart1);
         //显示边界
@@ -118,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setFragmentPosition(int position) {
-
+        Log.i("Fragment","MainActivity.setFragmentPosition");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment currentFragment = mFragments.get(position);
         Fragment lastFragment = mFragments.get(lastIndex);
@@ -134,7 +165,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void btn_update_user_info_cb(View viwe){
-        Log.i("FRAGMENT","btn update user info");
-    }
+//    public void btn_update_user_info_cb(View view){
+//        Log.i("SQLite","btn_update_user_info_cb");
+//
+//        Users u = new Users();
+//        u.setUsername("乐乐");
+//        u.setSlogan("我要吃山竹");
+//        if(db.getUser(1) == null)
+//            db.addUser(u);
+//        else
+//        {
+//            db.updateUser(u);
+//        }
+//
+////        List<Users> users = db.getAllUsers();
+////        for (Users cn : users) {
+////            String log = "Id: "+cn.getID()+" ,Name: " + cn.getUsername() + " ,Slogan: " + cn.getSlogan();
+////            Log.i("SQLite: ", log);
+////        }
+//        Bundle bundle = new Bundle();
+//        bundle.putString("name","大笨蛋");
+//        bundle.putString("slogan","我要出去玩");
+//        mFragments.get(0).setArguments(bundle);
+//    }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_user">
+    tools:context=".Fragment_user">
 
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,10 +25,10 @@
             android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userImg" />
+            app:layout_constraintTop_toBottomOf="@+id/fragUser_userImg" />
 
         <ImageView
-            android:id="@+id/userImg"
+            android:id="@+id/fragUser_userImg"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginStart="16dp"
@@ -40,7 +40,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <EditText
-            android:id="@+id/editText_userName"
+            android:id="@+id/fragUser_userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -52,11 +52,11 @@
             android:inputType="textPersonName"
             android:text="用户名"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/userImg"
+            app:layout_constraintStart_toEndOf="@+id/fragUser_userImg"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editText_slogan"
+            android:id="@+id/fragUser_slogan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -69,11 +69,11 @@
             android:singleLine="false"
             android:text="这家伙懒到爆炸，什么都不想写"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/userImg"
-            app:layout_constraintTop_toBottomOf="@+id/editText_userName" />
+            app:layout_constraintStart_toEndOf="@+id/fragUser_userImg"
+            app:layout_constraintTop_toBottomOf="@+id/fragUser_userName" />
 
         <Button
-            android:id="@+id/btn_update_user_info"
+            android:id="@+id/fragUser_btn_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
