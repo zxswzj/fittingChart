@@ -1,7 +1,9 @@
 package com.example.fittingChart;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,33 +19,19 @@ import com.example.fittingChart.autoLogin.UserManage;
 import java.util.ArrayList;
 import java.util.Random;
 
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
+
 /**
  * 启动页，app刚打开时的activity
  * create by seanz
  */
 public class SplashActivity extends Activity {
 
-//    private static final int GO_HOME = 0;//去主页
-//    private static final int GO_LOGIN = 1;//去登录页
-//    private Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case GO_HOME://去主页
-//                    Log.i("LOGIN", "handler to MainActivity");
-//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                    break;
-//                case GO_LOGIN://去登录页
-//                    Log.i("LOGIN", "handler to LoginActivity");
-//                    Intent intent2 = new Intent(SplashActivity.this, LoginActivity.class);
-//                    startActivity(intent2);
-//                    finish();
-//                    break;
-//            }
-//        }
-//    };
+    //public static Typeface typeface ;
+
 
     private final int SPLASH_DISPLAY_LENGTH = 2000; // 两秒后进入系统
     //ArrayList<String> sentence;
@@ -69,9 +57,18 @@ public class SplashActivity extends Activity {
 
         tv_sentence = findViewById(R.id.splash_tv_sentense);
         tv_author = findViewById(R.id.splash_tv_author);
+//        try{
+//            typeface = Typeface.createFromAsset(getAssets(), "fonts/URANIA.ttf");
+//        }catch (Exception e)
+//        {
+//            Log.i("Fragment", "onCreate: load typeface fail");
+//            typeface = null;
+//        }
+
+        //tv_sentence.setTypeface(typeface);
 
         sentence = getResources().getStringArray(R.array.splashSentence);
-        sentenceList = new ArrayList<String>();
+        sentenceList = new ArrayList<>();
         for (String str : sentence) {
             sentenceList.add(str);
         }
@@ -98,4 +95,10 @@ public class SplashActivity extends Activity {
 //            Log.i("LOGIN","no user data found, branch to login");
 //            mHandler.sendEmptyMessageAtTime(GO_LOGIN, 2000);
 //        }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+}
+
 }
