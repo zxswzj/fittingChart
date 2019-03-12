@@ -18,7 +18,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.fittingChart.Users;
 
 /**
- * Created by yanwli on 2016/10/10.
+ * Created by seanz on 2016/10/10.
  */
 public class DBHelper  extends SQLiteOpenHelper {
     // All Static variables

@@ -24,24 +24,31 @@ import com.example.fittingChart.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Fragment_user.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     private LineChart mLineChart;
     private DBHelper db;
     Toast toast;
-    List<Fragment> mFragments;
+    //ArrayList<Fragment> mFragments;
     //private Toolbar mToolbar;
+    Fragment_user fragment_user;
+    Fragment_activity fragment_activity;
+    Fragment_blank fragment_blank;
+    int currentFrag;
     private int lastIndex;
 
     private void initCtrl(){
-
+        currentFrag = 0;
+        fragment_user = new Fragment_user();
+        fragment_activity = new Fragment_activity();
+        fragment_blank = new Fragment_blank();
     }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initCtrl();
@@ -56,17 +63,17 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.navigation_home:
                                 toast=Toast.makeText(getApplicationContext(), "page1", Toast.LENGTH_SHORT);
                                 toast.show();
-                                setFragmentPosition(0);
+                                replaceFragmentPosition(0);
                                 break;
                             case R.id.navigation_notifications:
                                 toast=Toast.makeText(getApplicationContext(), "page2", Toast.LENGTH_SHORT);
                                 toast.show();
-                                setFragmentPosition(1);
+                                replaceFragmentPosition(1);
                                 break;
                             case R.id.navigation_dashboard:
                                 toast=Toast.makeText(getApplicationContext(), "page3", Toast.LENGTH_SHORT);
                                 toast.show();
-                                setFragmentPosition(2);
+                                replaceFragmentPosition(2);
                                 break;
                         }
                         return false;
@@ -77,17 +84,16 @@ public class MainActivity extends AppCompatActivity {
 
         //init Fragment
         //setSupportActionBar(mToolbar);
-        mFragments = new List<>();
-        mFragments.add(new Fragment_user());
-        mFragments.add(new Fragment_activity());
-        mFragments.add(new Fragment_blank());
-        setFragmentPosition(0);
-
+//        mFragments = new ArrayList<>();
+//        mFragments.add(new Fragment_user());
+//        mFragments.add(new Fragment_activity());
+//        mFragments.add(new Fragment_blank());
+//        setFragmentPosition(0);
 
         //尝试从SQLite中加载用户数据
         //SQLite
         //create/open Database
-        Users u = new Users(1,"le","sdfds");
+        Users u = new Users(1,"乐乐","我要吃山竹");
 //        u.setID(1);
 //        u.setUsername("乐乐啊");
 //        u.setSlogan("我要回家");
@@ -106,7 +112,10 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("username",u.getUsername());
         bundle.putString("slogan",u.getSlogan());
-        Fragment_user fu = mFragments.get(0);
+        fragment_user.setArguments(bundle);
+        replaceFragmentPosition(0);
+        //fragment_user.onAmend(u.getUsername(),u.getSlogan());
+//        Fragment_user fu = mFragments.get(0);
         //Users u = db.getUser(0);
         //et_username.setText(u.getUsername());
         //et_slogan.setText(u.getSlogan());
@@ -148,21 +157,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setFragmentPosition(int position) {
+    private void replaceFragmentPosition(int position) {
         Log.i("Fragment","MainActivity.setFragmentPosition");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment currentFragment = mFragments.get(position);
-        Fragment lastFragment = mFragments.get(lastIndex);
-        lastIndex = position;
-        ft.hide(lastFragment);
-        if (!currentFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
-            ft.add(R.id.ll_frameLayout, currentFragment);
-
+        switch(position)
+        {
+            case 0: ft.replace(R.id.fragment_container, fragment_user);break;
+            case 1: ft.replace(R.id.fragment_container, fragment_activity);break;
+            case 2: ft.replace(R.id.fragment_container, fragment_blank);break;
+            default:
+                Log.e("Fragment", "replaceFragmentPosition: ");
         }
-        ft.show(currentFragment);
-        ft.commitAllowingStateLoss();
-
+        ft.addToBackStack(null);
+        ft.commit();
+        //Fragment currentFragment = mFragments.get(position);
+        //Fragment lastFragment = mFragments.get(lastIndex);
+        //lastIndex = position;
+//        ft.hide(lastFragment);
+//        if (!currentFragment.isAdded()) {
+//            getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
+//            ft.add(R.id.fragment_container, currentFragment);
+//        }
+//        ft.show(currentFragment);
+//        ft.commitAllowingStateLoss();
     }
 
 //    public void btn_update_user_info_cb(View view){
@@ -188,4 +205,10 @@ public class MainActivity extends AppCompatActivity {
 //        bundle.putString("slogan","我要出去玩");
 //        mFragments.get(0).setArguments(bundle);
 //    }
+
+    @Override
+    public void OnClicked(String name, String slogan) {
+        Log.i("Fragment", "MainActivity.OnClicked");
+        db.updateUser(new Users(1,name,slogan));
+    }
 }
