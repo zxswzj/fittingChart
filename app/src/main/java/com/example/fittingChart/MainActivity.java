@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements Fragment_user.OnF
         //尝试从SQLite中加载用户数据
         //SQLite
         //create/open Database
-        Users u = new Users(1,"乐乐","我要吃山竹");
+        Users u = new Users(1,"乐乐","我要吃山竹", R.mipmap.ic_launcher);
         db = new DBHelper(this);
         if(db.getUserCount() == 0)
             db.addUser(u);
@@ -121,6 +121,6 @@ public class MainActivity extends AppCompatActivity implements Fragment_user.OnF
     @Override
     public void OnClicked(String name, String slogan) {
         Log.i("Fragment", "MainActivity.OnClicked");
-        db.updateUser(new Users(1,name,slogan));
+        db.updateUser(new Users(1,name,slogan,R.mipmap.ic_launcher));
     }
 }

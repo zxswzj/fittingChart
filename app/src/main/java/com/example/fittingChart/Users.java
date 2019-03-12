@@ -4,16 +4,19 @@ public class Users {
     Integer id;
     String username;
     String slogan;
+    private  int imgID;
+
 
     // Empty constructor
     public Users(){
 
     }
     // constructor
-    public Users(int id, String name, String slogan){
+    public Users(int id, String name, String slogan, int imgID){
         this.id = id;
         this.username = name;
         this.slogan = slogan;
+        this.imgID = imgID;
     }
 
     public int getID(){
@@ -39,5 +42,13 @@ public class Users {
 
     public String getSlogan(){
         return slogan;
+    }
+
+    public int getImgID() {
+        return imgID;
+    }
+
+    public void setImgID(int imgID) {
+        this.imgID = imgID;
     }
 }
