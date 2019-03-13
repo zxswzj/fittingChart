@@ -2,6 +2,7 @@ package com.example.fittingChart;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -123,4 +124,9 @@ public class MainActivity extends AppCompatActivity implements Fragment_user.OnF
         Log.i("Fragment", "MainActivity.OnClicked");
         db.updateUser(new Users(1,name,slogan,R.mipmap.ic_launcher));
     }
+
+//    @Override
+//    public void onFragmentInteraction(Uri uri) {
+//
+//    }
 }

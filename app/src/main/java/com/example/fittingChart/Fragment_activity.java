@@ -3,7 +3,10 @@ package com.example.fittingChart;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.fittingChart.TabLayout.ItemFragment;
+import com.example.fittingChart.TabLayout.TabFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +31,12 @@ public class Fragment_activity extends Fragment {
     //自定义recyclerveiw的适配器
     private ActionAdapter mCollectRecyclerAdapter;
 
+    //TabLayout
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    List<Fragment> fragments = new ArrayList<>();
+    List<String> titles = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,6 +46,54 @@ public class Fragment_activity extends Fragment {
         initRecyclerView();
         //模拟数据
         initData();
+
+        //tableLayout
+        tabLayout = view.findViewById(R.id.tl_tabs);
+        viewPager = view.findViewById(R.id.vp_content);
+
+        fragments.add(TabFragment.newInstance("a","b"));
+        fragments.add(TabFragment.newInstance("c","b"));
+        fragments.add(TabFragment.newInstance("d","b"));
+        fragments.add(TabFragment.newInstance("e","b"));
+        fragments.add(TabFragment.newInstance("f","b"));
+        titles.add("head");
+        titles.add("breast");
+        titles.add("back");
+        titles.add("shoulder");
+        titles.add("arm");
+
+        viewPager.setAdapter(new FragmentStatePagerAdapter(getActivity().getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                Log.i("Fragment", "Fragment_activity.getItem");
+
+                return fragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                Log.i("Fragment", "Fragment_activity.getCount");
+
+                return fragments.size();
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                super.destroyItem(container, position, object);
+                Log.i("Fragment", "Fragment_activity.destroyItem");
+
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                Log.i("Fragment", "Fragment_activity.getPageTitle");
+                return titles.get(position);
+            }
+        });
+
+        tabLayout.setupWithViewPager(viewPager);
+
         return view;
     }
 
