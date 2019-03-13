@@ -79,25 +79,25 @@ public class TabFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_tab, container, false);
 
         //init RecyclerView
-        recyclerView = view.findViewById(R.id.frag_recyclerView);
-        actionAdapter = new ActionAdapter(getContext(), goodsEntityList);
-        recyclerView.setAdapter(actionAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
-        actionAdapter.setOnItemClickListener(new ActionAdapter.OnItemClickListener() {
-            @Override
-            public void OnItemClick(View view, GoodsEntity data) {
-                Toast.makeText(getActivity(),"TabFragment.recyclerView",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        Log.i("Fragment", "Fragment_activity.initData");
-        for (int i=0;i<3;i++){
-            GoodsEntity goodsEntity=new GoodsEntity();
-            goodsEntity.setGoodsName("俯卧撑"+i);
-            goodsEntity.setGoodsPrice("10"+i);
-            goodsEntityList.add(goodsEntity);
-        }
+//        recyclerView = view.findViewById(R.id.frag_recyclerView);
+//        actionAdapter = new ActionAdapter(getContext(), goodsEntityList);
+//        recyclerView.setAdapter(actionAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+//        actionAdapter.setOnItemClickListener(new ActionAdapter.OnItemClickListener() {
+//            @Override
+//            public void OnItemClick(View view, GoodsEntity data) {
+//                Toast.makeText(getActivity(),"TabFragment.recyclerView",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        Log.i("Fragment", "Fragment_activity.initData");
+//        for (int i=0;i<3;i++){
+//            GoodsEntity goodsEntity=new GoodsEntity();
+//            goodsEntity.setGoodsName("俯卧撑"+i);
+//            goodsEntity.setGoodsPrice("10"+i);
+//            goodsEntityList.add(goodsEntity);
+//        }
         return view;
     }
 
