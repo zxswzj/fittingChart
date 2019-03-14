@@ -83,12 +83,6 @@ public class Fragment_user extends Fragment {
         });
     }
 
-    public void onAmend(String strName, String strSlogan){
-        Log.i("Fragment", "Fragment_user.onAmend");
-        //et_user.setText(strName);
-        //et_slogan.setText(strSlogan);
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();

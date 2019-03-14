@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements Fragment_user.OnF
     //ArrayList<Fragment> mFragments;
     //private Toolbar mToolbar;
     Fragment_user fragment_user;
-    Fragment_activity fragment_activity;
+    ActivityFragment activityFragment;
     Fragment_blank fragment_blank;
     int currentFrag;
     private int lastIndex;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements Fragment_user.OnF
     private void initCtrl(){
         currentFrag = 0;
         fragment_user = new Fragment_user();
-        fragment_activity = new Fragment_activity();
+        activityFragment = new ActivityFragment();
         fragment_blank = new Fragment_blank();
     }
 
@@ -100,12 +100,12 @@ public class MainActivity extends AppCompatActivity implements Fragment_user.OnF
         switch(position)
         {
             case 0: ft.replace(R.id.fragment_container, fragment_user);break;
-            case 1: ft.replace(R.id.fragment_container, fragment_activity);break;
+            case 1: ft.replace(R.id.fragment_container, activityFragment);break;
             case 2: ft.replace(R.id.fragment_container, fragment_blank);break;
             default:
                 Log.e("Fragment", "replaceFragmentPosition: ");
         }
-        ft.addToBackStack(null);
+        //ft.addToBackStack(null);
         ft.commit();
         //Fragment currentFragment = mFragments.get(position);
         //Fragment lastFragment = mFragments.get(lastIndex);
