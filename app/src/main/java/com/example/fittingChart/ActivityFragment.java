@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.TabLayout.BlankFragment;
@@ -83,11 +84,14 @@ public class ActivityFragment extends Fragment {
 
     }
 
-    private String [] mTitles = {"胸", "肩", "手臂","背","腹","腿","大脑"};
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    List<Fragment> fragments = new ArrayList<>();
-    MyFragmentPagerAdapter adapter;
+    private String [] mTitles1 = {"胸", "肩", "手臂","背"};
+    private String [] mTitles2 = {"腹","腿","大脑","???"};
+    TabLayout tabLayout1,tabLayout2;
+    ViewPager viewPager1, viewPager2;
+    List<Fragment> fragments1 = new ArrayList<>();
+    List<Fragment> fragments2 = new ArrayList<>();
+    MyFragmentPagerAdapter adapter1;
+    MyFragmentPagerAdapter adapter2;
 
     public ActivityFragment() {
         // Required empty public constructor
@@ -101,23 +105,45 @@ public class ActivityFragment extends Fragment {
         Log.i("Fragment", "FragmentActivity.onCreateView");
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.activity_fragment, container, false);
-        tabLayout = view.findViewById(R.id.tl_tabs);
-        viewPager = view.findViewById(R.id.vp_content);
+        tabLayout1 = view.findViewById(R.id.tl_tab1);
+        tabLayout2 = view.findViewById(R.id.tl_tab2);
+        viewPager1 = view.findViewById(R.id.vp_content);
+        viewPager2 = view.findViewById(R.id.vp_content2);
+        fragments1.add(new BlankFragment());
+        fragments1.add(new BlankFragment());
+        fragments1.add(new BlankFragment());
+        fragments1.add(new BlankFragment());
+        fragments2.add(new BlankFragment());
+        fragments2.add(new BlankFragment());
+        fragments2.add(new BlankFragment());
+        fragments2.add(new BlankFragment());
 
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
 
+        adapter1 = new MyFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter1.addTitlesAndFragments(mTitles1, fragments1);
+        adapter2 = new MyFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter2.addTitlesAndFragments(mTitles2, fragments2);
 
-        adapter = new MyFragmentPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addTitlesAndFragments(mTitles, fragments);
+        viewPager1.setAdapter(adapter1); // 给ViewPager设置适配器
+        tabLayout1.setupWithViewPager(viewPager1); //关联TabLayout和ViewPager
+        viewPager2.setAdapter(adapter2); // 给ViewPager设置适配器
+        tabLayout2.setupWithViewPager(viewPager2); //关联TabLayout和ViewPager
 
-        viewPager.setAdapter(adapter); // 给ViewPager设置适配器
-        tabLayout.setupWithViewPager(viewPager); //关联TabLayout和ViewPager
+        tabLayout1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.i("Fragment", "ActivityFragment.onTabSelected");
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+        //setContentView(tabLayout);
 
         return view;
     }
@@ -128,4 +154,6 @@ public class ActivityFragment extends Fragment {
         Log.i("Fragment", "FragmentActivity.onCreate");
 
     }
+
+
 }
