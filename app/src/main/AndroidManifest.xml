@@ -22,6 +22,8 @@
         </activity>
         <activity android:name="com.example.fittingChart.MainActivity">
         </activity>
+        <activity android:name="com.example.fittingChart.FittingTimerActivity">
+        </activity>
     </application>
 
 </manifest>

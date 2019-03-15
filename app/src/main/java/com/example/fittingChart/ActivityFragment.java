@@ -84,8 +84,8 @@ public class ActivityFragment extends Fragment {
 
     }
 
-    private String [] mTitles1 = {"胸", "肩", "手臂","背"};
-    private String [] mTitles2 = {"腹","腿","大脑","???"};
+    private String [] mTitles1 = {"胸", "肩", "手臂","背","腹","腿"};
+    private String [] mTitles2 = {"大脑","???"};
     TabLayout tabLayout1,tabLayout2;
     ViewPager viewPager1, viewPager2;
     List<Fragment> fragments1 = new ArrayList<>();
@@ -107,16 +107,65 @@ public class ActivityFragment extends Fragment {
         view = inflater.inflate(R.layout.activity_fragment, container, false);
         tabLayout1 = view.findViewById(R.id.tl_tab1);
         tabLayout2 = view.findViewById(R.id.tl_tab2);
-        viewPager1 = view.findViewById(R.id.vp_content);
+        viewPager1 = view.findViewById(R.id.vp_content1);
         viewPager2 = view.findViewById(R.id.vp_content2);
-        fragments1.add(new BlankFragment());
-        fragments1.add(new BlankFragment());
-        fragments1.add(new BlankFragment());
-        fragments1.add(new BlankFragment());
-        fragments2.add(new BlankFragment());
-        fragments2.add(new BlankFragment());
-        fragments2.add(new BlankFragment());
-        fragments2.add(new BlankFragment());
+
+        String[] strBreast = {"俯卧撑","跪姿俯卧撑","扶墙俯卧撑","哑铃夹胸","+"};
+        String[] strShoulder = {"哑铃前平举","哑铃侧平举","哑铃飞鸟","+"};
+        String[] strArm = {"哑铃肱二头肌弯举","哑铃肱三头肌弯举","+"};
+        String[] strBack = {"哑铃飞鸟","+"};
+        String[] strBelly = {"卷腹","仰卧起坐(伤尾椎骨哦)","+"};
+        String[] strLeg = {"自重深蹲","负重深蹲","靠墙深蹲","+"};
+        String[] strBrain = {"最强大脑之数字迷宫","+"};
+        String[] strOthers = {"体重","跑步","+"};
+
+        Bundle bundleBreast = new Bundle();
+        bundleBreast.putStringArray("list",strBreast);
+        MyListFragment fragBreast = new MyListFragment();
+        fragBreast.setArguments(bundleBreast);
+        fragments1.add(fragBreast);
+
+        Bundle bundleShoulder = new Bundle();
+        bundleShoulder.putStringArray("list",strShoulder);
+        MyListFragment fragShoulder = new MyListFragment();
+        fragShoulder.setArguments(bundleShoulder);
+        fragments1.add(fragShoulder);
+
+        Bundle bundleArm = new Bundle();
+        bundleArm.putStringArray("list",strArm);
+        MyListFragment fragArm = new MyListFragment();
+        fragArm.setArguments(bundleArm);
+        fragments1.add(fragArm);
+
+        Bundle bundleBack = new Bundle();
+        bundleBack.putStringArray("list",strBack);
+        MyListFragment fragBack = new MyListFragment();
+        fragBack.setArguments(bundleBack);
+        fragments1.add(fragBack);
+
+        Bundle bundleBelly = new Bundle();
+        bundleBelly.putStringArray("list",strBelly);
+        MyListFragment fragBelly = new MyListFragment();
+        fragBelly.setArguments(bundleBelly);
+        fragments1.add(fragBelly);
+
+        Bundle bundleLeg = new Bundle();
+        bundleLeg.putStringArray("list",strLeg);
+        MyListFragment fragLeg = new MyListFragment();
+        fragLeg.setArguments(bundleLeg);
+        fragments1.add(fragLeg);
+
+        Bundle bundleBrain = new Bundle();
+        bundleBrain.putStringArray("list",strBrain);
+        MyListFragment fragBrain = new MyListFragment();
+        fragBrain.setArguments(bundleBrain);
+        fragments2.add(fragBrain);
+
+        Bundle bundleOthers = new Bundle();
+        bundleOthers.putStringArray("list",strOthers);
+        MyListFragment fragOthers = new MyListFragment();
+        fragOthers.setArguments(bundleOthers);
+        fragments2.add(fragOthers);
 
 
         adapter1 = new MyFragmentPagerAdapter(getActivity().getSupportFragmentManager());
