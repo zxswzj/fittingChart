@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity">
+    tools:context=".activity.SplashActivity">
 
-    <com.example.fittingChart.FontTextView
+    <com.example.fittingChart.ui.fontTextView.FontTextView
         android:id="@+id/splash_tv_sentense"
         path="fonts/gtw.ttf"
         android:layout_width="0dp"
@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.fittingChart.FontTextView
+    <com.example.fittingChart.ui.fontTextView.FontTextView
     android:id="@+id/splash_tv_author"
         android:layout_width="74dp"
         android:layout_height="35dp"

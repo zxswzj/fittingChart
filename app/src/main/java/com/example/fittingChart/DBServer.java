@@ -1,14 +1,11 @@
 package com.example.fittingChart;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.fittingChart.autoLogin.DBHelper;
+import com.example.fittingChart.ui.autoLogin.DBHelper;
 
 public class DBServer
 {
