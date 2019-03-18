@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         Users u = new Users(1,"乐乐","我要吃山竹", R.mipmap.ic_launcher);
         db = new DBHelper(this);
         if(db.getUserCount() == 0)
-            db.addItem(u,"table_users");
+            db.addItem(u,"users");
         else
             u = db.getUser(1);
 

@@ -3,7 +3,7 @@ package com.example.fittingChart.module;
 public class FittingData {
     Integer id;
     Integer number;
-    String time;
+    long time;
 
 
     // Empty constructor
@@ -11,7 +11,7 @@ public class FittingData {
 
     }
     // constructor
-    public FittingData(int id, int number, String time){
+    public FittingData(int id, int number, long time){
         this.id = id;
         this.number = number;
         this.time = time;
@@ -34,11 +34,11 @@ public class FittingData {
         this.number = number;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
-    public String getTime(){
+    public long getTime(){
         return time;
     }
 

@@ -171,7 +171,7 @@ public class DBHelper  extends SQLiteOpenHelper {
                 FittingData fd = new FittingData();
                 fd.setID(Integer.parseInt(cursor.getString(0)));
                 fd.setNumber(cursor.getInt(1));
-                fd.setTime(cursor.getString(2));
+                fd.setTime(cursor.getInt(2));
                 // Adding contact to list
                 fittingDataList.add(fd);
                 Log.i(TAG, "getAllFitting: " + fd.getID() + fd.getNumber() + fd.getTime());

@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,8 +78,8 @@ public class FittingStopFragment extends Fragment {
             public void onClick(View v) {
             DBHelper db = new DBHelper(getContext());
             FittingData fd = new FittingData();
-            fd.setNumber(16);
-            fd.setTime("16:16");
+            fd.setNumber(new Random().nextInt(100));
+            fd.setTime(new Date().getTime());
             db.addFittingItem(fd, "pushup");
             db.getAllFitting("pushup");
 //                long aa = db.myquery();
