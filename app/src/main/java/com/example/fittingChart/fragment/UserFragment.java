@@ -22,10 +22,15 @@ import com.example.fittingChart.ui.autoLogin.DBHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -39,7 +44,7 @@ public class UserFragment extends Fragment {
     private ImageView iv_user;
     private Button bt_update;
     private OnFragmentInteractionListener listener;
-    LineChart chart;
+    LineChart pushupchart;
     public UserFragment() {
         // Required empty public constructor
     }
@@ -62,7 +67,7 @@ public class UserFragment extends Fragment {
         et_user = (EditText)view.findViewById(R.id.fragUser_userName);
         et_slogan = (EditText)view.findViewById(R.id.fragUser_slogan);
         bt_update = (Button)view.findViewById(R.id.fragUser_btn_update);
-        chart = (LineChart) view.findViewById(R.id.chart1);
+        pushupchart = (LineChart) view.findViewById(R.id.chart1);
         return view;
     }
 
@@ -85,17 +90,19 @@ public class UserFragment extends Fragment {
         Log.i("Fragment", "UserFragment.onActivityCreated");
         DBHelper db = new DBHelper(getContext());
         ArrayList<FittingData> pushuplist = db.getAllFitting("pushup");
-        List<Entry> yVals = new ArrayList<Entry>();
-        ArrayList<String> xVals = new ArrayList<String>();
-        ILineDataSet dataset
 
-        for(int i=0;i<pushuplist.size();i++){
-            yVals.add(new Entry(2,pushuplist.get(i).getNumber()));
-            xVals.add(pushuplist.get(i).getTime());
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < pushuplist.size(); i++) {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+            Date d = new Date(pushuplist.get(i).getTime());
+            entries.add(new Entry(getDay(d), new Random().nextInt(300)));
         }
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
-        chart.invalidate(); // refresh
+        if(pushuplist.size() != 0){
+            LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
+            LineData lineData = new LineData(dataSet);
+            pushupchart.setData(lineData);
+        }
+
 
         Bundle bundle = getArguments();
         et_user.setText(bundle.getString("username"));
@@ -139,5 +146,101 @@ public class UserFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void OnClicked(String name, String slogan);
+    }
+
+
+    public static String getTimeString() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        Calendar calendar = Calendar.getInstance();
+        return df.format(calendar.getTime());
+    }
+
+    /**
+     * 获取日期年份
+     * @param date 日期
+     * @return
+     */
+    public static int getYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
+    }
+    /**
+     * 功能描述：返回月
+     *
+     * @param date
+     *            Date 日期
+     * @return 返回月份
+     */
+    public static int getMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MONTH) + 1;
+    }
+
+    /**
+     * 功能描述：返回日期
+     *
+     * @param date
+     *            Date 日期
+     * @return 返回日份
+     */
+    public static int getDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 功能描述：返回小时
+     *
+     * @param date
+     *            日期
+     * @return 返回小时
+     */
+    public static int getHour(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * 功能描述：返回分
+     *
+     * @param date
+     *            日期
+     * @return 返回分钟
+     */
+    public static int getMinute(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    /**
+     * 返回秒钟
+     *
+     * @param date
+     *            Date 日期
+     * @return 返回秒钟
+     */
+    public static int getSecond(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.SECOND);
+    }
+
+    /**
+     * 功能描述：返回毫
+     *
+     * @param date
+     *            日期
+     * @return 返回毫
+     */
+    public static long getMillis(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.getTimeInMillis();
+
     }
 }
