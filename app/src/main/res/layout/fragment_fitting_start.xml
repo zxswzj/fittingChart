@@ -45,6 +45,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/fitting_pt_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:text="Name" />
+
     <TimePicker
         android:id="@+id/fitting_timePicker"
         android:layout_width="match_parent"
@@ -76,35 +84,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/fitting_btn_start"
         app:layout_constraintTop_toBottomOf="@+id/fitting_timerView" />
-
-    <LinearLayout android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layoutDirection="ltr">
-
-        <!-- hour -->
-        <NumberPicker
-            android:id="@+id/hour"
-            />
-
-        <!-- divider -->
-        <TextView
-            android:id="@+id/divider"
-            />
-
-        <!-- minute -->
-        <NumberPicker
-            android:id="@+id/minute"
-            />
-
-    </LinearLayout>
-
-    <!-- AM / PM -->
-    <NumberPicker
-        android:id="@+id/amPm"
-        />
-
-</LinearLayout>
-
 
 </LinearLayout>

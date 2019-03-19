@@ -20,6 +20,7 @@ import com.example.fittingChart.R;
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnFragmentInteractionListener {
 
+    String TAG = "SQLite";
     private TextView mTextMessage;
     private LineChart mLineChart;
     private DBHelper db;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i(TAG, "MainActivity.onCreate");
 
         initCtrl();
 
@@ -72,10 +74,8 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         //尝试从SQLite中加载用户数据
         //SQLite
         //create/open Database
-        Users u = new Users(1,"乐乐","我要吃山竹", R.mipmap.ic_launcher);
-        db = new DBHelper(this);
-        boolean b = db.tableExists("table_users");
-        boolean c = db.tableExists("abc");
+        Users u = new Users(1,"乐乐啊","我要学习，学习让我快乐", R.mipmap.ic_launcher);
+        db = new DBHelper(this,2);
 
         if(db.getUserCount() == 0)
             db.addItem(u,"users");
@@ -86,9 +86,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         bundle.putString("username",u.getUsername());
         bundle.putString("slogan",u.getSlogan());
         userFragment.setArguments(bundle);
-
-        //long aa = db.myquery();
-
 
 //        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //        FittingStartFragment fragment = new FittingStartFragment();

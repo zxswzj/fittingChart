@@ -71,10 +71,10 @@ public class FittingStopFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Data data = (Data)getActivity().getApplication();
-                DBHelper db = new DBHelper(getContext());
+                DBHelper db = new DBHelper(getContext(),data.DATABASE_VERSION);
                 FittingData fd = new FittingData();
                 fd.setNumber(new Random().nextInt(100));
-                fd.setTime(new Date().getTime());
+                fd.setLocalTime(new Date().getTime());
                 db.addFittingItem(fd, "pushup");
                db.getAllFitting("pushup");
 //                long aa = db.myquery();

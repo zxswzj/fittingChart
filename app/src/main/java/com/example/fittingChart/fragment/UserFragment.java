@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
+import com.example.fittingChart.module.Data;
 import com.example.fittingChart.module.FittingData;
 import com.example.fittingChart.database.DBHelper;
 import com.github.mikephil.charting.charts.LineChart;
@@ -85,12 +86,12 @@ public class UserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
-        DBHelper db = new DBHelper(getContext());
+        DBHelper db = new DBHelper(getContext(),((Data) getActivity().getApplication()).DATABASE_VERSION);
         ArrayList<FittingData> pushuplist = db.getAllFitting("pushup");
 
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {
-            Date d = new Date(pushuplist.get(i).getTime());
+            Date d = new Date(pushuplist.get(i).getNumber());
             entries.add(new Entry(getDay(d), new Random().nextInt(300)));
         }
         if(pushuplist.size() != 0){

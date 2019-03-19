@@ -25,7 +25,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     String TAG = "SQLite";
     Data data;
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "db_user";
@@ -39,8 +39,8 @@ public class DBHelper  extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_SLOGAN = "slogan";
 
-    public DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public DBHelper(Context context, int version) {
+        super(context, DATABASE_NAME, null, version);
         Log.i("SQLite", "DBHelper.DBHelper");
     }
 
@@ -55,12 +55,11 @@ public class DBHelper  extends SQLiteOpenHelper {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
+        Log.i("SQLite", "DBHelper.onUpgrade");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUSHUP);
         // Create tables again
         onCreate(db);
-        Log.i("SQLite", "DBHelper.onUpgrade");
     }
 
     public void createUser(SQLiteDatabase db) {
@@ -68,15 +67,15 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_SLOGAN + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
-        Log.i("SQLite", "DBHelper.onCreate");
+        Log.i("SQLite", "DBHelper.createUser");
     }
 
     public void createFitting(SQLiteDatabase db, String tableName) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + tableName + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + "number" + " INTEGER,"
-                + "time" + " TEXT" + ")";
+                + "durationTime" + " INTEGER," + "localTime" + " INTEGER" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
-        Log.i("SQLite", "DBHelper.onCreate");
+        Log.i("SQLite", "DBHelper.createFitting");
     }
 
     // Adding new item in table
@@ -97,9 +96,9 @@ public class DBHelper  extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("number", data.getNumber()); // Contact Name
-        values.put("time", data.getTime()); // Contact Phone
-
+        values.put("number", data.getNumber());
+        values.put("durationTime", data.getDurationTime());
+        values.put("localTime", data.getLocalTime());
         // Inserting Row
         db.insert(table, null, values);
         db.close(); // Closing database connection
@@ -135,7 +134,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_USER;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -163,7 +162,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT * FROM " + table;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -172,10 +171,12 @@ public class DBHelper  extends SQLiteOpenHelper {
                 FittingData fd = new FittingData();
                 fd.setID(Integer.parseInt(cursor.getString(0)));
                 fd.setNumber(cursor.getInt(1));
-                fd.setTime(cursor.getInt(2));
+                fd.setDurationTime(cursor.getInt(2));
+                fd.setLocalTime(cursor.getInt(3));
+
                 // Adding contact to list
                 fittingDataList.add(fd);
-                Log.i(TAG, "getAllFitting: " + fd.getID() + fd.getNumber() + fd.getTime());
+                Log.i(TAG, "getAllFitting: " + fd.getID() + fd.getNumber() + fd.getDurationTime() + fd.getLocalTime());
             } while (cursor.moveToNext());
         }
 

@@ -1,11 +1,13 @@
-package com.example.fittingChart;
+package com.example.fittingChart.database;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.fittingChart.Users;
 import com.example.fittingChart.database.DBHelper;
+import com.example.fittingChart.module.Data;
 
 public class DBServer
 {
@@ -13,7 +15,7 @@ public class DBServer
     private static Integer idx;
     public DBServer(Context context)
     {
-        this.dbhelper = new DBHelper(context);
+        //this.dbhelper = new DBHelper(context,((Data) getActivity().getApplication()).DATABASE_VERSION);
         idx = 0;
         Log.i("SQLite","DBServer");
     }

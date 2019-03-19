@@ -3,7 +3,8 @@ package com.example.fittingChart.module;
 public class FittingData {
     Integer id;
     Integer number;
-    long time;
+    long durationTime;
+    long localTime;
 
 
     // Empty constructor
@@ -11,10 +12,11 @@ public class FittingData {
 
     }
     // constructor
-    public FittingData(int id, int number, long time){
+    public FittingData(int id, int number, long durationTime, long localTime){
         this.id = id;
         this.number = number;
-        this.time = time;
+        this.durationTime = durationTime;
+        this.localTime = localTime;
     }
 
     public int getID(){
@@ -34,12 +36,19 @@ public class FittingData {
         this.number = number;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setDurationTime(long time) {
+        this.durationTime = time;
     }
 
-    public long getTime(){
-        return time;
+    public long getDurationTime(){
+        return durationTime;
     }
 
+    public void setLocalTime(long time) {
+        this.localTime = time;
+    }
+
+    public long getLocalTime(){
+        return localTime;
+    }
 }

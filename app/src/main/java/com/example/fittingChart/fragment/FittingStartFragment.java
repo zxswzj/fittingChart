@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -44,10 +45,12 @@ public class FittingStartFragment extends Fragment {
     TextView tv;
     long baseTimer;
     Timer timer;
-
+    EditText et_num;
     Button bt_start, bt_stop;
     private TimePicker timePicker;
     Button btn_save, btn_cancel;
+
+    long lHour,lMinute,lSecond;
 
     View view;
     final Handler startTimehandler = new Handler(){
@@ -93,6 +96,7 @@ public class FittingStartFragment extends Fragment {
         timePicker = view.findViewById(R.id.fitting_timePicker);
         btn_save = view.findViewById(R.id.fitting_btn_save);
         btn_cancel = view.findViewById(R.id.fitting_btn_cancel);
+        et_num = view.findViewById(R.id.fitting_pt_num);
 
         bt_start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,16 +123,16 @@ public class FittingStartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i("Fragment", "FittingStartFragment.bt_stop.onClick");
-                long lSeconds = (int)((SystemClock.elapsedRealtime() - baseTimer) / 1000);
+                lSecond = (int)((SystemClock.elapsedRealtime() - baseTimer) / 1000);
                 timer.cancel();
 
-                long nHour = lSeconds / 3600;
-                long nMin = lSeconds % 3600;
-                long nSec = nMin % 60;
-                nMin = nMin / 60;
+                lHour = lSecond / 3600;
+                lMinute = lSecond % 3600;
+                lSecond = lMinute % 60;
+                lMinute = lMinute / 60;
 
-                timePicker.setHour(nHour);
-                timePicker.setMinute(nMin);
+                //timePicker.setHour(nHour);
+                //timePicker.setMinute(nMin);
 
 //                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 //                ft.replace(R.id.fitting_fragment_container, fittingStopFragment);
@@ -151,10 +155,11 @@ public class FittingStartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Data data = (Data)getActivity().getApplication();
-                DBHelper db = new DBHelper(getContext());
+                DBHelper db = new DBHelper(getContext(), ((Data) getActivity().getApplication()).DATABASE_VERSION);
                 FittingData fd = new FittingData();
-                fd.setNumber(new Random().nextInt(100));
-                fd.setTime(new Date().getTime());
+                fd.setNumber(Integer.parseInt(et_num.getEditableText().toString().trim()));
+                fd.setDurationTime(lSecond);
+                fd.setLocalTime(new Date().getTime());
                 db.addFittingItem(fd, "pushup");
                 db.getAllFitting("pushup");
 //                long aa = db.myquery();
