@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.fittingChart.ui.autoLogin.DBHelper;
+import com.example.fittingChart.database.DBHelper;
 
 public class DBServer
 {

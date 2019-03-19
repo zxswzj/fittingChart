@@ -13,10 +13,10 @@ import java.util.List;
 
 public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.myViewHodler> {
     private Context context;
-    private ArrayList<GoodsEntity> goodsEntityList;
+    private ArrayList<com.example.fittingChart.GoodsEntity> goodsEntityList;
 
     //创建构造函数
-    public ActionAdapter(Context context, ArrayList<GoodsEntity> goodsEntityList) {
+    public ActionAdapter(Context context, ArrayList<com.example.fittingChart.GoodsEntity> goodsEntityList) {
         //将传递过来的数据，赋值给本地变量
         this.context = context;//上下文
         this.goodsEntityList = goodsEntityList;//实体类数据ArrayList

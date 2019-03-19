@@ -1,4 +1,4 @@
-package com.example.fittingChart.ui.autoLogin;
+package com.example.fittingChart.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +13,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.example.fittingChart.Users;
+import com.example.fittingChart.module.Data;
 import com.example.fittingChart.module.FittingData;
 
 /**
@@ -22,6 +23,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
     String TAG = "SQLite";
+    Data data;
 
     private static final int DATABASE_VERSION = 1;
 
@@ -46,7 +48,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createUser(db);
-        createFitting(db,TABLE_PUSHUP);
+        createFitting(db, TABLE_PUSHUP);
         Log.i("SQLite", "DBHelper.onCreate");
     }
 
@@ -61,7 +63,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         Log.i("SQLite", "DBHelper.onUpgrade");
     }
 
-    public void createUser(SQLiteDatabase db){
+    public void createUser(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_USER + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_SLOGAN + " TEXT" + ")";
@@ -69,7 +71,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         Log.i("SQLite", "DBHelper.onCreate");
     }
 
-    public void createFitting(SQLiteDatabase db, String tableName){
+    public void createFitting(SQLiteDatabase db, String tableName) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + tableName + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + "number" + " INTEGER,"
                 + "time" + " TEXT" + ")";
@@ -106,7 +108,7 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     // Getting single contact
     public Users getUser(int id) {
-        Log.i("SQLite","DBHelper.getUser");
+        Log.i("SQLite", "DBHelper.getUser");
         Users user = new Users();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -114,13 +116,12 @@ public class DBHelper  extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, new String[]{"1"});
 
         //cursor.moveToFirst();
-        for(cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext())
-        {
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             user.setID(Integer.parseInt(cursor.getString(0)));
             user.setUsername(cursor.getString(1));
             user.setSlogan(cursor.getString(2));
 
-            String log = "Id: "+user.getID()+" ,Name: " + user.getUsername() + " ,Slogan: " + user.getSlogan();
+            String log = "Id: " + user.getID() + " ,Name: " + user.getUsername() + " ,Slogan: " + user.getSlogan();
             Log.i("SQLite: ", log);
         }
 
@@ -129,7 +130,7 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     //Getting All Contacts
     public ArrayList<Users> getAllUsers() {
-        Log.i("SQLite","DBHelper.getAllUsers");
+        Log.i("SQLite", "DBHelper.getAllUsers");
         ArrayList<Users> userList = new ArrayList<Users>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_USER;
@@ -157,7 +158,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     }
 
     public ArrayList<FittingData> getAllFitting(String table) {
-        Log.i("SQLite","DBHelper.getAllFitting");
+        Log.i("SQLite", "DBHelper.getAllFitting");
         ArrayList<FittingData> fittingDataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + table;
@@ -187,12 +188,12 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     // Updating single user
     public int updateUser(Users user) {
-        Log.i("SQLite","DBHelper.updateUser");
+        Log.i("SQLite", "DBHelper.updateUser");
         int ret_value = 0;
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sql = "update " + TABLE_USER + " set name=?,slogan=? where id = 1";
-        db.execSQL(sql,new String[]{user.getUsername(),user.getSlogan()});
+        db.execSQL(sql, new String[]{user.getUsername(), user.getSlogan()});
 
 //        ContentValues values = new ContentValues();
 //        values.put(KEY_NAME, user.getUsername());
@@ -210,7 +211,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     public void deleteUser(Users user) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_USER, KEY_ID + " = ?",
-                new String[] { String.valueOf(user.getUsername()) });
+                new String[]{String.valueOf(user.getUsername())});
         db.close();
     }
 
@@ -228,48 +229,40 @@ public class DBHelper  extends SQLiteOpenHelper {
         return count;
     }
 
-
-    public long myquery() {
-        Log.i("SQLite", "myquery");
-        String str = "CREATE table IF NOT EXISTS pushup (para1,para2)";
-
+    //return table item number, 0 means no table;
+    public long hasTable(String table) {
+        Log.i("SQLite", "hasTable");
         SQLiteDatabase db = this.getReadableDatabase();
-        String table = "users";
-        String[] columns = {"id", "name"};
-        String selection = "id=?";
-        String[] selectionArgs = {"1"};
-        String groupBy = null;
-        String having = null;
-        String orderBy = "column3 DESC";
-        String limit = "10";
-        try{
-            Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, null, null);
-            if (!cursor.moveToFirst()) {
-                cursor.close();
-                db.close();
-                return 0;
-            } else {
-                Users user = new Users();
-                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    user.setID(Integer.parseInt(cursor.getString(0)));
-                    user.setUsername(cursor.getString(1));
-                    //user.setSlogan(cursor.getString(2));
-                    String log = "myquery: Id: " + user.getID() + " ,Name: " + user.getUsername();// + " ,Slogan: " + user.getSlogan();
-                    Log.i("SQLite", log);
-                }
-                cursor.moveToFirst();
-                long n = cursor.getInt(0);
-                cursor.close();
-                db.close();
-                return n;
-            }
-        }catch(SQLiteException e)
-        {
+        try {
+            Cursor cursor = db.query(table, new String[]{"id"}, "id=?", new String[]{"1"}, null, null, null, null);
+            cursor.moveToFirst();
+            long n = cursor.getInt(0);
+            cursor.close();
+            db.close();
+            return n;
+        } catch (SQLiteException e) {
             return 0;
         }
     }
-}
 
+    public boolean tableExists(String tableName)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (tableName == null || db == null || !db.isOpen())
+        {
+            return false;
+        }
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type = ? AND name = ?", new String[] {"table", tableName});
+        if (!cursor.moveToFirst())
+        {
+            cursor.close();
+            return false;
+        }
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count > 0;
+    }
+}
 //    String sqlDataStore = "create table if not exists " +
 //            TABLE_NAME_INFOTABLE + " ("+ BaseColumns._ID + " integer primary key autoincrement,"
 //

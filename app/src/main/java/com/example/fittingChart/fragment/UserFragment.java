@@ -2,7 +2,6 @@ package com.example.fittingChart.fragment;
 
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,12 +17,11 @@ import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.ui.autoLogin.DBHelper;
+import com.example.fittingChart.database.DBHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +53,6 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i("Fragment", "UserFragment.onViewCreated");
-
     }
 
     @Override
@@ -93,7 +90,6 @@ public class UserFragment extends Fragment {
 
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
             Date d = new Date(pushuplist.get(i).getTime());
             entries.add(new Entry(getDay(d), new Random().nextInt(300)));
         }

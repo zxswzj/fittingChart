@@ -3,6 +3,7 @@
     package="com.example.fittingChart">
 
     <application
+        android:name=".module.Data"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +13,6 @@
         <activity
             android:name=".activity.SplashActivity"
             android:label="@string/app_name">
-
         </activity>
         <activity android:name=".ui.autoLogin.LoginActivity">
         </activity>
@@ -27,5 +27,6 @@
 
         </activity>
     </application>
+
 
 </manifest>

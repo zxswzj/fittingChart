@@ -9,22 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 
 
 import com.example.fittingChart.R;
+import com.example.fittingChart.module.Data;
 import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.ui.TimePicker.BaseFragment;
-import com.example.fittingChart.ui.TimePicker.BasePicker;
 import com.example.fittingChart.ui.TimePicker.PickerView;
-import com.example.fittingChart.ui.autoLogin.DBHelper;
+import com.example.fittingChart.database.DBHelper;
 //import com.example.fittingChart.ui.TimePicker.TimePicker;
 
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -76,12 +70,13 @@ public class FittingStopFragment extends Fragment {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            DBHelper db = new DBHelper(getContext());
-            FittingData fd = new FittingData();
-            fd.setNumber(new Random().nextInt(100));
-            fd.setTime(new Date().getTime());
-            db.addFittingItem(fd, "pushup");
-            db.getAllFitting("pushup");
+                Data data = (Data)getActivity().getApplication();
+                DBHelper db = new DBHelper(getContext());
+                FittingData fd = new FittingData();
+                fd.setNumber(new Random().nextInt(100));
+                fd.setTime(new Date().getTime());
+                db.addFittingItem(fd, "pushup");
+               db.getAllFitting("pushup");
 //                long aa = db.myquery();
                 //boolean hastable = db.isTableExist("table_users");
             }

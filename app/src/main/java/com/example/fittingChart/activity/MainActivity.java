@@ -12,10 +12,9 @@ import android.widget.Toast;
 
 import com.example.fittingChart.fragment.BlankFragment;
 import com.example.fittingChart.fragment.FittingFragment;
-import com.example.fittingChart.fragment.FittingStartFragment;
 import com.example.fittingChart.fragment.UserFragment;
 import com.example.fittingChart.Users;
-import com.example.fittingChart.ui.autoLogin.DBHelper;
+import com.example.fittingChart.database.DBHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.example.fittingChart.R;
 
@@ -75,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         //create/open Database
         Users u = new Users(1,"乐乐","我要吃山竹", R.mipmap.ic_launcher);
         db = new DBHelper(this);
+        boolean b = db.tableExists("table_users");
+        boolean c = db.tableExists("abc");
+
         if(db.getUserCount() == 0)
             db.addItem(u,"users");
         else
