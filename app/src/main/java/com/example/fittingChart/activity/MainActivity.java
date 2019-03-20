@@ -75,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         //SQLite
         //create/open Database
         Users u = new Users(1,"乐乐啊","我要学习，学习让我快乐", R.mipmap.ic_launcher);
-        db = new DBHelper(this,2);
-
+        db = new DBHelper(this);
         if(db.getUserCount() == 0)
             db.addItem(u,"users");
         else

@@ -15,26 +15,19 @@ import com.example.fittingChart.R;
 import com.example.fittingChart.activity.FittingActivity;
 
 public class MyListFragment extends ListFragment{
-    private static final String TAG = "MyListFragment";
+    private static final String TAG = "TabLayout";
 
+    private ArrayAdapter<String> adapter;
 
-    String[] strs = {
-            "listItem1",
-            "listItem2",
-            "listItem3"
-    };
+    String[] strs;
+    String[] str1={"aa","bb","cc"};
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "MyListFragment.onCreateView");
-        Bundle bundle = getArguments();
-        if(bundle != null)
-            strs = bundle.getStringArray("list");
 
-        // 设置ListFragment默认的ListView，即@id/android:list
-        this.setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, strs));
         return inflater.inflate(R.layout.mylist_fragment, container, false);
     }
 
@@ -44,6 +37,15 @@ public class MyListFragment extends ListFragment{
         Log.i(TAG, "MyListFragment.onCreate");
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = getArguments();
+        if(bundle != null)
+            strs = bundle.getStringArray("list");
+        else
+            Log.i(TAG, "MyListFragment.onCreate: empty list!!!");
+
+        // 设置ListFragment默认的ListView，即@id/android:list
+        adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, strs);
+        setListAdapter(adapter);
     }
 
     public void onListItemClick(ListView parent, View v,

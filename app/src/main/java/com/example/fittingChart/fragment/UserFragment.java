@@ -86,13 +86,13 @@ public class UserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
-        DBHelper db = new DBHelper(getContext(),((Data) getActivity().getApplication()).DATABASE_VERSION);
+        DBHelper db = new DBHelper(getContext());
         ArrayList<FittingData> pushuplist = db.getAllFitting("pushup");
 
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {
-            Date d = new Date(pushuplist.get(i).getNumber());
-            entries.add(new Entry(getDay(d), new Random().nextInt(300)));
+            Date d = new Date(pushuplist.get(i).getLocalTime());
+            entries.add(new Entry(i, pushuplist.get(i).getNumber()));//new Random().nextInt(300)
         }
         if(pushuplist.size() != 0){
             LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset

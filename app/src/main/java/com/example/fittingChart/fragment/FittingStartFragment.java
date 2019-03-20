@@ -42,10 +42,9 @@ public class FittingStartFragment extends Fragment {
 
     String TAG = "Fragment";
     FittingStopFragment fittingStopFragment;
-    TextView tv;
     long baseTimer;
     Timer timer;
-    EditText et_num;
+    EditText et_num,et_duration;
     Button bt_start, bt_stop;
     private TimePicker timePicker;
     Button btn_save, btn_cancel;
@@ -55,8 +54,8 @@ public class FittingStartFragment extends Fragment {
     View view;
     final Handler startTimehandler = new Handler(){
         public void handleMessage(android.os.Message msg) {
-            if (null != tv) {
-                tv.setText((String) msg.obj);
+            if (null != et_duration) {
+                et_duration.setText((String) msg.obj);
             }
         }
     };
@@ -90,13 +89,13 @@ public class FittingStartFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_fitting_start, container, false);
         timer = new Timer();
-        tv = view.findViewById(R.id.fitting_timerView);
         bt_start = view.findViewById(R.id.fitting_btn_start);
         bt_stop = view.findViewById(R.id.fitting_btn_stop);
         timePicker = view.findViewById(R.id.fitting_timePicker);
         btn_save = view.findViewById(R.id.fitting_btn_save);
         btn_cancel = view.findViewById(R.id.fitting_btn_cancel);
         et_num = view.findViewById(R.id.fitting_pt_num);
+        et_duration = view.findViewById(R.id.fitting_pt_duration);
 
         bt_start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,14 +125,14 @@ public class FittingStartFragment extends Fragment {
                 lSecond = (int)((SystemClock.elapsedRealtime() - baseTimer) / 1000);
                 timer.cancel();
 
-                lHour = lSecond / 3600;
-                lMinute = lSecond % 3600;
-                lSecond = lMinute % 60;
-                lMinute = lMinute / 60;
+                String hh = new DecimalFormat("00").format(lSecond / 3600);
+                String mm = new DecimalFormat("00").format(lSecond % 3600 / 60);
+                String ss = new DecimalFormat("00").format(lSecond % 60);
+                String timeFormat = new String(hh + ":" + mm + ":" + ss);
 
+                et_duration.setText(timeFormat);
                 //timePicker.setHour(nHour);
                 //timePicker.setMinute(nMin);
-
 //                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 //                ft.replace(R.id.fitting_fragment_container, fittingStopFragment);
 //                ft.commit();
@@ -155,7 +154,7 @@ public class FittingStartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Data data = (Data)getActivity().getApplication();
-                DBHelper db = new DBHelper(getContext(), ((Data) getActivity().getApplication()).DATABASE_VERSION);
+                DBHelper db = new DBHelper(getContext());
                 FittingData fd = new FittingData();
                 fd.setNumber(Integer.parseInt(et_num.getEditableText().toString().trim()));
                 fd.setDurationTime(lSecond);

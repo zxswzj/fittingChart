@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -22,10 +23,10 @@ import com.example.fittingChart.module.FittingData;
 public class DBHelper  extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
+    private static final int VERSION = 7;
     String TAG = "SQLite";
     Data data;
 
-    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "db_user";
@@ -33,14 +34,20 @@ public class DBHelper  extends SQLiteOpenHelper {
     // Contacts table name
     private static final String TABLE_USER = "users";
     private static final String TABLE_PUSHUP = "pushup";
+    private static final String TABLE_HANDSTAND = "handStand";
+    private static final String TABLE_BURPEE = "burpee";
+    private static final String TABLE_JUMPING_JACK = "jumpingJack";//开合跳
+
+
+
 
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_SLOGAN = "slogan";
 
-    public DBHelper(Context context, int version) {
-        super(context, DATABASE_NAME, null, version);
+    public DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, VERSION);
         Log.i("SQLite", "DBHelper.DBHelper");
     }
 
@@ -49,6 +56,10 @@ public class DBHelper  extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createUser(db);
         createFitting(db, TABLE_PUSHUP);
+        createFitting(db, TABLE_HANDSTAND);
+        createFitting(db, TABLE_BURPEE);
+        createFitting(db, TABLE_JUMPING_JACK);
+
         Log.i("SQLite", "DBHelper.onCreate");
     }
 
@@ -176,7 +187,7 @@ public class DBHelper  extends SQLiteOpenHelper {
 
                 // Adding contact to list
                 fittingDataList.add(fd);
-                Log.i(TAG, "getAllFitting: " + fd.getID() + fd.getNumber() + fd.getDurationTime() + fd.getLocalTime());
+                Log.i(TAG, "getAllFitting: " + fd.getID() + ":" + fd.getNumber() + ":" + fd.getDurationTime() + ":" + fd.getLocalTime());
             } while (cursor.moveToNext());
         }
 

@@ -71,7 +71,7 @@ public class FittingStopFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Data data = (Data)getActivity().getApplication();
-                DBHelper db = new DBHelper(getContext(),data.DATABASE_VERSION);
+                DBHelper db = new DBHelper(getContext());
                 FittingData fd = new FittingData();
                 fd.setNumber(new Random().nextInt(100));
                 fd.setLocalTime(new Date().getTime());

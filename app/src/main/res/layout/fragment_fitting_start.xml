@@ -30,35 +30,21 @@
         app:layout_constraintStart_toEndOf="@+id/fitting_btn_start"
         app:layout_constraintTop_toBottomOf="@+id/fitting_timerView" />
 
-    <TextView
-        android:id="@+id/fitting_timerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/fitting_pt_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
-        android:text="Name" />
+        android:text="0" />
 
-    <TimePicker
-        android:id="@+id/fitting_timePicker"
+    <EditText
+        android:id="@+id/fitting_pt_duration"
         android:layout_width="match_parent"
-        android:layout_height="193dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/fitting_btn_save" />
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
 
     <Button
         android:id="@+id/fitting_btn_save"
@@ -84,5 +70,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/fitting_btn_start"
         app:layout_constraintTop_toBottomOf="@+id/fitting_timerView" />
+
+    <TimePicker
+        android:id="@+id/fitting_timePicker"
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/fitting_btn_save" />
 
 </LinearLayout>
