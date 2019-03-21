@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.fittingChart.ActionAdapter;
 import com.example.fittingChart.GoodsEntity;
 import com.example.fittingChart.R;
 
@@ -33,7 +32,7 @@ public class TabFragment extends Fragment {
     private View view;//定义view用来设置fragment的layout
     public RecyclerView recyclerView;//定义RecyclerView
     private ArrayList<GoodsEntity> goodsEntityList = new ArrayList<GoodsEntity>();
-    private ActionAdapter actionAdapter;
+    //private ActionAdapter actionAdapter;
 
     public TabFragment() {
         // Required empty public constructor

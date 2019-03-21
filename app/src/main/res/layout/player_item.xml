@@ -5,14 +5,14 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/item_imgv"
+        android:id="@+id/player_item_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="5dp"
         android:src="@mipmap/ic_launcher_round"/>
 
     <TextView
-        android:id="@+id/item_tv"
+        android:id="@+id/player_item_tv_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="梅西"
@@ -20,7 +20,7 @@
         android:gravity="center_vertical"/>
 
     <TextView
-        android:id="@+id/item_price"
+        android:id="@+id/player_item_tv_age"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="1000"
