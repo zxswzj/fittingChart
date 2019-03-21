@@ -23,7 +23,7 @@ import com.example.fittingChart.module.FittingData;
 public class DBHelper  extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int VERSION = 7;
+    private static final int VERSION = 8;
     String TAG = "SQLite";
     Data data;
 
@@ -33,6 +33,17 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     // Contacts table name
     private static final String TABLE_USER = "users";
+
+    private static final String TABLE_FITTING_BREAST = "fitting_breast";
+    private static final String TABLE_FITTING_SHOULDER = "fitting_shoulder";
+    private static final String TABLE_FITTING_BACK = "fitting_back";
+    private static final String TABLE_FITTING_ARM = "fitting_arm";
+    private static final String TABLE_FITTING_BELLY = "fitting_belly";
+    private static final String TABLE_FITTING_LEG = "fitting_leg";
+    private static final String TABLE_FITTING_BRAIN = "fitting_brain";
+    private static final String TABLE_FITTING_OTHER = "fitting_other";
+
+
     private static final String TABLE_PUSHUP = "pushup";
     private static final String TABLE_HANDSTAND = "handStand";
     private static final String TABLE_BURPEE = "burpee";
@@ -55,10 +66,39 @@ public class DBHelper  extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createUser(db);
-        createFitting(db, TABLE_PUSHUP);
-        createFitting(db, TABLE_HANDSTAND);
-        createFitting(db, TABLE_BURPEE);
-        createFitting(db, TABLE_JUMPING_JACK);
+
+        createFittingTable(db, TABLE_FITTING_ARM);
+        createFittingTable(db, TABLE_FITTING_BACK);
+        createFittingTable(db, TABLE_FITTING_BELLY);
+        createFittingTable(db, TABLE_FITTING_BRAIN);
+        createFittingTable(db, TABLE_FITTING_LEG);
+        createFittingTable(db, TABLE_FITTING_OTHER);
+        createFittingTable(db, TABLE_FITTING_SHOULDER);
+        createFittingTable(db, TABLE_FITTING_BREAST);
+
+        addFittingTableItem(db, TABLE_FITTING_BREAST, "俯卧撑");
+        addFittingTableItem(db, TABLE_FITTING_BREAST, "跪姿俯卧撑");
+        addFittingTableItem(db, TABLE_FITTING_BREAST, "扶墙俯卧撑");
+
+        addFittingTableItem(db, TABLE_FITTING_SHOULDER, "哑铃前平举");
+        addFittingTableItem(db, TABLE_FITTING_SHOULDER, "哑铃侧平举");
+
+        addFittingTableItem(db, TABLE_FITTING_BACK, "哑铃飞鸟");
+
+        addFittingTableItem(db, TABLE_FITTING_ARM, "哑铃肱二头肌弯举");
+        addFittingTableItem(db, TABLE_FITTING_ARM, "哑铃肱二头肌弯举");
+
+        addFittingTableItem(db, TABLE_FITTING_BELLY, "卷腹");
+        addFittingTableItem(db, TABLE_FITTING_BELLY, "仰卧起坐");
+        addFittingTableItem(db, TABLE_FITTING_BELLY, "平板支撑");
+
+        addFittingTableItem(db, TABLE_FITTING_LEG, "深蹲");
+        addFittingTableItem(db, TABLE_FITTING_LEG, "靠墙蹲");
+
+        addFittingTableItem(db, TABLE_FITTING_BRAIN, "最强大脑之数字迷宫");
+
+        addFittingTableItem(db, TABLE_FITTING_OTHER, "体重");
+        addFittingTableItem(db, TABLE_FITTING_OTHER, "波比跳");
 
         Log.i("SQLite", "DBHelper.onCreate");
     }
@@ -89,7 +129,14 @@ public class DBHelper  extends SQLiteOpenHelper {
         Log.i("SQLite", "DBHelper.createFitting");
     }
 
-    // Adding new item in table
+    public void createFittingTable(SQLiteDatabase db, String tableName) {
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + tableName + "("
+                + KEY_ID + " INTEGER PRIMARY KEY," + "name" + " STRING" + ")";
+        db.execSQL(CREATE_CONTACTS_TABLE);
+        Log.i("SQLite", "DBHelper.createFitting");
+    }
+
+    // Adding new item in fitting
     public void addItem(Users user, String table) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -103,7 +150,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         Log.i("SQLite", "DBHelper.addUser");
     }
 
-    public void addFittingItem(FittingData data, String table) {
+    public void addFittingItem(String table, FittingData data) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -114,6 +161,17 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.insert(table, null, values);
         db.close(); // Closing database connection
         Log.i("SQLite", "DBHelper.addUser");
+    }
+
+    public void addFittingTableItem(SQLiteDatabase db, String table, String item) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", item);
+
+        // Inserting Row
+        db.insert(table, null, values);
+        Log.i("SQLite", "DBHelper.addFittingTableItem");
     }
 
     // Getting single contact
@@ -134,7 +192,8 @@ public class DBHelper  extends SQLiteOpenHelper {
             String log = "Id: " + user.getID() + " ,Name: " + user.getUsername() + " ,Slogan: " + user.getSlogan();
             Log.i("SQLite: ", log);
         }
-
+        cursor.close();
+        db.close();
         return user;
     }
 

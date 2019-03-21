@@ -87,7 +87,7 @@ public class UserFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
         DBHelper db = new DBHelper(getContext());
-        ArrayList<FittingData> pushuplist = db.getAllFitting("pushup");
+        ArrayList<FittingData> pushuplist = db.getAllFitting("俯卧撑");
 
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {

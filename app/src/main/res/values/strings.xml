@@ -7,6 +7,22 @@
     <string name="blue">BLUE</string>
     <string name="green">GREEN</string>
 
+    <string name="pushUp">俯卧撑</string>
+    <string name="kneePushUp">跪姿俯卧撑</string>
+    <string name="wallPushUp">扶墙俯卧撑</string>
+    <string name="dumbbellFrontRaise">哑铃前平举</string>
+    <string name="dumbbellSideRaise">哑铃侧平举</string>
+    <string name="dumbbellBackRaise">哑铃飞鸟</string>
+    <string name="dumbbellBicepsBend">哑铃肱二头肌弯举</string>
+    <string name="dumbbellTricepsBend">哑铃肱三头肌弯举</string>
+    <string name="crunch">卷腹</string>
+    <string name="sitUp">仰卧起坐</string>
+    <string name="deepSquat">深蹲</string>
+    <string name="wallSquat">靠墙蹲</string>
+
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

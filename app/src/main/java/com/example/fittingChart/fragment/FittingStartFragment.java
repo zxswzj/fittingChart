@@ -159,7 +159,7 @@ public class FittingStartFragment extends Fragment {
                 fd.setNumber(Integer.parseInt(et_num.getEditableText().toString().trim()));
                 fd.setDurationTime(lSecond);
                 fd.setLocalTime(new Date().getTime());
-                db.addFittingItem(fd, "pushup");
+//                db.addFittingItem(fd, "pushup");
                 db.getAllFitting("pushup");
 //                long aa = db.myquery();
                 //boolean hastable = db.isTableExist("table_users");

@@ -42,7 +42,7 @@ public class MyListViewAdapter extends BaseAdapter {
         ImageView im_photo = (ImageView) view.findViewById(R.id.fitting_list_item_iv);
 
         //为Item 里面的组件设置相应的数据
-        tv_name.setText("Activity:" + fittingListItemData.getName());
+        tv_name.setText(fittingListItemData.getName());
         tv_age.setText(fittingListItemData.getDes());
         im_photo.setImageResource(fittingListItemData.getResourceID());
 
