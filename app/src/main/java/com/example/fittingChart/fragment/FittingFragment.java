@@ -2,6 +2,7 @@ package com.example.fittingChart.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,15 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
+import com.example.fittingChart.activity.FittingActivity;
 import com.example.fittingChart.module.Data;
-import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.module.FittingListItemData;
+import com.example.fittingChart.module.FittingTableData;
 import com.example.fittingChart.ui.CustomViewPager.CustomPagerAdapter;
 import com.example.fittingChart.ui.MyListView.MyListViewAdapter;
-import com.example.fittingChart.ui.TabLayout.MyFragmentPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,37 +193,40 @@ public class FittingFragment extends Fragment {
         //adapter2.addTitlesAndFragments(mTitles2, fragments2);
 
         Data data = (Data)getActivity().getApplication();
-        final List<FittingListItemData> breastList = data.breastList;
+        List<FittingTableData> breastList = data.breastList;
         //ListItem
-//        breastList.add(new FittingListItemData("跪姿俯卧撑","爽",R.drawable.ic_dashboard_black_24dp));
-//        breastList.add(new FittingListItemData("扶墙俯卧撑","爽",R.drawable.ic_dashboard_black_24dp));
         MyListViewAdapter myListViewBreastAdapter = new MyListViewAdapter(getContext(),breastList);
         ((ListView)viewList1.get(0).findViewById(R.id.fitting_lv)).setAdapter(myListViewBreastAdapter);
         ((ListView)viewList1.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
-            }
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("table", tv.getText());
+                startActivity(i);}
         });
 
-        List<FittingListItemData> shoulderList = data.shoulderList;
+        List<FittingTableData> shoulderList = data.shoulderList;
         MyListViewAdapter myListViewShoulderAdapter = new MyListViewAdapter(getContext(),shoulderList);
         ((ListView)viewList1.get(1).findViewById(R.id.fitting_lv)).setAdapter(myListViewShoulderAdapter);
         ((ListView)viewList1.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Toast.makeText(getContext(),                tv.getText()
+                        + " is clicked",Toast.LENGTH_SHORT).show();
             }
         });
 
-        //List<FittingListItemData> armList = data.armList;
+        List<FittingTableData> armList = data.armList;
         MyListViewAdapter myListViewArmAdapter = new MyListViewAdapter(getContext(),data.armList);
         ((ListView)viewList1.get(2).findViewById(R.id.fitting_lv)).setAdapter(myListViewArmAdapter);
         ((ListView)viewList1.get(2).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
-            }
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Toast.makeText(getContext(),                tv.getText()
+                        + " is clicked",Toast.LENGTH_SHORT).show();            }
         });
 
         MyListViewAdapter myListViewBackAdapter = new MyListViewAdapter(getContext(),data.backList);
@@ -230,8 +234,9 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(3).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
-            }
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Toast.makeText(getContext(),                tv.getText()
+                        + " is clicked",Toast.LENGTH_SHORT).show();            }
         });
 
         MyListViewAdapter myListViewBellyAdapter = new MyListViewAdapter(getContext(),data.bellyList);
@@ -239,8 +244,9 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(4).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
-            }
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Toast.makeText(getContext(),                tv.getText()
+                        + " is clicked",Toast.LENGTH_SHORT).show();            }
         });
 
         MyListViewAdapter myListViewLegAdapter = new MyListViewAdapter(getContext(),data.legList);
@@ -248,8 +254,9 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(5).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
-            }
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Toast.makeText(getContext(),                tv.getText()
+                        + " is clicked",Toast.LENGTH_SHORT).show();            }
         });
 
         MyListViewAdapter myListViewBrainAdapter = new MyListViewAdapter(getContext(),data.brainList);
@@ -257,8 +264,9 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList2.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
-            }
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Toast.makeText(getContext(),                tv.getText()
+                        + " is clicked",Toast.LENGTH_SHORT).show();            }
         });
 
         MyListViewAdapter myListViewOtherAdapter = new MyListViewAdapter(getContext(),data.otherList);
@@ -266,8 +274,9 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList2.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),breastList.get(position).getName() + " is clicked",Toast.LENGTH_SHORT).show();
-            }
+                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                Toast.makeText(getContext(),                tv.getText()
+                        + " is clicked",Toast.LENGTH_SHORT).show();            }
         });
 
 

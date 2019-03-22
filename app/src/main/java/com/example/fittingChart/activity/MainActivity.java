@@ -15,8 +15,12 @@ import com.example.fittingChart.fragment.FittingFragment;
 import com.example.fittingChart.fragment.UserFragment;
 import com.example.fittingChart.Users;
 import com.example.fittingChart.database.DBHelper;
+import com.example.fittingChart.module.Data;
+import com.example.fittingChart.module.FittingTableData;
 import com.github.mikephil.charting.charts.LineChart;
 import com.example.fittingChart.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnFragmentInteractionListener {
 
@@ -76,10 +80,19 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         //create/open Database
         Users u = new Users(1,"乐乐啊","我要学习，学习让我快乐", R.mipmap.ic_launcher);
         db = new DBHelper(this);
-        if(db.getUserCount() == 0)
-            db.addItem(u,"users");
-        else
-            u = db.getUser(1);
+
+        Data d = (Data)getApplication();
+        int count = 0;
+
+        ArrayList<FittingTableData> table = new ArrayList<>();
+
+        if(db.tableExists(d.TABLE_FITTING_BREAST))
+            table = db.getAllFittingTable(d.TABLE_FITTING_BREAST);
+
+//        if(db.getUserCount() == 0)
+//            db.addItem(u,"users");
+//        else
+//            u = db.getUser(1);
 
         Bundle bundle = new Bundle();
         bundle.putString("username",u.getUsername());

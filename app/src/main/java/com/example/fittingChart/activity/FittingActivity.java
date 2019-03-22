@@ -1,5 +1,6 @@
 package com.example.fittingChart.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +15,7 @@ import com.example.fittingChart.fragment.UserFragment;
 public class FittingActivity extends AppCompatActivity {
 
     FittingStartFragment fittingStartFragment;
-    UserFragment userFragment;
+    String table;
 
     public FittingActivity() {
         Log.i("Fragment","FittingActivity.FittingActivity");
@@ -26,6 +27,8 @@ public class FittingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fitting);
         Log.i("Fragment","FittingActivity.onCreate");
+        Intent intent = getIntent();
+        table = intent.getStringExtra("table");
 
         fittingStartFragment = new FittingStartFragment();
         //userFragment = new UserFragment();

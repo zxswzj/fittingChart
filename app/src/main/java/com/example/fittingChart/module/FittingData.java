@@ -5,6 +5,7 @@ public class FittingData {
     Integer number;
     long durationTime;
     long localTime;
+    String des;
 
 
     // Empty constructor

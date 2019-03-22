@@ -75,8 +75,8 @@ public class FittingStopFragment extends Fragment {
                 FittingData fd = new FittingData();
                 fd.setNumber(new Random().nextInt(100));
                 fd.setLocalTime(new Date().getTime());
-                db.addFittingItem("pushup",fd);
-               db.getAllFitting("pushup");
+                db.addFitting("FUWOCHENG",fd);
+               db.getAllFitting("FUWOCHENG");
 //                long aa = db.myquery();
                 //boolean hastable = db.isTableExist("table_users");
             }

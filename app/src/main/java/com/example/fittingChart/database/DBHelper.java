@@ -13,9 +13,11 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.example.fittingChart.R;
 import com.example.fittingChart.Users;
 import com.example.fittingChart.module.Data;
 import com.example.fittingChart.module.FittingData;
+import com.example.fittingChart.module.FittingTableData;
 
 /**
  * Created by seanz on 2016/10/10.
@@ -23,7 +25,7 @@ import com.example.fittingChart.module.FittingData;
 public class DBHelper  extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int VERSION = 8;
+    private static final int VERSION = 9;
     String TAG = "SQLite";
     Data data;
 
@@ -44,13 +46,6 @@ public class DBHelper  extends SQLiteOpenHelper {
     private static final String TABLE_FITTING_OTHER = "fitting_other";
 
 
-    private static final String TABLE_PUSHUP = "pushup";
-    private static final String TABLE_HANDSTAND = "handStand";
-    private static final String TABLE_BURPEE = "burpee";
-    private static final String TABLE_JUMPING_JACK = "jumpingJack";//开合跳
-
-
-
 
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
@@ -66,6 +61,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createUser(db);
+        Log.i("SQLite", "DBHelper.onCreate");
 
         createFittingTable(db, TABLE_FITTING_ARM);
         createFittingTable(db, TABLE_FITTING_BACK);
@@ -99,8 +95,33 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         addFittingTableItem(db, TABLE_FITTING_OTHER, "体重");
         addFittingTableItem(db, TABLE_FITTING_OTHER, "波比跳");
+        addFittingTableItem(db, TABLE_FITTING_OTHER, "倒立");
 
-        Log.i("SQLite", "DBHelper.onCreate");
+
+        createFitting(db, new FittingTableData("俯卧撑","FUWOCHENG","爽"，R.drawable.ic_home_black_24dp));
+        createFitting(db, "GUIZIFUWOCHENG");
+        createFitting(db, "FUQIANGFUWOCHENG");
+
+        createFitting(db, "YALINGQIANPINGJU");
+        createFitting(db, "YALINGCEPINGJU");
+
+        createFitting(db, "YALINGFEINIAO");
+
+        createFitting(db, "YALINGGONGERTOUJIWANJU");
+        createFitting(db, "YALINGGONGSANTOUJIWANJU");
+
+        createFitting(db, "JUANFU");
+        createFitting(db, "YANGWOQIZUO");
+        createFitting(db, "PINGBANZHICHENG");
+
+        createFitting(db, "SHENDUN");
+        createFitting(db, "KAOQIANGDUN");
+
+        createFitting(db, "ZUIQIANGDANAOZHISHUZIMIGONG");
+
+        createFitting(db, "TIZHONG");
+        createFitting(db, "BOBITIAO");
+        createFitting(db, "DAOLI");
     }
 
     // Upgrading database
@@ -108,10 +129,11 @@ public class DBHelper  extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i("SQLite", "DBHelper.onUpgrade");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUSHUP);
+        db.execSQL("DROP TABLE IF EXISTS " + "FUWOCHENG");
         // Create tables again
         onCreate(db);
     }
+
 
     public void createUser(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_USER + "("
@@ -120,24 +142,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.execSQL(CREATE_CONTACTS_TABLE);
         Log.i("SQLite", "DBHelper.createUser");
     }
-
-    public void createFitting(SQLiteDatabase db, String tableName) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + tableName + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + "number" + " INTEGER,"
-                + "durationTime" + " INTEGER," + "localTime" + " INTEGER" + ")";
-        db.execSQL(CREATE_CONTACTS_TABLE);
-        Log.i("SQLite", "DBHelper.createFitting");
-    }
-
-    public void createFittingTable(SQLiteDatabase db, String tableName) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + tableName + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + "name" + " STRING" + ")";
-        db.execSQL(CREATE_CONTACTS_TABLE);
-        Log.i("SQLite", "DBHelper.createFitting");
-    }
-
-    // Adding new item in fitting
-    public void addItem(Users user, String table) {
+    public void addUser(Users user, String table) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -149,32 +154,31 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close(); // Closing database connection
         Log.i("SQLite", "DBHelper.addUser");
     }
-
-    public void addFittingItem(String table, FittingData data) {
+    public int updateUser(Users user) {
+        Log.i("SQLite", "DBHelper.updateUser");
+        int ret_value = 0;
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put("number", data.getNumber());
-        values.put("durationTime", data.getDurationTime());
-        values.put("localTime", data.getLocalTime());
-        // Inserting Row
-        db.insert(table, null, values);
-        db.close(); // Closing database connection
-        Log.i("SQLite", "DBHelper.addUser");
+        String sql = "update " + TABLE_USER + " set name=?,slogan=? where id = 1";
+        db.execSQL(sql, new String[]{user.getUsername(), user.getSlogan()});
+
+//        ContentValues values = new ContentValues();
+//        values.put(KEY_NAME, user.getUsername());
+//        values.put(KEY_SLOGAN, user.getSlogan());
+//
+//        // updating row
+//        ret_value = db.update(TABLE_USER, values, KEY_ID + " = ?",
+//                new String[] { String.valueOf(user.getID()) });
+        db.close();
+
+        return 0;
     }
-
-    public void addFittingTableItem(SQLiteDatabase db, String table, String item) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put("name", item);
-
-        // Inserting Row
-        db.insert(table, null, values);
-        Log.i("SQLite", "DBHelper.addFittingTableItem");
+    public void deleteUser(Users user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_USER, KEY_ID + " = ?",
+                new String[]{String.valueOf(user.getUsername())});
+        db.close();
     }
-
-    // Getting single contact
     public Users getUser(int id) {
         Log.i("SQLite", "DBHelper.getUser");
         Users user = new Users();
@@ -196,8 +200,6 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close();
         return user;
     }
-
-    //Getting All Contacts
     public ArrayList<Users> getAllUsers() {
         Log.i("SQLite", "DBHelper.getAllUsers");
         ArrayList<Users> userList = new ArrayList<Users>();
@@ -226,6 +228,91 @@ public class DBHelper  extends SQLiteOpenHelper {
         return userList;
     }
 
+
+    public boolean createFittingTable(SQLiteDatabase db, String table) {
+        Log.i("SQLite", "DBHelper.createFitting");
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + table + "(id INTEGER PRIMARY KEY autoincrement,name STRING, dBname STRING, des STRING, layoutResourceID, INTEGER)";
+        try {
+            db.execSQL(CREATE_CONTACTS_TABLE);
+            return true;
+        }catch(SQLiteException e){
+            return false;
+        }
+    }
+    public ArrayList<FittingTableData> getAllFittingTable(String table){
+        ArrayList<FittingTableData> list = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + table;
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery,null);
+
+            while (cursor.moveToNext()) {
+                FittingTableData data = new FittingTableData();
+
+                data.setName(cursor.getString(0)); //获取第一列的值,第一列的索引从0开始
+                data.setDbName(cursor.getString(1));
+                data.setDes(cursor.getString(2));
+                data.setResourceID(cursor.getInt(3));
+                list.add(data);
+            }
+            cursor.close();
+            db.close();
+
+            // return user list
+            return list;
+        }
+        catch(SecurityException e){
+            return null;
+        }
+    }
+    public boolean addFittingTableItem(SQLiteDatabase db, String table, FittingTableData data) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+        Log.i("SQLite", "DBHelper.addFittingTableItem");
+        try {
+            ContentValues values = new ContentValues();
+            values.put("name", data.getName());
+            values.put("dBName", data.getDbName());
+            values.put("des",data.getDes());
+            values.put("layoutResourceID", data.getResourceID());
+            db.insert(table, null, values);
+            return true;
+        }catch(SQLiteException e)
+        {
+            return false;
+        }
+    }
+
+    public boolean createFitting(SQLiteDatabase db, String table, FittingData data) {
+        Log.i("SQLite", "DBHelper.createFitting");
+        try{
+            String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + table +
+                "(id INTEGER PRIMARY KEY autoincrement,number INTEGER,durationTime INTEGER,localTime INTEGER,des STRING)";
+            db.execSQL(CREATE_CONTACTS_TABLE);
+            return true;
+        }catch(SQLiteException e)
+        {
+            return false;
+        }
+    }
+    public boolean addFittingItem(String table, FittingData data) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.i("SQLite", "DBHelper.addFittingItem");
+        try {
+            ContentValues values = new ContentValues();
+            values.put("id", data.getID();
+            values.put("number", data.getNumber());
+            values.put("durationTime",data.getDurationTime());
+            values.put("localTime", data.getLocalTime());
+            values.put("des", "temp");
+            db.insert(table, null, values);
+            return true;
+        }catch(SQLiteException e)
+        {
+            return false;
+        }
+    }
     public ArrayList<FittingData> getAllFitting(String table) {
         Log.i("SQLite", "DBHelper.getAllFitting");
         ArrayList<FittingData> fittingDataList = new ArrayList<>();
@@ -257,67 +344,53 @@ public class DBHelper  extends SQLiteOpenHelper {
         return fittingDataList;
     }
 
-    // Updating single user
-    public int updateUser(Users user) {
-        Log.i("SQLite", "DBHelper.updateUser");
-        int ret_value = 0;
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String sql = "update " + TABLE_USER + " set name=?,slogan=? where id = 1";
-        db.execSQL(sql, new String[]{user.getUsername(), user.getSlogan()});
-
-//        ContentValues values = new ContentValues();
-//        values.put(KEY_NAME, user.getUsername());
-//        values.put(KEY_SLOGAN, user.getSlogan());
-//
-//        // updating row
-//        ret_value = db.update(TABLE_USER, values, KEY_ID + " = ?",
-//                new String[] { String.valueOf(user.getID()) });
-        db.close();
-
-        return 0;
-    }
-
-    // Deleting single contact
-    public void deleteUser(Users user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_USER, KEY_ID + " = ?",
-                new String[]{String.valueOf(user.getUsername())});
-        db.close();
-    }
-
-
-    // Getting user Count
-    public int getUserCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_USER;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
-
-        return count;
-    }
-
-    //return table item number, 0 means no table;
-    public long hasTable(String table) {
-        Log.i("SQLite", "hasTable");
-        SQLiteDatabase db = this.getReadableDatabase();
+    public boolean deleteTable(SQLiteDatabase db, String table){
+        Log.i("SQLite", "DBHelper.deleteFittingTable");
+        String cmd = "drop table " + table;
         try {
-            Cursor cursor = db.query(table, new String[]{"id"}, "id=?", new String[]{"1"}, null, null, null, null);
-            cursor.moveToFirst();
-            long n = cursor.getInt(0);
-            cursor.close();
-            db.close();
-            return n;
-        } catch (SQLiteException e) {
-            return 0;
+            db.execSQL(cmd);
+            return true;
+        }catch(SQLiteException e){
+            return false;
         }
     }
-
-    public boolean tableExists(String tableName)
-    {
+    //清空整个表
+    public boolean clearTable(SQLiteDatabase db, String table){
+        Log.i("SQLite", "DBHelper.deleteFittingTable");
+        String cmd = "delete from " + table;
+        try {
+            db.execSQL(cmd);
+            return true;
+        }catch(SQLiteException e){
+            return false;
+        }
+    }
+    public boolean deleteItem(SQLiteDatabase db, String table, int index){
+        Log.i("SQLite", "DBHelper.createFitting");
+        String cmd = "delete from " + table + "where id=" + index;
+        try {
+            db.execSQL(cmd);
+            return true;
+        }catch(SQLiteException e){
+            return false;
+        }
+    }
+    public int getTableCount(String table){
+        try{
+            SQLiteDatabase db = this.getReadableDatabase();
+            String countQuery = "SELECT  * FROM " + table;
+            Cursor cursor = db.rawQuery(countQuery, null);
+            int count = cursor.getCount();
+            cursor.close();
+            db.close();
+            return count;
+        }
+        catch(SQLiteException e)
+        {
+            return -1;
+        }
+    }
+    public boolean tableExists(String tableName){
         SQLiteDatabase db = this.getReadableDatabase();
         if (tableName == null || db == null || !db.isOpen())
         {
@@ -334,14 +407,3 @@ public class DBHelper  extends SQLiteOpenHelper {
         return count > 0;
     }
 }
-//    String sqlDataStore = "create table if not exists " +
-//            TABLE_NAME_INFOTABLE + " ("+ BaseColumns._ID + " integer primary key autoincrement,"
-//
-//            + COLUMN_NAME_SITE + " text not null,"
-//            + COLUMN_NAME_ADDRESS + " text not null,"
-//            + COLUMN_NAME_USERNAME + " text not null,"
-//            + COLUMN_NAME_PASSWORD + " text not null,"
-//            + COLUMN_NAME_NOTES + " text not null);";
-//
-//        db.execSQL(sqlDataStore);
-//                }

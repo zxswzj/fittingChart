@@ -1,27 +1,24 @@
 package com.example.fittingChart.ui.MyListView;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.module.FittingListItemData;
+import com.example.fittingChart.module.FittingTableData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyListViewAdapter extends BaseAdapter {
 
-    private List<FittingListItemData> fittingListItemDataList;// = new ArrayList<>();
+    private List<FittingTableData> fittingListItemDataList;// = new ArrayList<>();
     private LayoutInflater inflater; //得到一个LayoutInfalter对象用来导入布局
 
-    public MyListViewAdapter(Context context, List<FittingListItemData> fittingListItemDataList) {
+    public MyListViewAdapter(Context context, List<FittingTableData> fittingListItemDataList) {
         this.inflater = LayoutInflater.from(context);
         this.fittingListItemDataList = fittingListItemDataList;
     }
@@ -34,7 +31,7 @@ public class MyListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.fitting_list_item,null);
-        FittingListItemData fittingListItemData = (FittingListItemData) getItem(position);
+        FittingTableData fittingListItemData = (FittingTableData) getItem(position);
 
         //在view 视图中查找 组件
         TextView tv_name = (TextView) view.findViewById(R.id.fitting_list_item_tv_name);
