@@ -1,16 +1,19 @@
 package com.example.fittingChart.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fittingChart.fragment.BlankFragment;
+import com.example.fittingChart.fragment.RecordFragment;
 import com.example.fittingChart.fragment.FittingFragment;
 import com.example.fittingChart.fragment.UserFragment;
 import com.example.fittingChart.Users;
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
     //private Toolbar mToolbar;
     UserFragment userFragment;
     FittingFragment fittingFragment;
-    BlankFragment fragment_blank;
+    RecordFragment recordFragment;
     int currentFrag;
     private int lastIndex;
 
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         currentFrag = 0;
         userFragment = new UserFragment();
         fittingFragment = new FittingFragment();
-        fragment_blank = new BlankFragment();
+        recordFragment = new RecordFragment();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -71,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         setContentView(R.layout.activity_main);
         Log.i(TAG, "MainActivity.onCreate");
 
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+
         initCtrl();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -88,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
 
         if(db.tableExists(d.TABLE_FITTING_BREAST))
             table = db.getAllFittingTable(d.TABLE_FITTING_BREAST);
+
+//        FittingData fd = new FittingData();
+//        fd.setNumber(33);
+//        fd.setLocalTime(44);
+//        fd.setDurationTime(55);
+//        fd.setDes("test");
+//        db.addFittingItem("FUWOCHENG",fd);
 
 //        if(db.getUserCount() == 0)
 //            db.addItem(u,"users");
@@ -114,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         {
             case 0: ft.replace(R.id.fragment_container, userFragment);break;
             case 1: ft.replace(R.id.fragment_container, fittingFragment);break;
-            case 2: ft.replace(R.id.fragment_container, fragment_blank);break;
+            case 2: ft.replace(R.id.fragment_container, recordFragment);break;
             default:
                 Log.e("Fragment", "replaceFragmentPosition: ");
         }

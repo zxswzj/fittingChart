@@ -200,10 +200,13 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
                 Intent i = new Intent(getActivity() , FittingActivity.class);
-                i.putExtra("table", tv.getText());
-                startActivity(i);}
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
+            }
         });
 
         List<FittingTableData> shoulderList = data.shoulderList;
@@ -212,9 +215,12 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
-                Toast.makeText(getContext(),                tv.getText()
-                        + " is clicked",Toast.LENGTH_SHORT).show();
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
             }
         });
 
@@ -224,9 +230,13 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(2).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
-                Toast.makeText(getContext(),                tv.getText()
-                        + " is clicked",Toast.LENGTH_SHORT).show();            }
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
+            }
         });
 
         MyListViewAdapter myListViewBackAdapter = new MyListViewAdapter(getContext(),data.backList);
@@ -234,9 +244,13 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(3).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
-                Toast.makeText(getContext(),                tv.getText()
-                        + " is clicked",Toast.LENGTH_SHORT).show();            }
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
+            }
         });
 
         MyListViewAdapter myListViewBellyAdapter = new MyListViewAdapter(getContext(),data.bellyList);
@@ -244,9 +258,13 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(4).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
-                Toast.makeText(getContext(),                tv.getText()
-                        + " is clicked",Toast.LENGTH_SHORT).show();            }
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
+            }
         });
 
         MyListViewAdapter myListViewLegAdapter = new MyListViewAdapter(getContext(),data.legList);
@@ -254,9 +272,13 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList1.get(5).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
-                Toast.makeText(getContext(),                tv.getText()
-                        + " is clicked",Toast.LENGTH_SHORT).show();            }
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
+            }
         });
 
         MyListViewAdapter myListViewBrainAdapter = new MyListViewAdapter(getContext(),data.brainList);
@@ -264,9 +286,13 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList2.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
-                Toast.makeText(getContext(),                tv.getText()
-                        + " is clicked",Toast.LENGTH_SHORT).show();            }
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
+            }
         });
 
         MyListViewAdapter myListViewOtherAdapter = new MyListViewAdapter(getContext(),data.otherList);
@@ -274,9 +300,13 @@ public class FittingFragment extends Fragment {
         ((ListView)viewList2.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = view.findViewById(R.id.fitting_list_item_tv_name);
-                Toast.makeText(getContext(),                tv.getText()
-                        + " is clicked",Toast.LENGTH_SHORT).show();            }
+                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
+                Intent i = new Intent(getActivity() , FittingActivity.class);
+                i.putExtra("tableName", tv_Name.getText());
+                i.putExtra("tableDBName", tv_dbName.getText());
+                startActivity(i);
+            }
         });
 
 

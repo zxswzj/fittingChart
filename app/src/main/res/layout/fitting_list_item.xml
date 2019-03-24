@@ -32,4 +32,11 @@
             android:layout_weight="1"
             android:text="TextView" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/fitting_list_item_tv_dbName"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:visibility="visible" />
 </LinearLayout>

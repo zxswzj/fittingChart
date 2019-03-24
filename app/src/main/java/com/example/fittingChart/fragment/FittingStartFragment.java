@@ -40,6 +40,7 @@ import java.util.TimerTask;
  */
 public class FittingStartFragment extends Fragment {
 
+    String tableName,tableDBName;
     String TAG = "Fragment";
     FittingStopFragment fittingStopFragment;
     long baseTimer;
@@ -70,7 +71,10 @@ public class FittingStartFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "FittingStartFragment.onCreate");
-        fittingStopFragment = new FittingStopFragment();
+//        fittingStopFragment = new FittingStopFragment();
+        Bundle bundle = getArguments();
+        tableName = bundle.getString("tableName");
+        tableDBName = bundle.getString("tableDBName");
     }
 
 
@@ -159,10 +163,10 @@ public class FittingStartFragment extends Fragment {
                 fd.setNumber(Integer.parseInt(et_num.getEditableText().toString().trim()));
                 fd.setDurationTime(lSecond);
                 fd.setLocalTime(new Date().getTime());
-                db.addFitting("FUWOCHENG", fd);
-                db.getAllFitting("FUWOCHENG");
-//                long aa = db.myquery();
-                //boolean hastable = db.isTableExist("table_users");
+                fd.setDes("aaa");
+
+                db.addFittingItem(tableDBName, fd);
+                db.updateShowTableItem(tableDBName);
             }
         });
 

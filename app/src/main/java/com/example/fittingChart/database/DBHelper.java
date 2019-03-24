@@ -18,6 +18,7 @@ import com.example.fittingChart.Users;
 import com.example.fittingChart.module.Data;
 import com.example.fittingChart.module.FittingData;
 import com.example.fittingChart.module.FittingTableData;
+import com.example.fittingChart.module.ShowTable;
 
 /**
  * Created by seanz on 2016/10/10.
@@ -25,7 +26,7 @@ import com.example.fittingChart.module.FittingTableData;
 public class DBHelper  extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int VERSION = 9;
+    private static final int VERSION = 2;
     String TAG = "SQLite";
     Data data;
 
@@ -44,6 +45,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     private static final String TABLE_FITTING_LEG = "fitting_leg";
     private static final String TABLE_FITTING_BRAIN = "fitting_brain";
     private static final String TABLE_FITTING_OTHER = "fitting_other";
+    private static final String TABLER_SHOW = "fitting_show";
 
 
 
@@ -72,33 +74,33 @@ public class DBHelper  extends SQLiteOpenHelper {
         createFittingTable(db, TABLE_FITTING_SHOULDER);
         createFittingTable(db, TABLE_FITTING_BREAST);
 
-        addFittingTableItem(db, TABLE_FITTING_BREAST, "俯卧撑");
-        addFittingTableItem(db, TABLE_FITTING_BREAST, "跪姿俯卧撑");
-        addFittingTableItem(db, TABLE_FITTING_BREAST, "扶墙俯卧撑");
+        addFittingTableItem(db, TABLE_FITTING_BREAST, new FittingTableData("俯卧撑","FUWOCHENG","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_BREAST, new FittingTableData("跪姿俯卧撑","GUIZIFUWOCHENG","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_BREAST, new FittingTableData("扶墙俯卧撑","FUQIANGFUWOCHENG","abc",R.drawable.ic_launcher_foreground));
 
-        addFittingTableItem(db, TABLE_FITTING_SHOULDER, "哑铃前平举");
-        addFittingTableItem(db, TABLE_FITTING_SHOULDER, "哑铃侧平举");
+        addFittingTableItem(db, TABLE_FITTING_SHOULDER, new FittingTableData("哑铃前平举","YALINGQIANPINGJU","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_SHOULDER, new FittingTableData("哑铃侧平举","YALINGCEPINGJU","abc",R.drawable.ic_launcher_foreground));
 
-        addFittingTableItem(db, TABLE_FITTING_BACK, "哑铃飞鸟");
+        addFittingTableItem(db, TABLE_FITTING_BACK, new FittingTableData("哑铃飞鸟","YALINGFEINIAO","abc",R.drawable.ic_launcher_foreground));
 
-        addFittingTableItem(db, TABLE_FITTING_ARM, "哑铃肱二头肌弯举");
-        addFittingTableItem(db, TABLE_FITTING_ARM, "哑铃肱二头肌弯举");
+        addFittingTableItem(db, TABLE_FITTING_ARM, new FittingTableData("哑铃肱二头肌弯举","YALINGGONGERTOUJIWANJU","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_ARM, new FittingTableData("哑铃肱二头肌弯举","YALINGGONGSANTOUJIWANJU","abc",R.drawable.ic_launcher_foreground));
 
-        addFittingTableItem(db, TABLE_FITTING_BELLY, "卷腹");
-        addFittingTableItem(db, TABLE_FITTING_BELLY, "仰卧起坐");
-        addFittingTableItem(db, TABLE_FITTING_BELLY, "平板支撑");
+        addFittingTableItem(db, TABLE_FITTING_BELLY, new FittingTableData("卷腹","JUANFU","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_BELLY, new FittingTableData("仰卧起坐","YANGWOQIZUO","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_BELLY, new FittingTableData("平板支撑","PINGBANZHICHENG","abc",R.drawable.ic_launcher_foreground));
 
-        addFittingTableItem(db, TABLE_FITTING_LEG, "深蹲");
-        addFittingTableItem(db, TABLE_FITTING_LEG, "靠墙蹲");
+        addFittingTableItem(db, TABLE_FITTING_LEG, new FittingTableData("深蹲","SHENDUN","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_LEG, new FittingTableData("靠墙蹲","KAOQIANGDUN","abc",R.drawable.ic_launcher_foreground));
 
-        addFittingTableItem(db, TABLE_FITTING_BRAIN, "最强大脑之数字迷宫");
+        addFittingTableItem(db, TABLE_FITTING_BRAIN, new FittingTableData("最强大脑之数字迷宫","ZUIQIANGDANAOZHISHUZIMIGONG","abc",R.drawable.ic_launcher_foreground));
 
-        addFittingTableItem(db, TABLE_FITTING_OTHER, "体重");
-        addFittingTableItem(db, TABLE_FITTING_OTHER, "波比跳");
-        addFittingTableItem(db, TABLE_FITTING_OTHER, "倒立");
+        addFittingTableItem(db, TABLE_FITTING_OTHER, new FittingTableData("体重","TIZHONG","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_OTHER, new FittingTableData("波比跳","BOBITIAO","abc",R.drawable.ic_launcher_foreground));
+        addFittingTableItem(db, TABLE_FITTING_OTHER, new FittingTableData("倒立","DAOLI","abc",R.drawable.ic_launcher_foreground));
 
 
-        createFitting(db, new FittingTableData("俯卧撑","FUWOCHENG","爽"，R.drawable.ic_home_black_24dp));
+        createFitting(db, "FUWOCHENG");
         createFitting(db, "GUIZIFUWOCHENG");
         createFitting(db, "FUQIANGFUWOCHENG");
 
@@ -251,10 +253,10 @@ public class DBHelper  extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 FittingTableData data = new FittingTableData();
 
-                data.setName(cursor.getString(0)); //获取第一列的值,第一列的索引从0开始
-                data.setDbName(cursor.getString(1));
-                data.setDes(cursor.getString(2));
-                data.setResourceID(cursor.getInt(3));
+                data.setName(cursor.getString(1)); //获取第一列的值,第一列的索引从0开始
+                data.setDbName(cursor.getString(2));
+                data.setDes(cursor.getString(3));
+                data.setResourceID(cursor.getInt(4));
                 list.add(data);
             }
             cursor.close();
@@ -284,7 +286,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         }
     }
 
-    public boolean createFitting(SQLiteDatabase db, String table, FittingData data) {
+    public boolean createFitting(SQLiteDatabase db, String table) {
         Log.i("SQLite", "DBHelper.createFitting");
         try{
             String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + table +
@@ -301,15 +303,17 @@ public class DBHelper  extends SQLiteOpenHelper {
         Log.i("SQLite", "DBHelper.addFittingItem");
         try {
             ContentValues values = new ContentValues();
-            values.put("id", data.getID();
+//            values.put("id", data.getID());
             values.put("number", data.getNumber());
             values.put("durationTime",data.getDurationTime());
             values.put("localTime", data.getLocalTime());
-            values.put("des", "temp");
+            values.put("des", "Abc");
             db.insert(table, null, values);
+            db.close();;
             return true;
         }catch(SQLiteException e)
         {
+            db.close();
             return false;
         }
     }
@@ -326,14 +330,15 @@ public class DBHelper  extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 FittingData fd = new FittingData();
-                fd.setID(Integer.parseInt(cursor.getString(0)));
+//                fd.setID(Integer.parseInt(cursor.getString(0)));
                 fd.setNumber(cursor.getInt(1));
-                fd.setDurationTime(cursor.getInt(2));
-                fd.setLocalTime(cursor.getInt(3));
+                fd.setDurationTime(cursor.getLong(2));
+                fd.setLocalTime(cursor.getLong(3));
+                fd.setDes(cursor.getString(4));
 
                 // Adding contact to list
                 fittingDataList.add(fd);
-                Log.i(TAG, "getAllFitting: " + fd.getID() + ":" + fd.getNumber() + ":" + fd.getDurationTime() + ":" + fd.getLocalTime());
+                Log.i(TAG, "getAllFitting: " + ":" + fd.getNumber() + ":" + fd.getDurationTime() + ":" + fd.getLocalTime() + ":" + fd.getDurationTime());
             } while (cursor.moveToNext());
         }
 
@@ -343,6 +348,95 @@ public class DBHelper  extends SQLiteOpenHelper {
         // return user list
         return fittingDataList;
     }
+
+    public boolean createShowTable(SQLiteDatabase db) {
+        Log.i("SQLite", "DBHelper.createShowTable");
+        try{
+            String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists fitting_show(id INTEGER PRIMARY KEY autoincrement,name STRING, count Integer)";
+            db.execSQL(CREATE_CONTACTS_TABLE);
+            return true;
+        }catch(SQLiteException e)
+        {
+            return false;
+        }
+    }
+    public ArrayList<ShowTable> getAllShowTable(){
+        ArrayList<ShowTable> list = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "select * from fitting_show order by count desc";
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery,null);
+
+            while (cursor.moveToNext()) {
+                ShowTable data = new ShowTable();
+                data.setID(cursor.getInt(0));
+                data.setName(cursor.getString(1)); //获取第一列的值,第一列的索引从0开始
+                data.setCount(cursor.getInt(2));
+                list.add(data);
+            }
+            cursor.close();
+            db.close();
+
+            // return user list
+            return list;
+        }
+        catch(SecurityException e){
+            return null;
+        }
+    }
+    public boolean updateShowTableItem(String tablename) {
+        Log.i("SQLite", "DBHelper.updateShowTableItem");
+        String cmd;
+        SQLiteDatabase db = this.getReadableDatabase();
+        try {
+//            ArrayList<ShowTable> tablelist = getAllShowTable();
+            String selectQuery = "select * from fitting_show order by count desc";
+            Cursor cursor = db.rawQuery(selectQuery,null);
+            for(int i=0;i<cursor.getCount();i++){
+                String name = cursor.getString(1);
+                int count = cursor.getInt(2);
+                int id = cursor.getInt(0);
+
+                if(name.equals(tablename)) {
+                    cmd = "UPDATE fitting_show SET count=" + count+1 +" WHERE ID=" + id;
+                    db.execSQL(cmd);
+                    db.close();
+                    return true;
+                }
+            }
+
+            ContentValues values = new ContentValues();
+            values.put("name", tablename);
+            values.put("count",1);
+            db.insert(TABLER_SHOW, null, values);
+            db.close();
+            return false;
+        }catch(SQLiteException e)
+        {
+            db.close();
+            return false;
+        }
+    }
+//    public boolean addShowTableItem(String name) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        Log.i("SQLite", "DBHelper.addFittingItem");
+//        try {
+//            ContentValues values = new ContentValues();
+//            values.put("name", name);
+//            values.put("count",count);
+//            db.insert(TABLER_SHOW, null, values);
+//            return true;
+//        }catch(SQLiteException e)
+//        {
+//            return false;
+//        }
+//    }
+
+    //insert into fitting_show(id,name,count)values(2,"JUANFU",14);
+    //select * from fitting_show order by count desc;
+    //update fitting_show set count=15 where id=2;
 
     public boolean deleteTable(SQLiteDatabase db, String table){
         Log.i("SQLite", "DBHelper.deleteFittingTable");

@@ -2,10 +2,16 @@ package com.example.fittingChart.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
+import com.example.fittingChart.Users;
 import com.example.fittingChart.module.Data;
 import com.example.fittingChart.module.FittingData;
 import com.example.fittingChart.database.DBHelper;
@@ -24,12 +31,16 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import static android.app.Activity.RESULT_CANCELED;
 
 
 /**
@@ -44,6 +55,21 @@ public class UserFragment extends Fragment {
     private Button bt_update;
     private OnFragmentInteractionListener listener;
     LineChart pushupchart;
+    private Uri imageUri;
+
+
+    public static final int CAMERA_REQUEST_CODE = 100;
+    public static final int IMAGE_REQUEST_CODE = 101;
+    public static final int RESULT_REQUEST_CODE = 102;
+
+    public static final String PHOTO_IMAGE_FILE_NAME = "fileImg.jpg";
+    private File tempFile = null;
+
+
+
+    private static int output_X = 480;
+    private static int output_Y = 480;
+
     public UserFragment() {
         // Required empty public constructor
     }
@@ -66,6 +92,13 @@ public class UserFragment extends Fragment {
         et_slogan = (EditText)view.findViewById(R.id.fragUser_slogan);
         bt_update = (Button)view.findViewById(R.id.fragUser_btn_update);
         pushupchart = (LineChart) view.findViewById(R.id.chart1);
+        iv_user = view.findViewById(R.id.fragUser_userImg);
+        iv_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toPicture();
+            }
+        });
         return view;
     }
 
@@ -111,7 +144,9 @@ public class UserFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("username",et_user.getText().toString());
                 bundle.putString("slogan",et_slogan.getText().toString());
-                listener.OnClicked(et_user.getText().toString(), et_slogan.getText().toString());
+                //listener.OnClicked(et_user.getText().toString(), et_slogan.getText().toString());
+                DBHelper db = new DBHelper(getContext());
+                db.updateUser(new Users(1,et_user.getText().toString(),et_slogan.getText().toString(),R.mipmap.ic_launcher));
             }
         });
     }
@@ -145,99 +180,99 @@ public class UserFragment extends Fragment {
         void OnClicked(String name, String slogan);
     }
 
-
-    public static String getTimeString() {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-        Calendar calendar = Calendar.getInstance();
-        return df.format(calendar.getTime());
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != getActivity().RESULT_CANCELED) {
+            switch (requestCode) {
+                //相机数据
+                case CAMERA_REQUEST_CODE:
+                    //tempFile = new File(Environment.getExternalStorageDirectory(), PHOTO_IMAGE_FILE_NAME);
+                    //startPhotoZoom(Uri.fromFile(tempFile));
+                    startPhotoZoom(imageUri);
+                    break;
+                //相册数据
+                case IMAGE_REQUEST_CODE:
+                    startPhotoZoom(data.getData());
+                    break;
+                case RESULT_REQUEST_CODE:
+                    //有可能点击舍弃
+                    if (data != null) {
+                        //拿到图片设置
+                        setImageToView(data);
+                        //删除原来的图片
+                        if (tempFile != null) {
+                            tempFile.delete();
+                        }
+                    }
+                    break;
+            }
+        }
     }
 
-    /**
-     * 获取日期年份
-     * @param date 日期
-     * @return
-     */
-    public static int getYear(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.YEAR);
-    }
-    /**
-     * 功能描述：返回月
-     *
-     * @param date
-     *            Date 日期
-     * @return 返回月份
-     */
-    public static int getMonth(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.MONTH) + 1;
-    }
+    private void startPhotoZoom(Uri uri) {
+        if (uri == null) {
+//            Log.e("uri == null");
+            return;
+        }
 
-    /**
-     * 功能描述：返回日期
-     *
-     * @param date
-     *            Date 日期
-     * @return 返回日份
-     */
-    public static int getDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.DAY_OF_MONTH);
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        //裁剪
+        intent.putExtra("crop", true);
+        //宽高比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        //图片质量
+        intent.putExtra("outputX", 320);
+        intent.putExtra("outputY", 320);
+        //发送数据
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, RESULT_REQUEST_CODE);
     }
 
-    /**
-     * 功能描述：返回小时
-     *
-     * @param date
-     *            日期
-     * @return 返回小时
-     */
-    public static int getHour(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.HOUR_OF_DAY);
+    //设置图片
+    private void setImageToView(Intent data) {
+        Bundle bundle = data.getExtras();
+        if (bundle != null) {
+            Bitmap bitmap = bundle.getParcelable("data");
+            iv_user.setImageBitmap(bitmap);
+        }
     }
 
-    /**
-     * 功能描述：返回分
-     *
-     * @param date
-     *            日期
-     * @return 返回分钟
-     */
-    public static int getMinute(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.MINUTE);
+    private void toCamera() {
+
+        File outputImage = new File(getActivity().getExternalCacheDir(),
+                PHOTO_IMAGE_FILE_NAME);
+        try {
+            if (outputImage.exists()) {
+                outputImage.delete();
+            }
+            outputImage.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (Build.VERSION.SDK_INT >= 24) {
+            imageUri = FileProvider.getUriForFile(getActivity(),
+                    "com.liushengjie.smartbutler.fileprovider", outputImage);
+        } else {
+            imageUri = Uri.fromFile(outputImage);
+        }
+        //启动相机程序
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, CAMERA_REQUEST_CODE);
+//        dialog.dismiss();
+
     }
 
-    /**
-     * 返回秒钟
-     *
-     * @param date
-     *            Date 日期
-     * @return 返回秒钟
-     */
-    public static int getSecond(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.SECOND);
-    }
-
-    /**
-     * 功能描述：返回毫
-     *
-     * @param date
-     *            日期
-     * @return 返回毫
-     */
-    public static long getMillis(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.getTimeInMillis();
-
+    //跳转相册
+    private void toPicture() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_REQUEST_CODE);
+//        dialog.dismiss();
     }
 }

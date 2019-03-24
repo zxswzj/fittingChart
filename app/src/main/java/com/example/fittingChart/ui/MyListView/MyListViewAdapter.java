@@ -15,17 +15,17 @@ import java.util.List;
 
 public class MyListViewAdapter extends BaseAdapter {
 
-    private List<FittingTableData> fittingListItemDataList;// = new ArrayList<>();
+    private List<FittingTableData> dataList;// = new ArrayList<>();
     private LayoutInflater inflater; //得到一个LayoutInfalter对象用来导入布局
 
-    public MyListViewAdapter(Context context, List<FittingTableData> fittingListItemDataList) {
+    public MyListViewAdapter(Context context, List<FittingTableData> fittingTableDataList) {
         this.inflater = LayoutInflater.from(context);
-        this.fittingListItemDataList = fittingListItemDataList;
+        this.dataList = fittingTableDataList;
     }
 
     @Override
     public int getCount() {
-        return fittingListItemDataList == null?0:fittingListItemDataList.size();
+        return dataList == null?0:dataList.size();
     }
 
     @Override
@@ -34,12 +34,14 @@ public class MyListViewAdapter extends BaseAdapter {
         FittingTableData fittingListItemData = (FittingTableData) getItem(position);
 
         //在view 视图中查找 组件
-        TextView tv_name = (TextView) view.findViewById(R.id.fitting_list_item_tv_name);
-        TextView tv_age = (TextView) view.findViewById(R.id.fitting_list_item_tv_des);
-        ImageView im_photo = (ImageView) view.findViewById(R.id.fitting_list_item_iv);
+        TextView tv_name =  view.findViewById(R.id.fitting_list_item_tv_name);
+        TextView tv_age =  view.findViewById(R.id.fitting_list_item_tv_des);
+        TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+        ImageView im_photo =  view.findViewById(R.id.fitting_list_item_iv);
 
         //为Item 里面的组件设置相应的数据
         tv_name.setText(fittingListItemData.getName());
+        tv_dbName.setText(fittingListItemData.getDbName());
         tv_age.setText(fittingListItemData.getDes());
         im_photo.setImageResource(fittingListItemData.getResourceID());
 
@@ -49,7 +51,7 @@ public class MyListViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return fittingListItemDataList.get(position);
+        return dataList.get(position);
     }
 
     @Override

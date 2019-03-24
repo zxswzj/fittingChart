@@ -1,7 +1,7 @@
 package com.example.fittingChart.module;
 
 public class FittingData {
-    Integer id;
+//    Integer id;
     Integer number;
     long durationTime;
     long localTime;
@@ -13,20 +13,19 @@ public class FittingData {
 
     }
     // constructor
-    public FittingData(int id, int number, long durationTime, long localTime){
-        this.id = id;
+    public FittingData(int number, long durationTime, long localTime, String des){
+//        this.id = id;
         this.number = number;
         this.durationTime = durationTime;
         this.localTime = localTime;
+        this.des = des;
     }
 
-    public int getID(){
-        return this.id;
+    public String getDes(){
+        return this.des;
     }
-
-    // setting id
-    public void setID(int id){
-        this.id = id;
+    public void setDes(String des){
+        this.des = des;
     }
 
     public int getNumber() {

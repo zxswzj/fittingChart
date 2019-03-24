@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical"
+    android:fadingEdge="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_record_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/fragment_record_fl1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+        <FrameLayout
+            android:id="@+id/fragment_record_fl2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+        <FrameLayout
+            android:id="@+id/fragment_record_fl3"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+        <FrameLayout
+            android:id="@+id/fragment_record_fl4"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+        <FrameLayout
+            android:id="@+id/fragment_record_fl5"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+        <FrameLayout
+            android:id="@+id/fragment_record_fl6"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+        <FrameLayout
+            android:id="@+id/fragment_record_fl7"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+        <FrameLayout
+            android:id="@+id/fragment_record_fl8"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+
+    </LinearLayout>
+
+</ScrollView>
