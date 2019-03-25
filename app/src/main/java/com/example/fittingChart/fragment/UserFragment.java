@@ -120,8 +120,9 @@ public class UserFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
         DBHelper db = new DBHelper(getContext());
+        db.openDatabase();
         ArrayList<FittingData> pushuplist = db.getAllFitting("FUWOCHENG");
-
+        db.closeDatabase();
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {
             Date d = new Date(pushuplist.get(i).getLocalTime());
@@ -146,7 +147,9 @@ public class UserFragment extends Fragment {
                 bundle.putString("slogan",et_slogan.getText().toString());
                 //listener.OnClicked(et_user.getText().toString(), et_slogan.getText().toString());
                 DBHelper db = new DBHelper(getContext());
+                db.openDatabase();
                 db.updateUser(new Users(1,et_user.getText().toString(),et_slogan.getText().toString(),R.mipmap.ic_launcher));
+                db.closeDatabase();
             }
         });
     }

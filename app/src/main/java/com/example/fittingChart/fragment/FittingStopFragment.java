@@ -72,13 +72,13 @@ public class FittingStopFragment extends Fragment {
             public void onClick(View v) {
                 Data data = (Data)getActivity().getApplication();
                 DBHelper db = new DBHelper(getContext());
+                db.openDatabase();
                 FittingData fd = new FittingData();
                 fd.setNumber(new Random().nextInt(100));
                 fd.setLocalTime(new Date().getTime());
                 db.addFittingItem("FUWOCHENG",fd);
-               db.getAllFitting("FUWOCHENG");
-//                long aa = db.myquery();
-                //boolean hastable = db.isTableExist("table_users");
+                db.getAllFitting("FUWOCHENG");
+                db.closeDatabase();
             }
         });
 

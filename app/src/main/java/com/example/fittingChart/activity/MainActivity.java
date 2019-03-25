@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         int count = 0;
 
         ArrayList<FittingTableData> table = new ArrayList<>();
-
+        db.openDatabase();
         if(db.tableExists(d.TABLE_FITTING_BREAST))
             table = db.getAllFittingTable(d.TABLE_FITTING_BREAST);
-
+        db.closeDatabase();
 //        FittingData fd = new FittingData();
 //        fd.setNumber(33);
 //        fd.setLocalTime(44);

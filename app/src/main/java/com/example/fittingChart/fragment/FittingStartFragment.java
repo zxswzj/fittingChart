@@ -159,14 +159,16 @@ public class FittingStartFragment extends Fragment {
             public void onClick(View v) {
                 Data data = (Data)getActivity().getApplication();
                 DBHelper db = new DBHelper(getContext());
+                db.openDatabase();
                 FittingData fd = new FittingData();
                 fd.setNumber(Integer.parseInt(et_num.getEditableText().toString().trim()));
                 fd.setDurationTime(lSecond);
                 fd.setLocalTime(new Date().getTime());
                 fd.setDes("aaa");
 
-                db.addFittingItem(tableDBName, fd);
+                //db.addFittingItem(tableDBName, fd);
                 db.updateShowTableItem(tableDBName);
+                db.closeDatabase();
             }
         });
 

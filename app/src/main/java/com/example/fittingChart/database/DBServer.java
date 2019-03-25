@@ -15,7 +15,6 @@ public class DBServer
     private static Integer idx;
     public DBServer(Context context)
     {
-        //this.dbhelper = new DBHelper(context,((Data) getActivity().getApplication()).DATABASE_VERSION);
         idx = 0;
         Log.i("SQLite","DBServer");
     }

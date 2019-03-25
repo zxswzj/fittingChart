@@ -35,10 +35,12 @@ public class Data extends Application {
     @Override
     public void onCreate() {
         DBHelper db = new DBHelper(getBaseContext());
+        db.openDatabase();
         if(db.tableExists(TABLE_FITTING_BREAST))
         {
 
         }
+        db.closeDatabase();
         breastList.add(new FittingTableData("俯卧撑","FUWOCHENG","就这样",R.drawable.ic_dashboard_black_24dp));
         breastList.add(new FittingTableData("跪姿俯卧撑","GUIZIFUWOCHENG","做不了标准俯卧撑的小盆友们，半程膝盖着地比较适合你们",R.drawable.ic_dashboard_black_24dp));
         breastList.add(new FittingTableData("扶墙俯卧撑","FUQIANGFUWOCHENG","爽",R.drawable.ic_dashboard_black_24dp));
