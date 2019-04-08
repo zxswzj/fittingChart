@@ -13,24 +13,23 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fittingChart.database.MyDBHelper;
+import com.example.fittingChart.database.MyDatabaseAdapter;
 import com.example.fittingChart.fragment.RecordFragment;
 import com.example.fittingChart.fragment.FittingFragment;
 import com.example.fittingChart.fragment.UserFragment;
 import com.example.fittingChart.Users;
-import com.example.fittingChart.database.DBHelper;
-import com.example.fittingChart.module.Data;
-import com.example.fittingChart.module.FittingTableData;
 import com.github.mikephil.charting.charts.LineChart;
 import com.example.fittingChart.R;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnFragmentInteractionListener {
 
     String TAG = "SQLite";
     private TextView mTextMessage;
     private LineChart mLineChart;
-    private DBHelper db;
+    MyDatabaseAdapter dbAdapter;
+
+    private MyDBHelper db;
     Toast toast;
     //ArrayList<Fragment> mFragments;
     //private Toolbar mToolbar;
@@ -85,17 +84,21 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         //尝试从SQLite中加载用户数据
         //SQLite
         //create/open Database
-        Users u = new Users(1,"乐乐啊","我要学习，学习让我快乐", R.mipmap.ic_launcher);
-        db = new DBHelper(this);
+        Users u = new Users(1,"咸鱼","我爱学习，学习使我快乐", R.mipmap.ic_launcher);
 
-        Data d = (Data)getApplication();
-        int count = 0;
+        dbAdapter=new MyDatabaseAdapter(getApplicationContext());
+        dbAdapter = dbAdapter.open();
+        dbAdapter.getSinlgeEntry("乐乐");
+        dbAdapter.close();
 
-        ArrayList<FittingTableData> table = new ArrayList<>();
-        db.openDatabase();
-        if(db.tableExists(d.TABLE_FITTING_BREAST))
-            table = db.getAllFittingTable(d.TABLE_FITTING_BREAST);
-        db.closeDatabase();
+//        db = new DBHelper(this);
+//        Data d = (Data)getApplication();
+//        int count = 0;
+//        ArrayList<FittingTableData> table = new ArrayList<>();
+//        db.openDatabase();
+//        if(db.tableExists(d.TABLE_FITTING_BREAST))
+//            table = db.getAllFittingTable(d.TABLE_FITTING_BREAST);
+//        db.closeDatabase();
 //        FittingData fd = new FittingData();
 //        fd.setNumber(33);
 //        fd.setLocalTime(44);
@@ -139,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
     @Override
     public void OnClicked(String name, String slogan) {
         Log.i("Fragment", "MainActivity.OnClicked");
-        db.updateUser(new Users(1,name,slogan,R.mipmap.ic_launcher));
+//        db.updateUser(new Users(1,name,slogan,R.mipmap.ic_launcher));
     }
 
 //    @Override

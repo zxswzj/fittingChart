@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_chart_fl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.ChartFragment">
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/fragment_chart"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:id="@+id/fragment_chart_container"
+        android:layout_width="394dp"
+        android:layout_height="299dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="56dp"
@@ -16,9 +17,9 @@
         android:layout_marginRight="8dp" />
 
     <TextView
-        android:id="@+id/chartfragment"
+        android:id="@+id/fragment_chart_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="40dp"
+        android:textSize="20dp"/>
 
 </FrameLayout>

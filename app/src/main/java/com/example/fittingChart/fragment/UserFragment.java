@@ -4,6 +4,7 @@ package com.example.fittingChart.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,24 +24,23 @@ import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.Users;
-import com.example.fittingChart.module.Data;
+import com.example.fittingChart.database.MyDBHelper;
+import com.example.fittingChart.database.MyDatabaseAdapter;
 import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.database.DBHelper;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-
-import static android.app.Activity.RESULT_CANCELED;
 
 
 /**
@@ -48,6 +48,7 @@ import static android.app.Activity.RESULT_CANCELED;
  */
 public class UserFragment extends Fragment {
 
+    MyDatabaseAdapter dbAdapter;
     View view;
     private EditText et_user;
     private EditText et_slogan;
@@ -119,19 +120,31 @@ public class UserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
-        DBHelper db = new DBHelper(getContext());
-        db.openDatabase();
-        ArrayList<FittingData> pushuplist = db.getAllFitting("FUWOCHENG");
-        db.closeDatabase();
-        List<Entry> entries = new ArrayList<>();
+        dbAdapter = new MyDatabaseAdapter(getContext());
+        dbAdapter.open();
+        ArrayList<FittingData> pushuplist = dbAdapter.getAllFitting("FUWOCHENG");
+        List<Entry> entryCnt = new ArrayList<>();
+        List<Entry> entryTime = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {
-            Date d = new Date(pushuplist.get(i).getLocalTime());
-            entries.add(new Entry(i, pushuplist.get(i).getNumber()));//new Random().nextInt(300)
+            entryCnt.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getNumber()));
+            entryTime.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getDurationTime()));
         }
         if(pushuplist.size() != 0){
-            LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
-            LineData lineData = new LineData(dataSet);
+            LineDataSet dataSetCnt = new LineDataSet(entryCnt, "数量"); // add entries to dataset
+            LineDataSet dataSetTime = new LineDataSet(entryTime, "时间"); // add entries to dataset
+            dataSetCnt.setColor(Color.RED);
+
+            LineData lineData = new LineData(dataSetCnt,dataSetTime);
             pushupchart.setData(lineData);
+            XAxis xAxis = pushupchart.getXAxis();
+            IAxisValueFormatter xFormatter = new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+                    return sdf.format(value);
+                }
+            };
+            xAxis.setValueFormatter(xFormatter);
         }
 
 
@@ -146,10 +159,8 @@ public class UserFragment extends Fragment {
                 bundle.putString("username",et_user.getText().toString());
                 bundle.putString("slogan",et_slogan.getText().toString());
                 //listener.OnClicked(et_user.getText().toString(), et_slogan.getText().toString());
-                DBHelper db = new DBHelper(getContext());
-                db.openDatabase();
-                db.updateUser(new Users(1,et_user.getText().toString(),et_slogan.getText().toString(),R.mipmap.ic_launcher));
-                db.closeDatabase();
+//                dbAdapter.updateUser(new Users(1,et_user.getText().toString(),et_slogan.getText().toString(),R.mipmap.ic_launcher));
+                dbAdapter.close();
             }
         });
     }

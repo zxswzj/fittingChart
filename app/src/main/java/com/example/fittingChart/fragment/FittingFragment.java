@@ -1,28 +1,36 @@
 package com.example.fittingChart.fragment;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.activity.FittingActivity;
+import com.example.fittingChart.database.MyDatabaseAdapter;
 import com.example.fittingChart.module.Data;
+import com.example.fittingChart.module.FittingData;
 import com.example.fittingChart.module.FittingTableData;
 import com.example.fittingChart.ui.CustomViewPager.CustomPagerAdapter;
 import com.example.fittingChart.ui.MyListView.MyListViewAdapter;
+import com.example.fittingChart.util.PinyinUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,75 +47,14 @@ public class FittingFragment extends Fragment {
     private String [] tabname2 = {"大脑","???"};
     TabLayout tabLayout1,tabLayout2;
     ViewPager viewPager1,viewPager2;
-//    List<Fragment> fragments1 = new ArrayList<>();
-//    List<Fragment> fragments2 = new ArrayList<>();
-//    MyFragmentPagerAdapter adapter1;
-//    MyFragmentPagerAdapter adapter2;
-//    MyListFragment fragBreast;
-//    MyListFragment fragShoulder;
-//    MyListFragment fragArm;
-//    MyListFragment fragBack;
-//    MyListFragment fragLeg;
-//    MyListFragment fragBelly;
-
     View view1,view2;
+    MyDatabaseAdapter dbAdapter;
+    MyListFragment myListFragment = new MyListFragment();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "FittingFragment.onCreate");
-        String[] strBreast = {"俯卧撑","跪姿俯卧撑","扶墙俯卧撑","哑铃夹胸","+"};
-        String[] strShoulder = {"哑铃前平举","哑铃侧平举","哑铃飞鸟","+"};
-        String[] strArm = {"哑铃肱二头肌弯举","哑铃肱三头肌弯举","+"};
-        String[] strBack = {"哑铃飞鸟","+"};
-        String[] strBelly = {"卷腹","仰卧起坐(伤尾椎骨哦)","+"};
-        String[] strLeg = {"自重深蹲","负重深蹲","靠墙深蹲","+"};
-        String[] strBrain = {"最强大脑之数字迷宫","+"};
-        String[] strOthers = {"体重","跑步","+"};
-//        view1 = getLayoutInflater().inflate(R.layout.fitting_list,null);
-//        view2 = getLayoutInflater().inflate(R.layout.fitting_list,null);
-
-
-
-
-//        Bundle bundleBreast = new Bundle();
-//        bundleBreast.putStringArray("list",strBreast);
-//        fragBreast = new MyListFragment();
-//        fragBreast.setArguments(bundleBreast);
-//        fragments1.add(fragBreast);
-//
-//        Bundle bundleShoulder = new Bundle();
-//        bundleShoulder.putStringArray("list",strShoulder);
-//        fragShoulder = new MyListFragment();
-//        fragShoulder.setArguments(bundleShoulder);
-//        fragments1.add(fragShoulder);
-//
-//        Bundle bundleArm = new Bundle();
-//        bundleArm.putStringArray("list",strArm);
-//        fragArm = new MyListFragment();
-//        fragArm.setArguments(bundleArm);
-//        fragments1.add(fragArm);
-//
-//        Bundle bundleBack = new Bundle();
-//        bundleBack.putStringArray("list",strBack);
-//        fragBack = new MyListFragment();
-//        fragBack.setArguments(bundleBack);
-//        fragments1.add(fragBack);
-//
-//        Bundle bundleBelly = new Bundle();
-//        bundleBelly.putStringArray("list",strBelly);
-//        fragBelly = new MyListFragment();
-//        fragBelly.setArguments(bundleBelly);
-//        fragments1.add(fragBelly);
-//
-//        Bundle bundleLeg = new Bundle();
-//        bundleLeg.putStringArray("list",strLeg);
-//        fragLeg = new MyListFragment();
-//        fragLeg.setArguments(bundleLeg);
-//        fragments1.add(fragLeg);
-
-//        adapter1 = new MyFragmentPagerAdapter(getActivity().getSupportFragmentManager());
-//        adapter1.addTitlesAndFragments(mTitles1, fragments1);
     }
 
     @Override
@@ -115,16 +62,16 @@ public class FittingFragment extends Fragment {
         Log.i(TAG, "FittingFragment.onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fitting, container, false);
+        dbAdapter = new MyDatabaseAdapter(getContext());
+        dbAdapter.open();
 
-        view1 = getLayoutInflater().inflate(R.layout.fitting_list,null);
-        view2 = getLayoutInflater().inflate(R.layout.fitting_list,null);
+        //view1 = getLayoutInflater().inflate(R.layout.fitting_list,null);
+        //view2 = getLayoutInflater().inflate(R.layout.fitting_list,null);
         //TabLayout list
         List<View> viewList1 = new ArrayList<>();
         List<View> viewList2 = new ArrayList<>();
-        viewList1.add(view1);
-        viewList1.add(view2);
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
         viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
         viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
         viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
@@ -133,13 +80,29 @@ public class FittingFragment extends Fragment {
         viewList2.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
 
         tabLayout1 = view.findViewById(R.id.tl_tab1);
-        viewPager1 = view.findViewById(R.id.vp_content1);
-        viewPager1.setAdapter(new CustomPagerAdapter(getContext(),viewList1, tabname1));
-        tabLayout1.setupWithViewPager(viewPager1); //关联TabLayout和ViewPager
+        //viewPager1 = view.findViewById(R.id.vp_content1);
+        //viewPager1.setAdapter(new CustomPagerAdapter(getContext(),viewList1, tabname1));
+        tabLayout1.addTab(tabLayout1.newTab());
+        tabLayout1.getTabAt(0).setText("胸部");
+        tabLayout1.addTab(tabLayout1.newTab());
+        tabLayout1.getTabAt(1).setText("腹部");
+        tabLayout1.addTab(tabLayout1.newTab());
+        tabLayout1.getTabAt(2).setText("肩部");
+        tabLayout1.addTab(tabLayout1.newTab());
+        tabLayout1.getTabAt(3).setText("背部");
+        tabLayout1.addTab(tabLayout1.newTab());
+        tabLayout1.getTabAt(4).setText("手臂");
+        tabLayout1.addTab(tabLayout1.newTab());
+        tabLayout1.getTabAt(5).setText("腿部");
+
+        //tabLayout1.setupWithViewPager(viewPager1); //关联TabLayout和ViewPager
         tabLayout1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.i(TAG, "FittingFragment.onTabSelected");
+                Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_fitting_container, myListFragment);
+                ft.commit();
             }
 
             @Override
@@ -155,18 +118,6 @@ public class FittingFragment extends Fragment {
             }
         });
 
-//        Bundle bundleBrain = new Bundle();
-//        bundleBrain.putStringArray("list",strBrain);
-//        MyListFragment fragBrain = new MyListFragment();
-//        fragBrain.setArguments(bundleBrain);
-//        fragments2.add(fragBrain);
-//        Bundle bundleOthers = new Bundle();
-//        bundleOthers.putStringArray("list",strOthers);
-//        MyListFragment fragOthers = new MyListFragment();
-//        fragOthers.setArguments(bundleOthers);
-//        fragments2.add(fragOthers);
-
-        //viewPager1.setAdapter(adapter1); // 给ViewPager设置适配器
         tabLayout2 = view.findViewById(R.id.tl_tab2);
         viewPager2 = view.findViewById(R.id.vp_content2);
         viewPager2.setAdapter(new CustomPagerAdapter(getContext(),viewList2, tabname2));
@@ -189,12 +140,28 @@ public class FittingFragment extends Fragment {
 
             }
         });
-        //adapter2 = new MyFragmentPagerAdapter(getActivity().getSupportFragmentManager());
-        //adapter2.addTitlesAndFragments(mTitles2, fragments2);
 
-        Data data = (Data)getActivity().getApplication();
-        List<FittingTableData> breastList = data.breastList;
+        //Data data = (Data)getActivity().getApplication();
+        //List<FittingTableData> breastList = data.breastList;
         //ListItem
+        ArrayList<FittingTableData> breastList = dbAdapter.getAllFittingTable("fitting_breast");
+        ArrayList<FittingTableData> armList = dbAdapter.getAllFittingTable("fitting_arm");
+        ArrayList<FittingTableData> shoulderList = dbAdapter.getAllFittingTable("fitting_shoulder");
+        ArrayList<FittingTableData> backList = dbAdapter.getAllFittingTable("fitting_back");
+        ArrayList<FittingTableData> bellyList = dbAdapter.getAllFittingTable("fitting_belly");
+        ArrayList<FittingTableData> legList = dbAdapter.getAllFittingTable("fitting_leg");
+        ArrayList<FittingTableData> brainList = dbAdapter.getAllFittingTable("fitting_brain");
+        ArrayList<FittingTableData> otherList = dbAdapter.getAllFittingTable("fitting_other");
+        FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+        armList.add(d);
+        breastList.add(d);
+        shoulderList.add(d);
+        backList.add(d);
+        bellyList.add(d);
+        legList.add(d);
+        brainList.add(d);
+        otherList.add(d);
+
         MyListViewAdapter myListViewBreastAdapter = new MyListViewAdapter(getContext(),breastList);
         ((ListView)viewList1.get(0).findViewById(R.id.fitting_lv)).setAdapter(myListViewBreastAdapter);
         ((ListView)viewList1.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -202,14 +169,57 @@ public class FittingFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
                 TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-                Intent i = new Intent(getActivity() , FittingActivity.class);
-                i.putExtra("tableName", tv_Name.getText());
-                i.putExtra("tableDBName", tv_dbName.getText());
-                startActivity(i);
+                String dbName = tv_dbName.getText().toString();
+                if(dbName.equals("ADD")) {
+                    //dbAdapter.open();
+                    AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(getContext());
+                    alertDialogBuilder.setTitle("添加新的运动");
+                    final EditText et = new EditText(getContext());
+                    alertDialogBuilder.setView(et);
+                    alertDialogBuilder.setPositiveButton("确定",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String name = et.getText().toString();
+                            if (TextUtils.isEmpty(name)) {
+                                Toast.makeText(getContext(), "No hanzi, please input again.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                StringBuilder builder = new StringBuilder();
+                                //builder.append(PinyinUtils.toPinyinString(dbName, PinyinUtils.CASE_CAPITALIZE));
+                                String dbNamePinyin = PinyinUtils.toPinyinString(name, PinyinUtils.CASE_CAPITALIZE);
+                                //dbAdapter = new MyDatabaseAdapter(getContext());
+                                //dbAdapter.open();
+                                ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable("fitting_breast");
+                                for(int i=0;i<fittingTableData.size();i++){
+                                    if(fittingTableData.get(i).getDbName().equals(dbNamePinyin)){
+                                        AlertDialog.Builder builderDuplicate=new AlertDialog.Builder(getContext());
+                                        builderDuplicate.setTitle("???");
+                                        builderDuplicate.setPositiveButton("名字重了知道不？退下重输！！！",null);
+                                        builderDuplicate.create().show();
+                                        //dbAdapter.close();
+
+                                        return;
+                                    }
+                                }
+                                FittingTableData ftd = new FittingTableData(name,dbNamePinyin,"user input activity", R.drawable.pushup);
+                                dbAdapter.addFittingTableItem("fitting_breast",ftd);
+                                //dbAdapter.close();
+                                return;
+                            }
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("取消",null);
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+                else {
+                    Intent i = new Intent(getActivity(), FittingActivity.class);
+                    i.putExtra("tableName", tv_Name.getText());
+                    i.putExtra("tableDBName", tv_dbName.getText());
+                    startActivity(i);
+                }
             }
         });
 
-        List<FittingTableData> shoulderList = data.shoulderList;
         MyListViewAdapter myListViewShoulderAdapter = new MyListViewAdapter(getContext(),shoulderList);
         ((ListView)viewList1.get(1).findViewById(R.id.fitting_lv)).setAdapter(myListViewShoulderAdapter);
         ((ListView)viewList1.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -224,8 +234,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        List<FittingTableData> armList = data.armList;
-        MyListViewAdapter myListViewArmAdapter = new MyListViewAdapter(getContext(),data.armList);
+        MyListViewAdapter myListViewArmAdapter = new MyListViewAdapter(getContext(),armList);
         ((ListView)viewList1.get(2).findViewById(R.id.fitting_lv)).setAdapter(myListViewArmAdapter);
         ((ListView)viewList1.get(2).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -239,7 +248,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        MyListViewAdapter myListViewBackAdapter = new MyListViewAdapter(getContext(),data.backList);
+        MyListViewAdapter myListViewBackAdapter = new MyListViewAdapter(getContext(),backList);
         ((ListView)viewList1.get(3).findViewById(R.id.fitting_lv)).setAdapter(myListViewBackAdapter);
         ((ListView)viewList1.get(3).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -253,7 +262,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        MyListViewAdapter myListViewBellyAdapter = new MyListViewAdapter(getContext(),data.bellyList);
+        MyListViewAdapter myListViewBellyAdapter = new MyListViewAdapter(getContext(),bellyList);
         ((ListView)viewList1.get(4).findViewById(R.id.fitting_lv)).setAdapter(myListViewBellyAdapter);
         ((ListView)viewList1.get(4).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -267,7 +276,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        MyListViewAdapter myListViewLegAdapter = new MyListViewAdapter(getContext(),data.legList);
+        MyListViewAdapter myListViewLegAdapter = new MyListViewAdapter(getContext(),legList);
         ((ListView)viewList1.get(5).findViewById(R.id.fitting_lv)).setAdapter(myListViewLegAdapter);
         ((ListView)viewList1.get(5).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -281,7 +290,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        MyListViewAdapter myListViewBrainAdapter = new MyListViewAdapter(getContext(),data.brainList);
+        MyListViewAdapter myListViewBrainAdapter = new MyListViewAdapter(getContext(),brainList);
         ((ListView)viewList2.get(0).findViewById(R.id.fitting_lv)).setAdapter(myListViewBrainAdapter);
         ((ListView)viewList2.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -295,7 +304,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        MyListViewAdapter myListViewOtherAdapter = new MyListViewAdapter(getContext(),data.otherList);
+        MyListViewAdapter myListViewOtherAdapter = new MyListViewAdapter(getContext(),otherList);
         ((ListView)viewList2.get(1).findViewById(R.id.fitting_lv)).setAdapter(myListViewOtherAdapter);
         ((ListView)viewList2.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -308,8 +317,7 @@ public class FittingFragment extends Fragment {
                 startActivity(i);
             }
         });
-
-
+        Log.i(TAG, "FittingFragment.onCreateView closed");
         return view;
     }
 
@@ -318,7 +326,6 @@ public class FittingFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "FittingFragment.onActivityCreated");
-
     }
 
     @Override
@@ -366,6 +373,7 @@ public class FittingFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        dbAdapter.close();
         Log.i(TAG, "FittingFragment.onDestroyView");
 
     }

@@ -13,14 +13,8 @@ import android.widget.Button;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.module.Data;
-import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.ui.TimePicker.PickerView;
-import com.example.fittingChart.database.DBHelper;
 //import com.example.fittingChart.ui.TimePicker.TimePicker;
 
-
-import java.util.Date;
-import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,15 +64,15 @@ public class FittingStopFragment extends Fragment {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Data data = (Data)getActivity().getApplication();
-                DBHelper db = new DBHelper(getContext());
-                db.openDatabase();
-                FittingData fd = new FittingData();
-                fd.setNumber(new Random().nextInt(100));
-                fd.setLocalTime(new Date().getTime());
-                db.addFittingItem("FUWOCHENG",fd);
-                db.getAllFitting("FUWOCHENG");
-                db.closeDatabase();
+//                Data data = (Data)getActivity().getApplication();
+//                DBHelper db = new DBHelper(getContext());
+//                db.openDatabase();
+//                FittingData fd = new FittingData();
+//                fd.setNumber(new Random().nextInt(100));
+//                fd.setLocalTime(new Date().getTime());
+//                db.addFittingItem("FUWOCHENG",fd);
+//                db.getAllFitting("FUWOCHENG");
+//                db.closeDatabase();
             }
         });
 

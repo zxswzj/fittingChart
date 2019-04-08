@@ -6,31 +6,24 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.database.DBHelper;
+import com.example.fittingChart.database.MyDBHelper;
+import com.example.fittingChart.database.MyDatabaseAdapter;
 import com.example.fittingChart.module.Data;
 import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.ui.TabLayout.MyFragmentPagerAdapter;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -158,17 +151,17 @@ public class FittingStartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Data data = (Data)getActivity().getApplication();
-                DBHelper db = new DBHelper(getContext());
-                db.openDatabase();
+                MyDatabaseAdapter dbAdapter = new MyDatabaseAdapter(getContext());
                 FittingData fd = new FittingData();
                 fd.setNumber(Integer.parseInt(et_num.getEditableText().toString().trim()));
                 fd.setDurationTime(lSecond);
                 fd.setLocalTime(new Date().getTime());
                 fd.setDes("aaa");
 
-                //db.addFittingItem(tableDBName, fd);
-                db.updateShowTableItem(tableDBName);
-                db.closeDatabase();
+                dbAdapter.open();
+                dbAdapter.addFittingItem(tableDBName, fd);
+                dbAdapter.addShowTableItem(tableName, tableDBName);
+                dbAdapter.close();
             }
         });
 
