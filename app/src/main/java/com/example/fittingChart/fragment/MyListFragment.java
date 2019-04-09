@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
+import com.example.fittingChart.module.FittingTableData;
 import com.example.fittingChart.ui.SwipeList.MySwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
@@ -37,7 +38,7 @@ public class MyListFragment extends Fragment {
 
     String TAG = "SwipeList";
     View view;
-    ArrayList<String> mAppList = new ArrayList<>();
+    ArrayList<FittingTableData> mAppList = new ArrayList<>();
     private MySwipeListAdapter mAdapter;
     private SwipeMenuListView mListView;
 
@@ -49,14 +50,10 @@ public class MyListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_list, container, false);
-        Log.i(TAG, "MyListFragment.onCreateView: xy=" + view.getWidth() + "/" + view.getHeight());
-        mAppList.add("草莓");
-        mAppList.add("苹果");
-        mAppList.add("橘子");
+        Log.i(TAG, "MyListFragment.onCreateView");
+
 
         mListView = view.findViewById(R.id.listView);
-        Log.i(TAG, "MyListFragment.onCreateView:mListView xy=" + mListView.getWidth() + "/" + mListView.getHeight());
-
 
         mAdapter = new MySwipeListAdapter(getContext(),mAppList);
         mListView.setAdapter(mAdapter);
@@ -79,7 +76,7 @@ public class MyListFragment extends Fragment {
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,0x3F, 0x25)));
                 deleteItem.setWidth(dp2px(90));
-                deleteItem.setIcon(R.drawable.icon_delete);
+                deleteItem.setIcon(R.drawable.icon_add);
                 // 将创建的菜单项添加进菜单中
                 menu.addMenuItem(deleteItem);
             }
@@ -94,7 +91,7 @@ public class MyListFragment extends Fragment {
                 //position:列表项的下标。如：0，1，2，3，4，...
                 //index:菜单项的下标。如：0，1，2，3，4，...
                 //ApplicationInfo item = mAppList.get(position);
-                String str = mAppList.get(position);
+                //String str = mAppList.get(position);
                 switch (index) {
                     case 0:
                         // open
@@ -202,11 +199,32 @@ public class MyListFragment extends Fragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value,
                 getResources().getDisplayMetrics());
     }
-    //另一种将dp转换为px的方法
-    private int dp2px(float value){
-        final float scale = getResources().getDisplayMetrics().density;
-        return (int)(value*scale + 0.5f);
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "MyListFragment.onStart");
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "MyListFragment.onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "MyListFragment.onDestroy");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "MyListFragment.onDestroyView");
+    }
+
+    //另一种将dp转换为px的方法
 }
 //    public void onListItemClick(ListView parent, View v,
 //                                int position, long id) {

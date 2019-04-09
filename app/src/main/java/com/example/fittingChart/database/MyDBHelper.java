@@ -113,7 +113,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     void createFittingTable(SQLiteDatabase _db, String table) {
         Log.i("SQLite", "DBHelper.createFitting");
-        String CREATE_TABLE = "CREATE TABLE if not exists " + table + "(id INTEGER PRIMARY KEY autoincrement,name STRING, dBname STRING, des STRING, layoutResourceID, INTEGER)";
+        String CREATE_TABLE = "CREATE TABLE if not exists " + table + "(id INTEGER PRIMARY KEY autoincrement,name STRING, DBName STRING, des STRING, layoutResourceID INTEGER)";
         _db.execSQL(CREATE_TABLE);
     }
 

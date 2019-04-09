@@ -174,6 +174,20 @@ public class MyDatabaseAdapter {
         db.insert(table, null, values);
         return true;
     }
+    public boolean deleteFittingTableItem(String table, String itemName){
+        try {
+            String SQL = "delete from " + table + " where name='" + itemName + "'";
+            //int numberOFEntriesDeleted= db.delete("LOGIN", where, new String[]{UserName}) ;
+            // Toast.makeText(context, "Number fo Entry Deleted Successfully : "+numberOFEntriesDeleted, Toast.LENGTH_LONG).show();
+            db.execSQL(SQL);
+            return true;
+        }
+        catch(Exception e){
+            System.out.println("Exceptions " + e);
+            return false;
+        }
+    }
+
     public boolean addFittingItem(String table,FittingData fittingData){
 
         try {

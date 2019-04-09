@@ -67,7 +67,7 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
         }
         if (mAdapter instanceof BaseSwipeListAdapter) {
             boolean swipEnable = (((BaseSwipeListAdapter) mAdapter).getSwipeEnableByPosition(position));
-            layout.setSwipEnable(swipEnable);
+            layout.setSwipeEnable(swipEnable);
         }
         return layout;
     }

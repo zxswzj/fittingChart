@@ -10,31 +10,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
+import com.example.fittingChart.module.FittingTableData;
 
 import java.util.ArrayList;
 
 public class MySwipeListAdapter extends BaseSwipeListAdapter {
 
     String TAG = "SwipeList";
-    ArrayList<String> mList;
+    //ArrayList<String> mList;
+    ArrayList<FittingTableData> mFittingTableDataList;
     Context mContext;
 
-    public MySwipeListAdapter(Context context, ArrayList<String> list){
+    public MySwipeListAdapter(Context context, ArrayList<FittingTableData> list){
         this.mContext = context;
-        this.mList = list;
+        this.mFittingTableDataList = list;
     }
+
+//    public MySwipeListAdapter(Context context, ArrayList<FittingTableData> list, int dummy) {
+//        this.mContext = context;
+//        this.mFittingTableDataList = list;
+//    }
 
     @Override
     public int getCount() {
-        Log.i(TAG, "MySwipeListAdapter.getCount: " + mList.size());
-        return mList.size();
+        Log.i(TAG, "MySwipeListAdapter.getCount: " + mFittingTableDataList.size());
+        return mFittingTableDataList.size();
     }
 
     @Override
-    public String getItem(int position) {
+    public FittingTableData getItem(int position) {
         Log.i(TAG, "MySwipeListAdapter.getItem");
-        return mList.get(position);
+        return mFittingTableDataList.get(position);
     }
+
+//    public FittingTableData getItem(int position){
+//        return mFittingTableDataList.get(position);
+//    }
 
     @Override
     public long getItemId(int position) {
@@ -57,13 +68,14 @@ public class MySwipeListAdapter extends BaseSwipeListAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         // 获取手机全部应用的信息
 //        ApplicationInfo item = getItem(position);
-        String str = getItem(position);
+        FittingTableData ftd = getItem(position);
         // 加载应用的图标
 //        holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
-        holder.iv_icon.setImageResource(R.drawable.icon_add);
+        holder.iv_icon.setImageResource(ftd.getResourceID());
         // 加载应用的标题
 //        holder.tv_name.setText(item.loadLabel(getPackageManager()));
-        holder.tv_name.setText(str);
+        holder.tv_name.setText(ftd.getName());
+        holder.tv_name.setTag(ftd.getDbName());
         // 为图标设置点击事件监听器（弹出一个toast）
         holder.iv_icon.setOnClickListener(new View.OnClickListener() {
             @Override

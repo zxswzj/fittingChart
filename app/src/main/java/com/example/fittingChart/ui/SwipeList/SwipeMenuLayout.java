@@ -46,7 +46,7 @@ public class SwipeMenuLayout extends FrameLayout {
 	private Interpolator mCloseInterpolator;
 	private Interpolator mOpenInterpolator;
 
-	private boolean mSwipEnable = true;
+	private boolean mSwipeEnable = true;
 
 	public SwipeMenuLayout(View contentView, SwipeMenuView menuView) {
 		this(contentView, menuView, null, null);
@@ -210,7 +210,7 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	private void swipe(int dis) {
-		if(!mSwipEnable){
+		if(!mSwipeEnable){
 			return ;
 		}
 		if (Math.signum(dis) != mSwipeDirection) {
@@ -261,7 +261,7 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	public void smoothOpenMenu() {
-		if(!mSwipEnable){
+		if(!mSwipeEnable){
 			return ;
 		}
 		state = STATE_OPEN;
@@ -284,7 +284,7 @@ public class SwipeMenuLayout extends FrameLayout {
 	}
 
 	public void openMenu() {
-		if(!mSwipEnable){
+		if(!mSwipeEnable){
 			return ;
 		}
 		if (state == STATE_CLOSE) {
@@ -337,11 +337,11 @@ public class SwipeMenuLayout extends FrameLayout {
 		}
 	}
 
-	public void setSwipEnable(boolean swipEnable){
-		mSwipEnable = swipEnable;
+	public void setSwipeEnable(boolean swipEnable){
+		mSwipeEnable = swipEnable;
 	}
 
-	public boolean getSwipEnable(){
-		return mSwipEnable;
+	public boolean getSwipeEnable(){
+		return mSwipeEnable;
 	}
 }
