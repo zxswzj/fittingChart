@@ -64,15 +64,6 @@ public class FittingStopFragment extends Fragment {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Data data = (Data)getActivity().getApplication();
-//                DBHelper db = new DBHelper(getContext());
-//                db.openDatabase();
-//                FittingData fd = new FittingData();
-//                fd.setNumber(new Random().nextInt(100));
-//                fd.setLocalTime(new Date().getTime());
-//                db.addFittingItem("FUWOCHENG",fd);
-//                db.getAllFitting("FUWOCHENG");
-//                db.closeDatabase();
             }
         });
 

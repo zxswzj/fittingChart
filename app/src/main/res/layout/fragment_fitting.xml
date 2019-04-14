@@ -18,12 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
-        <!--<FrameLayout-->
-            <!--android:id="@+id/fragment_fitting_container"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="316dp" />-->
         <com.example.fittingChart.ui.SwipeList.SwipeMenuListView
-            android:id="@+id/listView"
+            android:id="@+id/listView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="20" />
@@ -42,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_content2"
+        <com.example.fittingChart.ui.SwipeList.SwipeMenuListView
+            android:id="@+id/listView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="20" />

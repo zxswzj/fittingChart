@@ -91,26 +91,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         dbAdapter.getSinlgeEntry("乐乐");
         dbAdapter.close();
 
-//        db = new DBHelper(this);
-//        Data d = (Data)getApplication();
-//        int count = 0;
-//        ArrayList<FittingTableData> table = new ArrayList<>();
-//        db.openDatabase();
-//        if(db.tableExists(d.TABLE_FITTING_BREAST))
-//            table = db.getAllFittingTable(d.TABLE_FITTING_BREAST);
-//        db.closeDatabase();
-//        FittingData fd = new FittingData();
-//        fd.setNumber(33);
-//        fd.setLocalTime(44);
-//        fd.setDurationTime(55);
-//        fd.setDes("test");
-//        db.addFittingItem("FUWOCHENG",fd);
-
-//        if(db.getUserCount() == 0)
-//            db.addItem(u,"users");
-//        else
-//            u = db.getUser(1);
-
         Bundle bundle = new Bundle();
         bundle.putString("username",u.getUsername());
         bundle.putString("slogan",u.getSlogan());

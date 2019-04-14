@@ -128,10 +128,10 @@ public class MyDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    void createFitting(SQLiteDatabase _db, String table) {
+    public void createFitting(SQLiteDatabase _db, String table) {
         Log.i("SQLite", "DBHelper.createFitting");
         String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + table +
-                    "(id INTEGER PRIMARY KEY autoincrement,number INTEGER,durationTime INTEGER,localTime INTEGER,des STRING)";
+                    "(id INTEGER PRIMARY KEY autoincrement,number INTEGER,durationTime INTEGER, restTime INTEGER, localTime INTEGER,des STRING)";
         _db.execSQL(CREATE_CONTACTS_TABLE);
     }
 

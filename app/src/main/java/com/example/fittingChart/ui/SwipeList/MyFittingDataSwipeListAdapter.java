@@ -3,6 +3,7 @@ package com.example.fittingChart.ui.SwipeList;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,50 +12,36 @@ import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.module.FittingData;
+import com.example.fittingChart.module.FittingSwipeItemData;
 import com.example.fittingChart.module.FittingTableData;
+import com.example.fittingChart.util.MyTimeUtils;
 
 import java.util.ArrayList;
 
-public class MySwipeListAdapter extends BaseSwipeListAdapter {
+public class MyFittingDataSwipeListAdapter extends BaseSwipeListAdapter {
 
     String TAG = "SwipeList";
     //ArrayList<String> mList;
-    ArrayList<FittingTableData> mFittingTableDataList;
-    ArrayList<FittingData> mFittingDataList;
+    ArrayList<FittingSwipeItemData> mList;
     Context mContext;
     int dataformat = 0;
 
-    public MySwipeListAdapter(Context context, ArrayList<FittingTableData> list){
+    public MyFittingDataSwipeListAdapter(Context context, ArrayList<FittingSwipeItemData> list){
         this.mContext = context;
-        this.mFittingTableDataList = list;
+        this.mList = list;
     }
-
-//    public MySwipeListAdapter(Context context, ArrayList<FittingData> list){
-//        this.mContext = context;
-//        this.mFittingDataList = list;
-//    }
-
-//    public MySwipeListAdapter(Context context, ArrayList<FittingTableData> list, int dummy) {
-//        this.mContext = context;
-//        this.mFittingTableDataList = list;
-//    }
 
     @Override
     public int getCount() {
-        Log.i(TAG, "MySwipeListAdapter.getCount: " + mFittingTableDataList.size());
-        return mFittingTableDataList.size();
+        Log.i(TAG, "MySwipeListAdapter.getCount: " + mList.size());
+        return mList.size();
     }
 
     @Override
     public Object getItem(int position) {
         Log.i(TAG, "MySwipeListAdapter.getItem");
-        return mFittingTableDataList.get(position);
+        return mList.get(position);
     }
-
-//    @Override
-//    public FittingData getItem(int position){
-//        return mFittingTableDataList.get(position);
-//    }
 
     @Override
     public long getItemId(int position) {
@@ -77,14 +64,17 @@ public class MySwipeListAdapter extends BaseSwipeListAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         // 获取手机全部应用的信息
 //        ApplicationInfo item = getItem(position);
-        FittingTableData ftd = (FittingTableData)getItem(position);
+        FittingSwipeItemData fd = (FittingSwipeItemData)getItem(position);
         // 加载应用的图标
 //        holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
-        holder.iv_icon.setImageResource(ftd.getResourceID());
+        holder.iv_icon.setImageResource(R.drawable.bicycle);
         // 加载应用的标题
 //        holder.tv_name.setText(item.loadLabel(getPackageManager()));
-        holder.tv_name.setText(ftd.getName());
-        holder.tv_name.setTag(ftd.getDbName());
+        holder.tv_name.setText(fd.getName());
+        holder.tv_name.setTag("def");
+        holder.tv_count.setText(fd.getNumber() + "");
+        holder.tv_duration.setText(MyTimeUtils.millis2String(fd.getDurationTime(), "HH:mm:ss"));
+        holder.tv_rest.setText(MyTimeUtils.millis2String(fd.getRestTime(), "HH:mm:ss"));
         // 为图标设置点击事件监听器（弹出一个toast）
         holder.iv_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,11 +95,19 @@ public class MySwipeListAdapter extends BaseSwipeListAdapter {
     class ViewHolder {
         ImageView iv_icon;
         TextView tv_name;
+        TextView tv_count;
+        TextView tv_duration;
+        TextView tv_rest;
+
 
         //根据传进来的convertView创建ViewHolder，并且将其设置为convertView的Tag
         public ViewHolder(View view) {
             iv_icon = view.findViewById(R.id.iv_icon);
             tv_name = view.findViewById(R.id.tv_name);
+            tv_count = view.findViewById(R.id.tv_count);
+            tv_duration = view.findViewById(R.id.tv_duration);
+            tv_rest = view.findViewById(R.id.tv_rest);
+
             view.setTag(this);
         }
     }

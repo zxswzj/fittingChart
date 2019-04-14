@@ -196,6 +196,7 @@ public class MyDatabaseAdapter {
             // Assign values for each column.
             newValues.put("number", fittingData.getNumber());
             newValues.put("durationTime", fittingData.getDurationTime());
+            newValues.put("restTime", fittingData.getRestTime());
             newValues.put("localTime", fittingData.getLocalTime());
             newValues.put("des", fittingData.getDes());
 
@@ -340,4 +341,14 @@ public class MyDatabaseAdapter {
         return true;
     }
 
+    public MyDBHelper getDBHelper(){
+        return dbHelper;
+    }
+
+    public void createFitting(String table) {
+        Log.i("SQLite", "DBHelper.createFitting");
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE if not exists " + table +
+                "(id INTEGER PRIMARY KEY autoincrement,number INTEGER,durationTime INTEGER,localTime INTEGER,des STRING)";
+        db.execSQL(CREATE_CONTACTS_TABLE);
+    }
 }

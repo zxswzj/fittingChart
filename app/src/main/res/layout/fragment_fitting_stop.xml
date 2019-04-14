@@ -34,7 +34,7 @@
         android:layout_marginRight="8dp"
         android:text="取消"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fitting_btn_start"
+        app:layout_constraintStart_toEndOf="@+id/fitting_btn_f1"
         app:layout_constraintTop_toBottomOf="@+id/fitting_timerView" />
 
 </LinearLayout>

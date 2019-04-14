@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -52,17 +53,20 @@ public class FittingFragment extends Fragment {
 
 //    View view;
     private ArrayList<String> tab1Name = new ArrayList<>();
-    private String [] tabname2 = {"大脑","???"};
+    private ArrayList<String> tab2Name = new ArrayList<>();
     TabLayout tabLayout1,tabLayout2;
-    ViewPager viewPager1,viewPager2;
-    View view1,view2;
+//    ViewPager viewPager1,viewPager2;
+//    View view1,view2;
     MyDatabaseAdapter dbAdapter;
     //MyListFragment myListFragment = new MyListFragment();
-    ArrayList<FittingTableData> breastList = new ArrayList<>();
+    ArrayList<FittingTableData> ftdList1 = new ArrayList<>();
+    ArrayList<FittingTableData> ftdList2 = new ArrayList<>();
 
     //ArrayList<String> mAppList = new ArrayList<>();
-    private MySwipeListAdapter mAdapter;
-    private SwipeMenuListView mListView;
+    private MySwipeListAdapter mListAdapter1;
+    private MySwipeListAdapter mListAdapter2;
+    private SwipeMenuListView mListView1;
+    private SwipeMenuListView mListView2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,11 +74,14 @@ public class FittingFragment extends Fragment {
         Log.i(TAG, "FittingFragment.onCreate");
         tab1Name.clear();
         tab1Name.add("胸部");
-        tab1Name.add("肩部");
-        tab1Name.add("手臂");
-        tab1Name.add("背部");
         tab1Name.add("腹部");
+        tab1Name.add("肩部");
+        tab1Name.add("背部");
+        tab1Name.add("手臂");
         tab1Name.add("腿部");
+        tab2Name.clear();
+        tab2Name.add("脑部");
+        tab2Name.add("？？？");
     }
 
     @Override
@@ -88,18 +95,23 @@ public class FittingFragment extends Fragment {
         //view1 = getLayoutInflater().inflate(R.layout.fitting_list,null);
         //view2 = getLayoutInflater().inflate(R.layout.fitting_list,null);
         //TabLayout list
-        List<View> viewList1 = new ArrayList<>();
-        List<View> viewList2 = new ArrayList<>();
-        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-        viewList2.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-        viewList2.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        List<View> viewList1 = new ArrayList<>();
+//        List<View> viewList2 = new ArrayList<>();
+//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        viewList2.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
+//        viewList2.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
 
         tabLayout1 = view.findViewById(R.id.tl_tab1);
+        tabLayout2 = view.findViewById(R.id.tl_tab2);
+        mListView1 = view.findViewById(R.id.listView1);
+        mListView2 = view.findViewById(R.id.listView2);
+
+
         //viewPager1 = view.findViewById(R.id.vp_content1);
         //viewPager1.setAdapter(new CustomPagerAdapter(getContext(),viewList1, tabname1));
         for(int i=0;i<tab1Name.size();i++){
@@ -107,13 +119,23 @@ public class FittingFragment extends Fragment {
             tabLayout1.getTabAt(i).setText(tab1Name.get(i));
         }
 
-        breastList = dbAdapter.getAllFittingTable("fitting_breast");
-        FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
-        breastList.add(d);
-        mListView = view.findViewById(R.id.listView);
+        for(int i=0;i<tab2Name.size();i++){
+            tabLayout2.addTab(tabLayout2.newTab());
+            tabLayout2.getTabAt(i).setText(tab2Name.get(i));
+        }
 
-        mAdapter = new MySwipeListAdapter(getContext(),breastList);
-        mListView.setAdapter(mAdapter);
+        ftdList1 = dbAdapter.getAllFittingTable("fitting_breast");
+        ftdList2 = dbAdapter.getAllFittingTable("fitting_brain");
+
+        FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+        ftdList1.add(d);
+        ftdList2.add(d);
+
+        mListAdapter1 = new MySwipeListAdapter(getContext(),ftdList1);
+        mListView1.setAdapter(mListAdapter1);
+
+        mListAdapter2 = new MySwipeListAdapter(getContext(),ftdList2);
+        mListView2.setAdapter(mListAdapter2);
 
         // 第1步：设置创建器，并且在其中生成我们需要的菜单项，将其添加进菜单中
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -123,25 +145,28 @@ public class FittingFragment extends Fragment {
                 SwipeMenuItem openItem = new SwipeMenuItem(getContext());
                 openItem.setBackground(new ColorDrawable(Color.rgb(0xC9,0xC9,0xCE)));
                 openItem.setWidth(dp2px(90));
-                openItem.setTitle("查看");
-                openItem.setTitleSize(18);
-                openItem.setTitleColor(Color.WHITE);
+                //openItem.setTitle("图表");
+                openItem.setIcon(R.drawable.icon_add);
+                //openItem.setTitleSize(18);
+                //openItem.setTitleColor(Color.WHITE);
                 // 将创建的菜单项添加进菜单中
                 menu.addMenuItem(openItem);
 
                 // 创建“删除”项
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,0x3F, 0x25)));
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xC9,0xC9, 0xCE)));
                 deleteItem.setWidth(dp2px(90));
-                deleteItem.setIcon(R.drawable.icon_add);
+                deleteItem.setIcon(R.drawable.ic_delete_forever_black_24dp);
                 // 将创建的菜单项添加进菜单中
                 menu.addMenuItem(deleteItem);
             }
         };
         // 为ListView设置创建器
-        mListView.setMenuCreator(creator);
+        mListView1.setMenuCreator(creator);
+        mListView2.setMenuCreator(creator);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        mListView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), position + " item clicked", Toast.LENGTH_SHORT).show();
@@ -152,6 +177,7 @@ public class FittingFragment extends Fragment {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
                     alertDialogBuilder.setTitle("添加新的运动");
                     final EditText et = new EditText(getContext());
+                    et.setInputType(InputType.TYPE_CLASS_TEXT);
                     alertDialogBuilder.setView(et);
                     alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
@@ -165,21 +191,105 @@ public class FittingFragment extends Fragment {
                                 String dbNamePinyin = PinyinUtils.toPinyinString(name, PinyinUtils.CASE_CAPITALIZE);
                                 //dbAdapter = new MyDatabaseAdapter(getContext());
                                 //dbAdapter.open();
-                                ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable("fitting_breast");
+                                String table;
+                                switch(tabLayout1.getSelectedTabPosition()){
+                                    case 0:table = "fitting_breast";break;
+                                    case 1:table = "fitting_belly";break;
+                                    case 2:table = "fitting_shoulder";break;
+                                    case 3:table = "fitting_back";break;
+                                    case 4:table = "fitting_arm";break;
+                                    case 5:table = "fitting_leg";break;
+                                    default:table = "";break;
+                                }
+
+                                ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable(table);
                                 for (int i = 0; i < fittingTableData.size(); i++) {
                                     if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
                                         AlertDialog.Builder builderDuplicate = new AlertDialog.Builder(getContext());
                                         builderDuplicate.setTitle("???");
                                         builderDuplicate.setPositiveButton("名字重了知道不？退下重输！！！", null);
                                         builderDuplicate.create().show();
-                                        //dbAdapter.close();
-
                                         return;
                                     }
                                 }
                                 FittingTableData ftd = new FittingTableData(name, dbNamePinyin, "user input activity", R.drawable.pushup);
-                                dbAdapter.addFittingTableItem("fitting_breast", ftd);
-                                //dbAdapter.close();
+                                FittingTableData ftdAdd = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+                                dbAdapter.addFittingTableItem(table, ftd);
+                                dbAdapter.createFitting(dbNamePinyin);
+                                ftdList1.clear();
+                                ftdList1.addAll(fittingTableData);
+                                ftdList1.add(ftd);
+                                ftdList1.add(ftdAdd);
+                                mListAdapter1.notifyDataSetChanged();
+                                return;
+                            }
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("取消", null);
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+                else{
+                    Intent i = new Intent(getActivity(), FittingActivity.class);
+                    i.putExtra("tableName", tv_Name.getText());
+                    i.putExtra("tableDBName", dbName);
+                    startActivity(i);
+                }
+            }
+        });
+
+        mListView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), position + " item clicked", Toast.LENGTH_SHORT).show();
+                //TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
+                TextView tv_Name = view.findViewById(R.id.tv_name);
+                String dbName = (String)tv_Name.getTag();
+                if(dbName.equals("ADD")) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                    alertDialogBuilder.setTitle("添加新的运动");
+                    final EditText et = new EditText(getContext());
+                    et.setInputType(InputType.TYPE_CLASS_TEXT);
+                    alertDialogBuilder.setView(et);
+                    alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String name = et.getText().toString();
+                            if (TextUtils.isEmpty(name)) {
+                                Toast.makeText(getContext(), "No hanzi, please input again.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                StringBuilder builder = new StringBuilder();
+                                //builder.append(PinyinUtils.toPinyinString(dbName, PinyinUtils.CASE_CAPITALIZE));
+                                String dbNamePinyin = PinyinUtils.toPinyinString(name, PinyinUtils.CASE_CAPITALIZE);
+                                //dbAdapter = new MyDatabaseAdapter(getContext());
+                                //dbAdapter.open();
+                                String table;
+                                switch(tabLayout2.getSelectedTabPosition()){
+                                    case 0:table = "fitting_brain";break;
+                                    case 1:table = "fitting_other";break;
+                                    case 2:table = "fitting_shoulder";break;
+                                    default:table = "";break;
+                                }
+
+                                ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable(table);
+                                for (int i = 0; i < fittingTableData.size(); i++) {
+                                    if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
+                                        AlertDialog.Builder builderDuplicate = new AlertDialog.Builder(getContext());
+                                        builderDuplicate.setTitle("???");
+                                        builderDuplicate.setPositiveButton("名字重了知道不？退下重输！！！", null);
+                                        builderDuplicate.create().show();
+                                        return;
+                                    }
+                                }
+                                FittingTableData ftd = new FittingTableData(name, dbNamePinyin, "user input activity", R.drawable.pushup);
+                                FittingTableData ftdAdd = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+                                dbAdapter.addFittingTableItem(table, ftd);
+                                dbAdapter.createFitting(dbNamePinyin);
+                                ftdList2.clear();
+                                ftdList2.addAll(fittingTableData);
+                                ftdList2.add(ftd);
+                                ftdList2.add(ftdAdd);
+                                mListAdapter2.notifyDataSetChanged();
                                 return;
                             }
                         }
@@ -198,7 +308,7 @@ public class FittingFragment extends Fragment {
         });
 
         // 第2步：为ListView设置菜单项点击监听器，来监听菜单项的点击事件
-        mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+        mListView1.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 //position:列表项的下标。如：0，1，2，3，4，...
@@ -223,14 +333,11 @@ public class FittingFragment extends Fragment {
                             case 5:table = "fitting_leg";break;
                             default:table = "";break;
                         }
-                        dbAdapter.deleteFittingTableItem(table, breastList.get(position).getName());
-
-                        breastList.remove(position);
+                        dbAdapter.deleteFittingTableItem(table, ftdList1.get(position).getName());
+                        ftdList1.remove(position);
                         //通知监听者数据集发生改变，更新ListView界面
                         Log.i(TAG, "FittingFragment.mListView.setOnMenuItemClickListener tab=" + tabLayout1.getSelectedTabPosition() + "item=" + position);
-
-
-                        mAdapter.notifyDataSetChanged();
+                        mListAdapter1.notifyDataSetChanged();
                         break;
                 }
                 // true：其他已打开的列表项的菜单状态将保持原样，不会受到其他列表项的影响而自动收回
@@ -239,10 +346,45 @@ public class FittingFragment extends Fragment {
             }
         });
 
+        mListView2.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                //position:列表项的下标。如：0，1，2，3，4，...
+                //index:菜单项的下标。如：0，1，2，3，4，...
+                //ApplicationInfo item = mAppList.get(position);
+                //String str = breastList.get(position);
+                switch (index) {
+                    case 0:
+                        // open
+                        //open(item);
+                        break;
+                    case 1:
+                        // delete
+//                    delete(item);
+                        String table;
+                        switch(tabLayout2.getSelectedTabPosition()){
+                            case 0:table = "fitting_brain";break;
+                            case 1:table = "fitting_other";break;
+                            default:table = "";break;
+                        }
+                        dbAdapter.deleteFittingTableItem(table, ftdList2.get(position).getName());
+                        ftdList2.remove(position);
+                        //通知监听者数据集发生改变，更新ListView界面
+                        Log.i(TAG, "FittingFragment.mListView.setOnMenuItemClickListener tab=" + tabLayout2.getSelectedTabPosition() + "item=" + position);
+                        mListAdapter2.notifyDataSetChanged();
+                        break;
+                }
+                // true：其他已打开的列表项的菜单状态将保持原样，不会受到其他列表项的影响而自动收回
+                // false:已打开的列表项的菜单将自动收回
+                return false;
+            }
+        });
+
+
         // 设置侧滑监听器，监听侧滑开始和侧滑结束
         // 注意：当我们将一个已经侧滑出来的菜单重新收回去的时候并不会调用onSwipeStart方法，
         // 但是结束的时候依然会调用onSwipeEnd方法
-        mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+        mListView1.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
 
             @Override
             public void onSwipeStart(int position) {
@@ -256,7 +398,7 @@ public class FittingFragment extends Fragment {
         });
 
         // 设置监听Menu状态改变的监听器（Menu的打开和关闭）
-        mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+        mListView1.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
             @Override
             public void onMenuOpen(int position) {
             }
@@ -269,15 +411,14 @@ public class FittingFragment extends Fragment {
         // other setting
 //        listView.setCloseInterpolator(new BounceInterpolator());
 
-        // 设置列表项长点击的监听器
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), position + " long click", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
+// 设置列表项长点击的监听器
+//        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getContext(), position + " long click", Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
 //        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 //        ft.replace(R.id.fragment_fitting_container, myListFragment);
 //        ft.commit();
@@ -287,19 +428,21 @@ public class FittingFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
+                ArrayList<FittingTableData> ftdList1Tmp = new ArrayList<>();
                 switch (tab.getPosition()){
-                    case 0:breastList = dbAdapter.getAllFittingTable("fitting_breast");break;
-                    case 1:breastList = dbAdapter.getAllFittingTable("fitting_belly");break;
-                    case 2:breastList = dbAdapter.getAllFittingTable("fitting_shoulder");break;
-                    case 3:breastList = dbAdapter.getAllFittingTable("fitting_back");break;
-                    case 4:breastList = dbAdapter.getAllFittingTable("fitting_arm");break;
-                    case 5:breastList = dbAdapter.getAllFittingTable("fitting_leg");break;
+                    case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_breast");break;
+                    case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_belly");break;
+                    case 2:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_shoulder");break;
+                    case 3:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_back");break;
+                    case 4:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_arm");break;
+                    case 5:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_leg");break;
                     default:break;
                 }
                 FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
-                breastList.add(d);
-                mAdapter = new MySwipeListAdapter(getContext(),breastList);
-                mListView.setAdapter(mAdapter);
+                ftdList1.clear();
+                ftdList1.addAll(ftdList1Tmp);
+                ftdList1.add(d);
+                mListAdapter1.notifyDataSetChanged();
             }
 
             @Override
@@ -315,14 +458,21 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        tabLayout2 = view.findViewById(R.id.tl_tab2);
-        viewPager2 = view.findViewById(R.id.vp_content2);
-        viewPager2.setAdapter(new CustomPagerAdapter(getContext(),viewList2, tabname2));
-        tabLayout2.setupWithViewPager(viewPager2); //关联TabLayout和ViewPager
         tabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.i(TAG, "FittingFragment.onTabSelected");
+                Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
+                ArrayList<FittingTableData> ftdList1Tmp = new ArrayList<>();
+                switch (tab.getPosition()){
+                    case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_brain");break;
+                    case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_other");break;
+                    default:break;
+                }
+                FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+                ftdList2.clear();
+                ftdList2.addAll(ftdList1Tmp);
+                ftdList2.add(d);
+                mListAdapter2.notifyDataSetChanged();
             }
 
             @Override
@@ -338,177 +488,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        //Data data = (Data)getActivity().getApplication();
-        //List<FittingTableData> breastList = data.breastList;
-        //ListItem
-//        ArrayList<FittingTableData> breastList = dbAdapter.getAllFittingTable("fitting_breast");
-//        ArrayList<FittingTableData> armList = dbAdapter.getAllFittingTable("fitting_arm");
-//        ArrayList<FittingTableData> shoulderList = dbAdapter.getAllFittingTable("fitting_shoulder");
-//        ArrayList<FittingTableData> backList = dbAdapter.getAllFittingTable("fitting_back");
-//        ArrayList<FittingTableData> bellyList = dbAdapter.getAllFittingTable("fitting_belly");
-//        ArrayList<FittingTableData> legList = dbAdapter.getAllFittingTable("fitting_leg");
-        ArrayList<FittingTableData> brainList = dbAdapter.getAllFittingTable("fitting_brain");
-        ArrayList<FittingTableData> otherList = dbAdapter.getAllFittingTable("fitting_other");
-//        FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
-//        armList.add(d);
-//        breastList.add(d);
-//        shoulderList.add(d);
-//        backList.add(d);
-//        bellyList.add(d);
-//        legList.add(d);
-//        brainList.add(d);
-//        otherList.add(d);
-//        MyListViewAdapter myListViewBreastAdapter = new MyListViewAdapter(getContext(),breastList);
-//        ((ListView)viewList1.get(0).findViewById(R.id.fitting_lv)).setAdapter(myListViewBreastAdapter);
-//        ((ListView)viewList1.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-//                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-//                String dbName = tv_dbName.getText().toString();
-//                if(dbName.equals("ADD")) {
-//                    //dbAdapter.open();
-//                    AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(getContext());
-//                    alertDialogBuilder.setTitle("添加新的运动");
-//                    final EditText et = new EditText(getContext());
-//                    alertDialogBuilder.setView(et);
-//                    alertDialogBuilder.setPositiveButton("确定",new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            String name = et.getText().toString();
-//                            if (TextUtils.isEmpty(name)) {
-//                                Toast.makeText(getContext(), "No hanzi, please input again.", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                StringBuilder builder = new StringBuilder();
-//                                //builder.append(PinyinUtils.toPinyinString(dbName, PinyinUtils.CASE_CAPITALIZE));
-//                                String dbNamePinyin = PinyinUtils.toPinyinString(name, PinyinUtils.CASE_CAPITALIZE);
-//                                //dbAdapter = new MyDatabaseAdapter(getContext());
-//                                //dbAdapter.open();
-//                                ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable("fitting_breast");
-//                                for(int i=0;i<fittingTableData.size();i++){
-//                                    if(fittingTableData.get(i).getDbName().equals(dbNamePinyin)){
-//                                        AlertDialog.Builder builderDuplicate=new AlertDialog.Builder(getContext());
-//                                        builderDuplicate.setTitle("???");
-//                                        builderDuplicate.setPositiveButton("名字重了知道不？退下重输！！！",null);
-//                                        builderDuplicate.create().show();
-//                                        //dbAdapter.close();
-//
-//                                        return;
-//                                    }
-//                                }
-//                                FittingTableData ftd = new FittingTableData(name,dbNamePinyin,"user input activity", R.drawable.pushup);
-//                                dbAdapter.addFittingTableItem("fitting_breast",ftd);
-//                                //dbAdapter.close();
-//                                return;
-//                            }
-//                        }
-//                    });
-//                    alertDialogBuilder.setNegativeButton("取消",null);
-//                    AlertDialog alertDialog = alertDialogBuilder.create();
-//                    alertDialog.show();
-//                }
-//                else {
-//                    Intent i = new Intent(getActivity(), FittingActivity.class);
-//                    i.putExtra("tableName", tv_Name.getText());
-//                    i.putExtra("tableDBName", tv_dbName.getText());
-//                    startActivity(i);
-//                }
-//            }
-//        });
-//        MyListViewAdapter myListViewShoulderAdapter = new MyListViewAdapter(getContext(),shoulderList);
-//        ((ListView)viewList1.get(1).findViewById(R.id.fitting_lv)).setAdapter(myListViewShoulderAdapter);
-//        ((ListView)viewList1.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-//                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-//                Intent i = new Intent(getActivity() , FittingActivity.class);
-//                i.putExtra("tableName", tv_Name.getText());
-//                i.putExtra("tableDBName", tv_dbName.getText());
-//                startActivity(i);
-//            }
-//        });
-//        MyListViewAdapter myListViewArmAdapter = new MyListViewAdapter(getContext(),armList);
-//        ((ListView)viewList1.get(2).findViewById(R.id.fitting_lv)).setAdapter(myListViewArmAdapter);
-//        ((ListView)viewList1.get(2).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-//                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-//                Intent i = new Intent(getActivity() , FittingActivity.class);
-//                i.putExtra("tableName", tv_Name.getText());
-//                i.putExtra("tableDBName", tv_dbName.getText());
-//                startActivity(i);
-//            }
-//        });
-//        MyListViewAdapter myListViewBackAdapter = new MyListViewAdapter(getContext(),backList);
-//        ((ListView)viewList1.get(3).findViewById(R.id.fitting_lv)).setAdapter(myListViewBackAdapter);
-//        ((ListView)viewList1.get(3).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-//                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-//                Intent i = new Intent(getActivity() , FittingActivity.class);
-//                i.putExtra("tableName", tv_Name.getText());
-//                i.putExtra("tableDBName", tv_dbName.getText());
-//                startActivity(i);
-//            }
-//        });
-//        MyListViewAdapter myListViewBellyAdapter = new MyListViewAdapter(getContext(),bellyList);
-//        ((ListView)viewList1.get(4).findViewById(R.id.fitting_lv)).setAdapter(myListViewBellyAdapter);
-//        ((ListView)viewList1.get(4).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-//                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-//                Intent i = new Intent(getActivity() , FittingActivity.class);
-//                i.putExtra("tableName", tv_Name.getText());
-//                i.putExtra("tableDBName", tv_dbName.getText());
-//                startActivity(i);
-//            }
-//        });
-//        MyListViewAdapter myListViewLegAdapter = new MyListViewAdapter(getContext(),legList);
-//        ((ListView)viewList1.get(5).findViewById(R.id.fitting_lv)).setAdapter(myListViewLegAdapter);
-//        ((ListView)viewList1.get(5).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-//                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-//                Intent i = new Intent(getActivity() , FittingActivity.class);
-//                i.putExtra("tableName", tv_Name.getText());
-//                i.putExtra("tableDBName", tv_dbName.getText());
-//                startActivity(i);
-//            }
-//        });
 
-        MyListViewAdapter myListViewBrainAdapter = new MyListViewAdapter(getContext(),brainList);
-        ((ListView)viewList2.get(0).findViewById(R.id.fitting_lv)).setAdapter(myListViewBrainAdapter);
-        ((ListView)viewList2.get(0).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-                Intent i = new Intent(getActivity() , FittingActivity.class);
-                i.putExtra("tableName", tv_Name.getText());
-                i.putExtra("tableDBName", tv_dbName.getText());
-                startActivity(i);
-            }
-        });
-
-        MyListViewAdapter myListViewOtherAdapter = new MyListViewAdapter(getContext(),otherList);
-        ((ListView)viewList2.get(1).findViewById(R.id.fitting_lv)).setAdapter(myListViewOtherAdapter);
-        ((ListView)viewList2.get(1).findViewById(R.id.fitting_lv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
-                TextView tv_Name = view.findViewById(R.id.fitting_list_item_tv_name);
-                Intent i = new Intent(getActivity() , FittingActivity.class);
-                i.putExtra("tableName", tv_Name.getText());
-                i.putExtra("tableDBName", tv_dbName.getText());
-                startActivity(i);
-            }
-        });
-        Log.i(TAG, "FittingFragment.onCreateView closed");
         return view;
     }
 
