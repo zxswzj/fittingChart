@@ -204,7 +204,7 @@ public class MyDatabaseAdapter {
             // Insert the row into your table
             db = dbHelper.getWritableDatabase();
             long result=db.insert(table, null, newValues);
-            System.out.print(result);
+            Log.i("SQLite", "DBHelper.addFittingItem return" + result);
         }catch(Exception ex) {
             System.out.println("Exceptions " +ex);
             Log.e("Note", "One row entered");

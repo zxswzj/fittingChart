@@ -92,20 +92,6 @@ public class FittingFragment extends Fragment {
         dbAdapter = new MyDatabaseAdapter(getContext());
         dbAdapter.open();
 
-        //view1 = getLayoutInflater().inflate(R.layout.fitting_list,null);
-        //view2 = getLayoutInflater().inflate(R.layout.fitting_list,null);
-        //TabLayout list
-//        List<View> viewList1 = new ArrayList<>();
-//        List<View> viewList2 = new ArrayList<>();
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList1.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList2.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-//        viewList2.add(getLayoutInflater().inflate(R.layout.fitting_list,null));
-
         tabLayout1 = view.findViewById(R.id.tl_tab1);
         tabLayout2 = view.findViewById(R.id.tl_tab2);
         mListView1 = view.findViewById(R.id.listView1);
@@ -172,7 +158,7 @@ public class FittingFragment extends Fragment {
                 Toast.makeText(getContext(), position + " item clicked", Toast.LENGTH_SHORT).show();
                 //TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
                 TextView tv_Name = view.findViewById(R.id.tv_name);
-                String dbName = (String)tv_Name.getTag();
+                final String dbName = (String)tv_Name.getTag();
                 if(dbName.equals("ADD")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
                     alertDialogBuilder.setTitle("添加新的运动");
@@ -189,8 +175,6 @@ public class FittingFragment extends Fragment {
                                 StringBuilder builder = new StringBuilder();
                                 //builder.append(PinyinUtils.toPinyinString(dbName, PinyinUtils.CASE_CAPITALIZE));
                                 String dbNamePinyin = PinyinUtils.toPinyinString(name, PinyinUtils.CASE_CAPITALIZE);
-                                //dbAdapter = new MyDatabaseAdapter(getContext());
-                                //dbAdapter.open();
                                 String table;
                                 switch(tabLayout1.getSelectedTabPosition()){
                                     case 0:table = "fitting_breast";break;
@@ -201,7 +185,7 @@ public class FittingFragment extends Fragment {
                                     case 5:table = "fitting_leg";break;
                                     default:table = "";break;
                                 }
-
+                                dbAdapter.open();
                                 ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable(table);
                                 for (int i = 0; i < fittingTableData.size(); i++) {
                                     if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
@@ -216,6 +200,7 @@ public class FittingFragment extends Fragment {
                                 FittingTableData ftdAdd = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
                                 dbAdapter.addFittingTableItem(table, ftd);
                                 dbAdapter.createFitting(dbNamePinyin);
+                                dbAdapter.close();
                                 ftdList1.clear();
                                 ftdList1.addAll(fittingTableData);
                                 ftdList1.add(ftd);
@@ -244,7 +229,7 @@ public class FittingFragment extends Fragment {
                 Toast.makeText(getContext(), position + " item clicked", Toast.LENGTH_SHORT).show();
                 //TextView tv_dbName = view.findViewById(R.id.fitting_list_item_tv_dbName);
                 TextView tv_Name = view.findViewById(R.id.tv_name);
-                String dbName = (String)tv_Name.getTag();
+                final String dbName = (String)tv_Name.getTag();
                 if(dbName.equals("ADD")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
                     alertDialogBuilder.setTitle("添加新的运动");
@@ -259,10 +244,7 @@ public class FittingFragment extends Fragment {
                                 Toast.makeText(getContext(), "No hanzi, please input again.", Toast.LENGTH_SHORT).show();
                             } else {
                                 StringBuilder builder = new StringBuilder();
-                                //builder.append(PinyinUtils.toPinyinString(dbName, PinyinUtils.CASE_CAPITALIZE));
                                 String dbNamePinyin = PinyinUtils.toPinyinString(name, PinyinUtils.CASE_CAPITALIZE);
-                                //dbAdapter = new MyDatabaseAdapter(getContext());
-                                //dbAdapter.open();
                                 String table;
                                 switch(tabLayout2.getSelectedTabPosition()){
                                     case 0:table = "fitting_brain";break;
@@ -270,7 +252,7 @@ public class FittingFragment extends Fragment {
                                     case 2:table = "fitting_shoulder";break;
                                     default:table = "";break;
                                 }
-
+                                dbAdapter.open();
                                 ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable(table);
                                 for (int i = 0; i < fittingTableData.size(); i++) {
                                     if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
@@ -285,6 +267,7 @@ public class FittingFragment extends Fragment {
                                 FittingTableData ftdAdd = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
                                 dbAdapter.addFittingTableItem(table, ftd);
                                 dbAdapter.createFitting(dbNamePinyin);
+                                dbAdapter.close();
                                 ftdList2.clear();
                                 ftdList2.addAll(fittingTableData);
                                 ftdList2.add(ftd);
@@ -333,7 +316,9 @@ public class FittingFragment extends Fragment {
                             case 5:table = "fitting_leg";break;
                             default:table = "";break;
                         }
+                        dbAdapter.open();
                         dbAdapter.deleteFittingTableItem(table, ftdList1.get(position).getName());
+                        dbAdapter.close();
                         ftdList1.remove(position);
                         //通知监听者数据集发生改变，更新ListView界面
                         Log.i(TAG, "FittingFragment.mListView.setOnMenuItemClickListener tab=" + tabLayout1.getSelectedTabPosition() + "item=" + position);
@@ -367,7 +352,9 @@ public class FittingFragment extends Fragment {
                             case 1:table = "fitting_other";break;
                             default:table = "";break;
                         }
+                        dbAdapter.open();
                         dbAdapter.deleteFittingTableItem(table, ftdList2.get(position).getName());
+                        dbAdapter.close();
                         ftdList2.remove(position);
                         //通知监听者数据集发生改变，更新ListView界面
                         Log.i(TAG, "FittingFragment.mListView.setOnMenuItemClickListener tab=" + tabLayout2.getSelectedTabPosition() + "item=" + position);
@@ -429,6 +416,7 @@ public class FittingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
                 ArrayList<FittingTableData> ftdList1Tmp = new ArrayList<>();
+                dbAdapter.open();
                 switch (tab.getPosition()){
                     case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_breast");break;
                     case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_belly");break;
@@ -438,6 +426,7 @@ public class FittingFragment extends Fragment {
                     case 5:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_leg");break;
                     default:break;
                 }
+                dbAdapter.close();
                 FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
                 ftdList1.clear();
                 ftdList1.addAll(ftdList1Tmp);
@@ -463,11 +452,13 @@ public class FittingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
                 ArrayList<FittingTableData> ftdList1Tmp = new ArrayList<>();
+                dbAdapter.open();
                 switch (tab.getPosition()){
                     case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_brain");break;
                     case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_other");break;
                     default:break;
                 }
+                dbAdapter.close();
                 FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
                 ftdList2.clear();
                 ftdList2.addAll(ftdList1Tmp);
@@ -488,7 +479,7 @@ public class FittingFragment extends Fragment {
             }
         });
 
-
+        dbAdapter.close();
         return view;
     }
 
