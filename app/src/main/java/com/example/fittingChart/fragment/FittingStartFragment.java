@@ -20,13 +20,12 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.database.MyDatabaseAdapter;
-import com.example.fittingChart.module.Data;
-import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.module.FittingSwipeItemData;
-import com.example.fittingChart.module.FittingTableData;
+import com.example.fittingChart.database.DaoSession;
+import com.example.fittingChart.database.FittingItem;
+import com.example.fittingChart.database.FittingItemDao;
+import com.example.fittingChart.database.FittingSwipeItemData;
+import com.example.fittingChart.database.GreenDaoHelper;
 import com.example.fittingChart.ui.SwipeList.MyFittingDataSwipeListAdapter;
-import com.example.fittingChart.ui.SwipeList.MySwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuItem;
@@ -45,7 +44,9 @@ import java.util.TimerTask;
 public class FittingStartFragment extends Fragment {
 
     String tableName,tableDBName;
-    MyDatabaseAdapter dbAdapter;
+    private DaoSession session;
+    FittingItemDao fittingDataDao;
+
     String TAG = "Fragment";
     long baseTimer;
     Timer mTimer;
@@ -78,6 +79,8 @@ public class FittingStartFragment extends Fragment {
         Bundle bundle = getArguments();
         tableName = bundle.getString("tableName");
         tableDBName = bundle.getString("tableDBName");
+        session = GreenDaoHelper.getDaoSession(getContext());
+        fittingDataDao = session.getFittingDataDao();
     }
 
     @Override
@@ -86,7 +89,6 @@ public class FittingStartFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_fitting_start, container, false);
 
-        dbAdapter = new MyDatabaseAdapter(getContext());
         mTimer = new Timer();
         bt_f1 = view.findViewById(R.id.fitting_btn_f1);
         bt_f1.setFocusable(true);
@@ -143,9 +145,8 @@ public class FittingStartFragment extends Fragment {
                     fd.setDes("aaa");
                     swipeItemDataList1.add(fd);
                     mListAdapter1.notifyDataSetChanged();
-                    dbAdapter.open();
-                    dbAdapter.addShowTableItem(tableName, tableDBName);
-                    dbAdapter.close();
+
+                    fittingDataDao.insert(fd);
                     bt_f1.setText("再来一组");
 
                 } else if (bt_f1.getText().equals("再来一组")) {
@@ -181,11 +182,8 @@ public class FittingStartFragment extends Fragment {
                         alertDialog.show();
                     }
                     else{
-                        dbAdapter.open();
-                        for(int i=0;i<swipeItemDataList1.size();i++){
-                            dbAdapter.addFittingItem(tableDBName,swipeItemDataList1.get(i));
-                        }
-                        dbAdapter.close();
+                        FittingItem fd = new FittingItem(222,333,444,555,"sdfs");
+                        fittingDataDao.insert(fd);
                     }
                 }
             }
@@ -214,7 +212,7 @@ public class FittingStartFragment extends Fragment {
 //            public void onClick(View v) {
 //                Data data = (Data)getActivity().getApplication();
 //                MyDatabaseAdapter dbAdapter = new MyDatabaseAdapter(getContext());
-//                FittingData fd = new FittingData();
+//                FittingItem fd = new FittingItem();
 //                fd.setNumber(Integer.parseInt(et_num.getEditableText().toString().trim()));
 //                fd.setDurationTime(lSecond);
 //                fd.setLocalTime(new Date().getTime());
@@ -354,6 +352,5 @@ public class FittingStartFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        dbAdapter.close();
     }
 }

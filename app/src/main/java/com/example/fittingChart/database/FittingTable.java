@@ -1,24 +1,18 @@
-package com.example.fittingChart.module;
+package com.example.fittingChart.database;
 
 import android.widget.ImageView;
 
-//描述数据库中的项目表
-public class FittingTableData {
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
 
-    int idx = 0;
+@Entity
+public class FittingTable {
+
+    @Id
     String name;
     String dbName;
     String des;
     int layoutResourceID;
-
-    public FittingTableData(){}
-
-    public FittingTableData(String name, String dbName, String des, int layoutResourceID){
-        this.name = name;
-        this.dbName = dbName;
-        this.des = des;
-        this.layoutResourceID = layoutResourceID;
-    }
 
     public void setDbName(String dbName){ this.dbName = dbName; }
     public void setName(String name){

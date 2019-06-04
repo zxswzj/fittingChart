@@ -23,10 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.Users;
-import com.example.fittingChart.database.MyDBHelper;
-import com.example.fittingChart.database.MyDatabaseAdapter;
-import com.example.fittingChart.module.FittingData;
+import com.example.fittingChart.database.FittingItem;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -39,7 +36,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -48,7 +44,6 @@ import java.util.List;
  */
 public class UserFragment extends Fragment {
 
-    MyDatabaseAdapter dbAdapter;
     View view;
     private EditText et_user;
     private EditText et_slogan;
@@ -120,9 +115,7 @@ public class UserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
-        dbAdapter = new MyDatabaseAdapter(getContext());
-        dbAdapter.open();
-        ArrayList<FittingData> pushuplist = dbAdapter.getAllFitting("FUWOCHENG");
+        ArrayList<FittingItem> pushuplist = dbAdapter.getAllFitting("FUWOCHENG");
         List<Entry> entryCnt = new ArrayList<>();
         List<Entry> entryTime = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {
@@ -158,9 +151,6 @@ public class UserFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("username",et_user.getText().toString());
                 bundle.putString("slogan",et_slogan.getText().toString());
-                //listener.OnClicked(et_user.getText().toString(), et_slogan.getText().toString());
-//                dbAdapter.updateUser(new Users(1,et_user.getText().toString(),et_slogan.getText().toString(),R.mipmap.ic_launcher));
-                dbAdapter.close();
             }
         });
     }

@@ -2,17 +2,18 @@ package com.example.fittingChart.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.database.MyDatabaseAdapter;
-import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.module.ShowTable;
+import com.example.fittingChart.database.DaoSession;
+import com.example.fittingChart.database.FittingItem;
+import com.example.fittingChart.database.GreenDaoHelper;
+import com.example.fittingChart.database.ShowTable;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -22,17 +23,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.fittingChart.database.MyDatabaseAdapter.db;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChartFragment extends Fragment {
 
-    MyDatabaseAdapter dbAdapter;
+    private DaoSession session;
+
+
     public ChartFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        session = GreenDaoHelper.getDaoSession(getActivity());
+
+        session.getUserDao().deleteAll();//清空所有记录
     }
 
 
@@ -47,10 +55,8 @@ public class ChartFragment extends Fragment {
         Bundle bundle = getArguments();
         int fragmentID = bundle.getInt("fragmentID");
 
-        dbAdapter = new MyDatabaseAdapter(getContext());
-        dbAdapter.open();
-        ArrayList<ShowTable> tables = dbAdapter.getAllShowTable();
-        int tablesize = tables.size();
+        List<ShowTable> showTables = session.getShowTableDao().loadAll();
+        int tablesize = showTables.size();
         if(tablesize != 0) {
             String tablename = new String();
             String tableDBName = new String();
@@ -115,8 +121,7 @@ public class ChartFragment extends Fragment {
 
             if(!tablename.isEmpty()){
                 tv.setText(tablename + "： 您已经运动" + tablecount + "次啦啊哈哈哈");
-                ArrayList<FittingData> fitting = dbAdapter.getAllFitting(tableDBName);
-                dbAdapter.close();
+                ArrayList<FittingItem> fitting = dbAdapter.getAllFitting(tableDBName);
                 List<Entry> entries = new ArrayList<>();
                 for (int i = 0; i < fitting.size(); i++) {
                     Date d = new Date(fitting.get(i).getLocalTime());

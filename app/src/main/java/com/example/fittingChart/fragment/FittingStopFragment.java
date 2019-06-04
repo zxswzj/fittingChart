@@ -12,9 +12,6 @@ import android.widget.Button;
 
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.module.Data;
-//import com.example.fittingChart.ui.TimePicker.TimePicker;
-
 
 /**
  * A simple {@link Fragment} subclass.

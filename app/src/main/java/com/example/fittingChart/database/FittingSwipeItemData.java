@@ -1,6 +1,6 @@
-package com.example.fittingChart.module;
+package com.example.fittingChart.database;
 
-public class FittingSwipeItemData extends FittingData{
+public class FittingSwipeItemData extends FittingItem {
     String name;
     int resourceID;
 

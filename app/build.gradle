@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 28
@@ -20,6 +21,13 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    //greenDao cfg
+    greendao{
+        schemaVersion 1
+        daoPackage 'com.example.fittingChart'
+        targetGenDir 'src.main.java'
+    }
 }
 
 dependencies {
@@ -37,4 +45,6 @@ dependencies {
     implementation 'io.github.inflationx:calligraphy3:3.1.0'
     implementation 'io.github.inflationx:viewpump:1.0.0'
     implementation files('lib/pinyin4j-2.5.0.jar')
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.4@aar'
 }

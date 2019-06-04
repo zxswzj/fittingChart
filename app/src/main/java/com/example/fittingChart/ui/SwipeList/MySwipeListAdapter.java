@@ -1,40 +1,39 @@
 package com.example.fittingChart.ui.SwipeList;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.module.FittingTableData;
+import com.example.fittingChart.database.FittingItem;
+import com.example.fittingChart.database.FittingTable;
 
 import java.util.ArrayList;
+
 
 public class MySwipeListAdapter extends BaseSwipeListAdapter {
 
     String TAG = "SwipeList";
     //ArrayList<String> mList;
-    ArrayList<FittingTableData> mFittingTableDataList;
-    ArrayList<FittingData> mFittingDataList;
+    ArrayList<FittingTable> mFittingTableDataList;
+    ArrayList<FittingItem> mFittingDataList;
     Context mContext;
     int dataformat = 0;
 
-    public MySwipeListAdapter(Context context, ArrayList<FittingTableData> list){
+    public MySwipeListAdapter(Context context, ArrayList<FittingTable> list){
         this.mContext = context;
         this.mFittingTableDataList = list;
     }
 
-//    public MySwipeListAdapter(Context context, ArrayList<FittingData> list){
+//    public MySwipeListAdapter(Context context, ArrayList<FittingItem> list){
 //        this.mContext = context;
 //        this.mFittingDataList = list;
 //    }
 
-//    public MySwipeListAdapter(Context context, ArrayList<FittingTableData> list, int dummy) {
+//    public MySwipeListAdapter(Context context, ArrayList<FittingTable> list, int dummy) {
 //        this.mContext = context;
 //        this.mFittingTableDataList = list;
 //    }
@@ -52,7 +51,7 @@ public class MySwipeListAdapter extends BaseSwipeListAdapter {
     }
 
 //    @Override
-//    public FittingData getItem(int position){
+//    public FittingItem getItem(int position){
 //        return mFittingTableDataList.get(position);
 //    }
 
@@ -77,7 +76,7 @@ public class MySwipeListAdapter extends BaseSwipeListAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         // 获取手机全部应用的信息
 //        ApplicationInfo item = getItem(position);
-        FittingTableData ftd = (FittingTableData)getItem(position);
+        FittingTable ftd = (FittingTable)getItem(position);
         // 加载应用的图标
 //        holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
         holder.iv_icon.setImageResource(ftd.getResourceID());

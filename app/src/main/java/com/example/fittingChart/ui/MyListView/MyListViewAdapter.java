@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.module.FittingTableData;
+import com.example.fittingChart.database.FittingTable;
 
 import java.util.List;
 
 public class MyListViewAdapter extends BaseAdapter {
 
-    private List<FittingTableData> dataList;// = new ArrayList<>();
+    private List<FittingTable> dataList;// = new ArrayList<>();
     private LayoutInflater inflater; //得到一个LayoutInfalter对象用来导入布局
 
-    public MyListViewAdapter(Context context, List<FittingTableData> fittingTableDataList) {
+    public MyListViewAdapter(Context context, List<FittingTable> fittingTableDataList) {
         this.inflater = LayoutInflater.from(context);
         this.dataList = fittingTableDataList;
     }
@@ -31,7 +31,7 @@ public class MyListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.fitting_list_item,null);
-        FittingTableData fittingListItemData = (FittingTableData) getItem(position);
+        FittingTable fittingListItemData = (FittingTable) getItem(position);
 
         //在view 视图中查找 组件
         TextView tv_name =  view.findViewById(R.id.fitting_list_item_tv_name);

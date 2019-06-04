@@ -12,16 +12,13 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.module.FittingTableData;
+import com.example.fittingChart.database.FittingTable;
 import com.example.fittingChart.ui.SwipeList.MySwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
@@ -38,7 +35,7 @@ public class MyListFragment extends Fragment {
 
     String TAG = "SwipeList";
     View view;
-    ArrayList<FittingTableData> mAppList = new ArrayList<>();
+    ArrayList<FittingTable> mAppList = new ArrayList<>();
     private MySwipeListAdapter mAdapter;
     private SwipeMenuListView mListView;
 

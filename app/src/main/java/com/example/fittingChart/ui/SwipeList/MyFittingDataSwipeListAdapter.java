@@ -1,19 +1,14 @@
 package com.example.fittingChart.ui.SwipeList;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.util.Log;
-import android.util.TimeUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.module.FittingSwipeItemData;
-import com.example.fittingChart.module.FittingTableData;
+import com.example.fittingChart.database.FittingSwipeItemData;
 import com.example.fittingChart.util.MyTimeUtils;
 
 import java.util.ArrayList;

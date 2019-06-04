@@ -1,7 +1,13 @@
-package com.example.fittingChart.module;
+package com.example.fittingChart.database;
 
-public class FittingData {
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
+public class FittingItem {
 //    Integer id;
+    @Id
     Integer number;
     long durationTime;
     long restTime;
@@ -9,18 +15,17 @@ public class FittingData {
     String des;
 
 
-    // Empty constructor
-    public FittingData(){
-
-    }
-    // constructor
-    public FittingData(int number, long durationTime, long restTime, long localTime, String des){
-//        this.id = id;
+    @Generated(hash = 1110836485)
+    public FittingItem(Integer number, long durationTime, long restTime, long localTime, String des) {
         this.number = number;
         this.durationTime = durationTime;
         this.restTime = restTime;
         this.localTime = localTime;
         this.des = des;
+    }
+
+    @Generated(hash = 893068348)
+    public FittingItem() {
     }
 
     public String getDes(){
@@ -60,5 +65,8 @@ public class FittingData {
 
     public long getLocalTime(){
         return localTime;
+    }
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }

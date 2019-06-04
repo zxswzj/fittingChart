@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,18 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.activity.FittingActivity;
-import com.example.fittingChart.database.MyDatabaseAdapter;
-import com.example.fittingChart.module.Data;
-import com.example.fittingChart.module.FittingData;
-import com.example.fittingChart.module.FittingTableData;
-import com.example.fittingChart.ui.CustomViewPager.CustomPagerAdapter;
-import com.example.fittingChart.ui.MyListView.MyListViewAdapter;
+import com.example.fittingChart.database.FittingTable;
 import com.example.fittingChart.ui.SwipeList.MySwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
@@ -42,7 +34,6 @@ import com.example.fittingChart.ui.SwipeList.SwipeMenuListView;
 import com.example.fittingChart.util.PinyinUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -57,10 +48,9 @@ public class FittingFragment extends Fragment {
     TabLayout tabLayout1,tabLayout2;
 //    ViewPager viewPager1,viewPager2;
 //    View view1,view2;
-    MyDatabaseAdapter dbAdapter;
     //MyListFragment myListFragment = new MyListFragment();
-    ArrayList<FittingTableData> ftdList1 = new ArrayList<>();
-    ArrayList<FittingTableData> ftdList2 = new ArrayList<>();
+    ArrayList<FittingTable> ftdList1 = new ArrayList<>();
+    ArrayList<FittingTable> ftdList2 = new ArrayList<>();
 
     //ArrayList<String> mAppList = new ArrayList<>();
     private MySwipeListAdapter mListAdapter1;
@@ -89,8 +79,6 @@ public class FittingFragment extends Fragment {
         Log.i(TAG, "FittingFragment.onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fitting, container, false);
-        dbAdapter = new MyDatabaseAdapter(getContext());
-        dbAdapter.open();
 
         tabLayout1 = view.findViewById(R.id.tl_tab1);
         tabLayout2 = view.findViewById(R.id.tl_tab2);
@@ -113,7 +101,7 @@ public class FittingFragment extends Fragment {
         ftdList1 = dbAdapter.getAllFittingTable("fitting_breast");
         ftdList2 = dbAdapter.getAllFittingTable("fitting_brain");
 
-        FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+        FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
         ftdList1.add(d);
         ftdList2.add(d);
 
@@ -186,7 +174,7 @@ public class FittingFragment extends Fragment {
                                     default:table = "";break;
                                 }
                                 dbAdapter.open();
-                                ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable(table);
+                                ArrayList<FittingTable> fittingTableData = dbAdapter.getAllFittingTable(table);
                                 for (int i = 0; i < fittingTableData.size(); i++) {
                                     if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
                                         AlertDialog.Builder builderDuplicate = new AlertDialog.Builder(getContext());
@@ -196,8 +184,8 @@ public class FittingFragment extends Fragment {
                                         return;
                                     }
                                 }
-                                FittingTableData ftd = new FittingTableData(name, dbNamePinyin, "user input activity", R.drawable.pushup);
-                                FittingTableData ftdAdd = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+                                FittingTable ftd = new FittingTable(name, dbNamePinyin, "user input activity", R.drawable.pushup);
+                                FittingTable ftdAdd = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
                                 dbAdapter.addFittingTableItem(table, ftd);
                                 dbAdapter.createFitting(dbNamePinyin);
                                 dbAdapter.close();
@@ -253,7 +241,7 @@ public class FittingFragment extends Fragment {
                                     default:table = "";break;
                                 }
                                 dbAdapter.open();
-                                ArrayList<FittingTableData> fittingTableData = dbAdapter.getAllFittingTable(table);
+                                ArrayList<FittingTable> fittingTableData = dbAdapter.getAllFittingTable(table);
                                 for (int i = 0; i < fittingTableData.size(); i++) {
                                     if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
                                         AlertDialog.Builder builderDuplicate = new AlertDialog.Builder(getContext());
@@ -263,8 +251,8 @@ public class FittingFragment extends Fragment {
                                         return;
                                     }
                                 }
-                                FittingTableData ftd = new FittingTableData(name, dbNamePinyin, "user input activity", R.drawable.pushup);
-                                FittingTableData ftdAdd = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+                                FittingTable ftd = new FittingTable(name, dbNamePinyin, "user input activity", R.drawable.pushup);
+                                FittingTable ftdAdd = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
                                 dbAdapter.addFittingTableItem(table, ftd);
                                 dbAdapter.createFitting(dbNamePinyin);
                                 dbAdapter.close();
@@ -415,7 +403,7 @@ public class FittingFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
-                ArrayList<FittingTableData> ftdList1Tmp = new ArrayList<>();
+                ArrayList<FittingTable> ftdList1Tmp = new ArrayList<>();
                 dbAdapter.open();
                 switch (tab.getPosition()){
                     case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_breast");break;
@@ -427,7 +415,7 @@ public class FittingFragment extends Fragment {
                     default:break;
                 }
                 dbAdapter.close();
-                FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+                FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
                 ftdList1.clear();
                 ftdList1.addAll(ftdList1Tmp);
                 ftdList1.add(d);
@@ -451,7 +439,7 @@ public class FittingFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
-                ArrayList<FittingTableData> ftdList1Tmp = new ArrayList<>();
+                ArrayList<FittingTable> ftdList1Tmp = new ArrayList<>();
                 dbAdapter.open();
                 switch (tab.getPosition()){
                     case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_brain");break;
@@ -459,7 +447,7 @@ public class FittingFragment extends Fragment {
                     default:break;
                 }
                 dbAdapter.close();
-                FittingTableData d = new FittingTableData("add","ADD","增加新的运动", R.drawable.icon_add);
+                FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
                 ftdList2.clear();
                 ftdList2.addAll(ftdList1Tmp);
                 ftdList2.add(d);

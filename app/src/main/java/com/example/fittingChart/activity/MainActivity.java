@@ -13,23 +13,25 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fittingChart.database.MyDBHelper;
-import com.example.fittingChart.database.MyDatabaseAdapter;
+import com.example.fittingChart.database.DaoSession;
+import com.example.fittingChart.database.GreenDaoHelper;
 import com.example.fittingChart.fragment.RecordFragment;
 import com.example.fittingChart.fragment.FittingFragment;
 import com.example.fittingChart.fragment.UserFragment;
-import com.example.fittingChart.Users;
+import com.example.fittingChart.database.User;
 import com.github.mikephil.charting.charts.LineChart;
 import com.example.fittingChart.R;
 
+import java.util.List;
+
+
 public class MainActivity extends AppCompatActivity implements UserFragment.OnFragmentInteractionListener {
 
+    private DaoSession session;
     String TAG = "SQLite";
     private TextView mTextMessage;
     private LineChart mLineChart;
-    MyDatabaseAdapter dbAdapter;
 
-    private MyDBHelper db;
     Toast toast;
     //ArrayList<Fragment> mFragments;
     //private Toolbar mToolbar;
@@ -84,12 +86,12 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         //尝试从SQLite中加载用户数据
         //SQLite
         //create/open Database
-        Users u = new Users(1,"咸鱼","我爱学习，学习使我快乐", R.mipmap.ic_launcher);
+        session = GreenDaoHelper.getDaoSession(this);
 
-        dbAdapter=new MyDatabaseAdapter(getApplicationContext());
-        dbAdapter = dbAdapter.open();
-        dbAdapter.getSinlgeEntry("乐乐");
-        dbAdapter.close();
+        session.getUserDao().deleteAll();//清空所有记录
+        List<User> users = session.getUserDao().loadAll();
+
+        User u = users.get(0);
 
         Bundle bundle = new Bundle();
         bundle.putString("username",u.getUsername());
@@ -122,11 +124,8 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
     @Override
     public void OnClicked(String name, String slogan) {
         Log.i("Fragment", "MainActivity.OnClicked");
-//        db.updateUser(new Users(1,name,slogan,R.mipmap.ic_launcher));
-    }
+        User u = new User("咸鱼","我爱学习，学习使我快乐", R.mipmap.ic_launcher);
+        session.getUserDao().deleteAll();//清空所有记录
+        session.getUserDao().insert(u);    }
 
-//    @Override
-//    public void onFragmentInteraction(Uri uri) {
-//
-//    }
 }
