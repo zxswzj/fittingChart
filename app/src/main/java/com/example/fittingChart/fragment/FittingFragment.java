@@ -25,7 +25,12 @@ import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.activity.FittingActivity;
+import com.example.fittingChart.database.App;
+import com.example.fittingChart.database.DaoSession;
+import com.example.fittingChart.database.FittingItem;
+import com.example.fittingChart.database.FittingItemDao;
 import com.example.fittingChart.database.FittingTable;
+import com.example.fittingChart.database.GreenDaoHelper;
 import com.example.fittingChart.ui.SwipeList.MySwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
@@ -33,7 +38,11 @@ import com.example.fittingChart.ui.SwipeList.SwipeMenuItem;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuListView;
 import com.example.fittingChart.util.PinyinUtils;
 
+import org.greenrobot.greendao.query.Query;
+import org.greenrobot.greendao.query.QueryBuilder;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -41,8 +50,12 @@ import java.util.ArrayList;
  */
 public class FittingFragment extends Fragment {
     String TAG ="TabLayout";
+    private DaoSession session;
+    FittingItemDao fittingItemDao;
+    Query query;
 
-//    View view;
+
+    //    View view;
     private ArrayList<String> tab1Name = new ArrayList<>();
     private ArrayList<String> tab2Name = new ArrayList<>();
     TabLayout tabLayout1,tabLayout2;
@@ -98,10 +111,15 @@ public class FittingFragment extends Fragment {
             tabLayout2.getTabAt(i).setText(tab2Name.get(i));
         }
 
-        ftdList1 = dbAdapter.getAllFittingTable("fitting_breast");
-        ftdList2 = dbAdapter.getAllFittingTable("fitting_brain");
+        DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
+        fittingItemDao = daoSession.getFittingItemDao();
+        query = fittingItemDao.queryBuilder().where(
+                FittingItemDao.Properties.Name.eq("FUWOCHENG"), FittingItemDao.Properties.Number.gt(1970)).build();
+        List<FittingItem> ftdList1 = query.forCurrentThread().list();
 
-        FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
+        List<FittingItem> ftdList2 = query.forCurrentThread().list();
+
+        FittingTable d = new FittingTable("add","ADD","增加新的运动", (Long)R.drawable.icon_add);
         ftdList1.add(d);
         ftdList2.add(d);
 
@@ -173,8 +191,8 @@ public class FittingFragment extends Fragment {
                                     case 5:table = "fitting_leg";break;
                                     default:table = "";break;
                                 }
-                                dbAdapter.open();
-                                ArrayList<FittingTable> fittingTableData = dbAdapter.getAllFittingTable(table);
+
+                                List<FittingTable> fittingTableData = query.forCurrentThread().list();
                                 for (int i = 0; i < fittingTableData.size(); i++) {
                                     if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
                                         AlertDialog.Builder builderDuplicate = new AlertDialog.Builder(getContext());
@@ -186,13 +204,13 @@ public class FittingFragment extends Fragment {
                                 }
                                 FittingTable ftd = new FittingTable(name, dbNamePinyin, "user input activity", R.drawable.pushup);
                                 FittingTable ftdAdd = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
-                                dbAdapter.addFittingTableItem(table, ftd);
-                                dbAdapter.createFitting(dbNamePinyin);
-                                dbAdapter.close();
-                                ftdList1.clear();
-                                ftdList1.addAll(fittingTableData);
-                                ftdList1.add(ftd);
-                                ftdList1.add(ftdAdd);
+//                                dbAdapter.addFittingTableItem(table, ftd);
+//                                dbAdapter.createFitting(dbNamePinyin);
+//                                dbAdapter.close();
+//                                ftdList1.clear();
+//                                ftdList1.addAll(fittingTableData);
+//                                ftdList1.add(ftd);
+//                                ftdList1.add(ftdAdd);
                                 mListAdapter1.notifyDataSetChanged();
                                 return;
                             }
@@ -240,27 +258,26 @@ public class FittingFragment extends Fragment {
                                     case 2:table = "fitting_shoulder";break;
                                     default:table = "";break;
                                 }
-                                dbAdapter.open();
-                                ArrayList<FittingTable> fittingTableData = dbAdapter.getAllFittingTable(table);
-                                for (int i = 0; i < fittingTableData.size(); i++) {
-                                    if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
-                                        AlertDialog.Builder builderDuplicate = new AlertDialog.Builder(getContext());
-                                        builderDuplicate.setTitle("???");
-                                        builderDuplicate.setPositiveButton("名字重了知道不？退下重输！！！", null);
-                                        builderDuplicate.create().show();
-                                        return;
-                                    }
-                                }
-                                FittingTable ftd = new FittingTable(name, dbNamePinyin, "user input activity", R.drawable.pushup);
-                                FittingTable ftdAdd = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
-                                dbAdapter.addFittingTableItem(table, ftd);
-                                dbAdapter.createFitting(dbNamePinyin);
-                                dbAdapter.close();
-                                ftdList2.clear();
-                                ftdList2.addAll(fittingTableData);
-                                ftdList2.add(ftd);
-                                ftdList2.add(ftdAdd);
-                                mListAdapter2.notifyDataSetChanged();
+//                                List<FittingTable> fittingTableData = dbAdapter.getAllFittingTable(table);
+//                                for (int i = 0; i < fittingTableData.size(); i++) {
+//                                    if (fittingTableData.get(i).getDbName().equals(dbNamePinyin)) {
+//                                        AlertDialog.Builder builderDuplicate = new AlertDialog.Builder(getContext());
+//                                        builderDuplicate.setTitle("???");
+//                                        builderDuplicate.setPositiveButton("名字重了知道不？退下重输！！！", null);
+//                                        builderDuplicate.create().show();
+//                                        return;
+//                                    }
+//                                }
+//                                FittingTable ftd = new FittingTable(name, dbNamePinyin, "user input activity", R.drawable.pushup);
+//                                FittingTable ftdAdd = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
+//                                dbAdapter.addFittingTableItem(table, ftd);
+//                                dbAdapter.createFitting(dbNamePinyin);
+//                                dbAdapter.close();
+//                                ftdList2.clear();
+//                                ftdList2.addAll(fittingTableData);
+//                                ftdList2.add(ftd);
+//                                ftdList2.add(ftdAdd);
+//                                mListAdapter2.notifyDataSetChanged();
                                 return;
                             }
                         }
@@ -304,10 +321,10 @@ public class FittingFragment extends Fragment {
                             case 5:table = "fitting_leg";break;
                             default:table = "";break;
                         }
-                        dbAdapter.open();
-                        dbAdapter.deleteFittingTableItem(table, ftdList1.get(position).getName());
-                        dbAdapter.close();
-                        ftdList1.remove(position);
+//                        dbAdapter.open();
+//                        dbAdapter.deleteFittingTableItem(table, ftdList1.get(position).getName());
+//                        dbAdapter.close();
+//                        ftdList1.remove(position);
                         //通知监听者数据集发生改变，更新ListView界面
                         Log.i(TAG, "FittingFragment.mListView.setOnMenuItemClickListener tab=" + tabLayout1.getSelectedTabPosition() + "item=" + position);
                         mListAdapter1.notifyDataSetChanged();
@@ -340,10 +357,10 @@ public class FittingFragment extends Fragment {
                             case 1:table = "fitting_other";break;
                             default:table = "";break;
                         }
-                        dbAdapter.open();
-                        dbAdapter.deleteFittingTableItem(table, ftdList2.get(position).getName());
-                        dbAdapter.close();
-                        ftdList2.remove(position);
+//                        dbAdapter.open();
+//                        dbAdapter.deleteFittingTableItem(table, ftdList2.get(position).getName());
+//                        dbAdapter.close();
+//                        ftdList2.remove(position);
                         //通知监听者数据集发生改变，更新ListView界面
                         Log.i(TAG, "FittingFragment.mListView.setOnMenuItemClickListener tab=" + tabLayout2.getSelectedTabPosition() + "item=" + position);
                         mListAdapter2.notifyDataSetChanged();
@@ -404,21 +421,21 @@ public class FittingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
                 ArrayList<FittingTable> ftdList1Tmp = new ArrayList<>();
-                dbAdapter.open();
-                switch (tab.getPosition()){
-                    case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_breast");break;
-                    case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_belly");break;
-                    case 2:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_shoulder");break;
-                    case 3:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_back");break;
-                    case 4:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_arm");break;
-                    case 5:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_leg");break;
-                    default:break;
-                }
-                dbAdapter.close();
-                FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
-                ftdList1.clear();
-                ftdList1.addAll(ftdList1Tmp);
-                ftdList1.add(d);
+//                dbAdapter.open();
+//                switch (tab.getPosition()){
+//                    case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_breast");break;
+//                    case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_belly");break;
+//                    case 2:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_shoulder");break;
+//                    case 3:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_back");break;
+//                    case 4:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_arm");break;
+//                    case 5:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_leg");break;
+//                    default:break;
+//                }
+//                dbAdapter.close();
+//                FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
+//                ftdList1.clear();
+//                ftdList1.addAll(ftdList1Tmp);
+//                ftdList1.add(d);
                 mListAdapter1.notifyDataSetChanged();
             }
 
@@ -440,17 +457,17 @@ public class FittingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
                 ArrayList<FittingTable> ftdList1Tmp = new ArrayList<>();
-                dbAdapter.open();
-                switch (tab.getPosition()){
-                    case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_brain");break;
-                    case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_other");break;
-                    default:break;
-                }
-                dbAdapter.close();
-                FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
-                ftdList2.clear();
-                ftdList2.addAll(ftdList1Tmp);
-                ftdList2.add(d);
+//                dbAdapter.open();
+//                switch (tab.getPosition()){
+//                    case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_brain");break;
+//                    case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_other");break;
+//                    default:break;
+//                }
+//                dbAdapter.close();
+//                FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
+//                ftdList2.clear();
+//                ftdList2.addAll(ftdList1Tmp);
+//                ftdList2.add(d);
                 mListAdapter2.notifyDataSetChanged();
             }
 
@@ -467,7 +484,6 @@ public class FittingFragment extends Fragment {
             }
         });
 
-        dbAdapter.close();
         return view;
     }
 
@@ -523,7 +539,6 @@ public class FittingFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        dbAdapter.close();
         Log.i(TAG, "FittingFragment.onDestroyView");
 
     }

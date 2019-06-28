@@ -80,7 +80,7 @@ public class FittingStartFragment extends Fragment {
         tableName = bundle.getString("tableName");
         tableDBName = bundle.getString("tableDBName");
         session = GreenDaoHelper.getDaoSession(getContext());
-        fittingDataDao = session.getFittingDataDao();
+        fittingDataDao = session.getFittingItemDao();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.fittingChart.activity;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,21 +14,33 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fittingChart.database.DaoMaster;
 import com.example.fittingChart.database.DaoSession;
-import com.example.fittingChart.database.GreenDaoHelper;
+import com.example.fittingChart.database.UserDao;
 import com.example.fittingChart.fragment.RecordFragment;
 import com.example.fittingChart.fragment.FittingFragment;
 import com.example.fittingChart.fragment.UserFragment;
 import com.example.fittingChart.database.User;
 import com.github.mikephil.charting.charts.LineChart;
 import com.example.fittingChart.R;
+import com.example.fittingChart.database.App;
+
+import org.greenrobot.greendao.query.Query;
+import org.greenrobot.greendao.query.WhereCondition;
 
 import java.util.List;
+import java.util.Properties;
 
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnFragmentInteractionListener {
 
-    private DaoSession session;
+    private DaoSession daoSession;
+    DaoMaster.OpenHelper helper;
+    SQLiteDatabase db;
+    DaoMaster daoMaster;
+    private UserDao userDao;
+    private Query<User> userQuery;
+
     String TAG = "SQLite";
     private TextView mTextMessage;
     private LineChart mLineChart;
@@ -86,10 +99,17 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
         //尝试从SQLite中加载用户数据
         //SQLite
         //create/open Database
-        session = GreenDaoHelper.getDaoSession(this);
+        helper = new DaoMaster.DevOpenHelper(this, "notes-db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = ((App) getApplication()).getDaoSession();
+        userDao = daoSession.getUserDao();
+        userQuery = userDao.queryBuilder().where(new WhereCondition.StringCondition("_ID IN (SELECT USER_ID FROM USER_MESSAGE WHERE READ_FLAG = 0)")).build();
 
-        session.getUserDao().deleteAll();//清空所有记录
-        List<User> users = session.getUserDao().loadAll();
+        //session = GreenDaoHelper.getDaoSession(this);
+
+        daoSession.getUserDao().deleteAll();//清空所有记录
+        List<User> users = daoSession.getUserDao().loadAll();
 
         User u = users.get(0);
 
@@ -125,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnFr
     public void OnClicked(String name, String slogan) {
         Log.i("Fragment", "MainActivity.OnClicked");
         User u = new User("咸鱼","我爱学习，学习使我快乐", R.mipmap.ic_launcher);
-        session.getUserDao().deleteAll();//清空所有记录
-        session.getUserDao().insert(u);    }
+        daoSession.getUserDao().deleteAll();//清空所有记录
+        daoSession.getUserDao().insert(u);    }
 
 }

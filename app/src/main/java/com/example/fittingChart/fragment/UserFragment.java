@@ -23,7 +23,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
+import com.example.fittingChart.database.App;
+import com.example.fittingChart.database.DaoSession;
 import com.example.fittingChart.database.FittingItem;
+import com.example.fittingChart.database.FittingTableDao;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -31,6 +34,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+
+import org.greenrobot.greendao.query.Query;
+import org.greenrobot.greendao.query.WhereCondition;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +49,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class UserFragment extends Fragment {
+
+    private DaoSession daoSession;
+    FittingTableDao fittingTableDao;
 
     View view;
     private EditText et_user;
@@ -115,12 +124,17 @@ public class UserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
-        ArrayList<FittingItem> pushuplist = dbAdapter.getAllFitting("FUWOCHENG");
+
+        daoSession = ((App) getActivity().getApplication()).getDaoSession();
+        fittingTableDao = daoSession.getFittingTableDao();
+        Query query = fittingTableDao.queryBuilder().build();
+        List<FittingItem> pushuplist = query.forCurrentThread().list();
+
         List<Entry> entryCnt = new ArrayList<>();
         List<Entry> entryTime = new ArrayList<>();
         for (int i = 0; i < pushuplist.size(); i++) {
-            entryCnt.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getNumber()));
-            entryTime.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getDurationTime()));
+//            entryCnt.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getNumber()));
+//            entryTime.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getDurationTime()));
         }
         if(pushuplist.size() != 0){
             LineDataSet dataSetCnt = new LineDataSet(entryCnt, "数量"); // add entries to dataset

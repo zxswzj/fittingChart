@@ -15,18 +15,24 @@ import org.greenrobot.greendao.database.DatabaseStatement;
 */
 public class FittingItemDao extends AbstractDao<FittingItem, Integer> {
 
-    public static final String TABLENAME = "FITTINGDATA";
+    public static final String TABLENAME = "FITTINGITEM";
 
     /**
      * Properties of entity Product.<br/>
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Number = new Property(0, Integer.class, "Number", true, "NUMBER");
-        public final static Property DurationTime = new Property(1, Long.class, "DurationTime", false, "DURATIONTIME");
-        public final static Property RestTime = new Property(2, Long.class, "RestTime", false, "RESTTIME");
-        public final static Property LocalTime = new Property(3, Long.class, "LocalTime", false, "LOCALTIME");
-        public final static Property Des = new Property(4, String.class, "Des", false, "DES");
+        public final static Property Name = new Property(0, String.class, "Name", true, "NAME");
+        public final static Property Number = new Property(1, Integer.class, "Number", false, "NUMBER");
+        public final static Property DurationTime = new Property(2, Long.class, "DurationTime", false, "DURATIONTIME");
+        public final static Property RestTime = new Property(3, Long.class, "RestTime", false, "RESTTIME");
+        public final static Property LocalTime = new Property(4, Long.class, "LocalTime", false, "LOCALTIME");
+        public final static Property Des = new Property(5, String.class, "Des", false, "DES");
+        public final static Property Unit = new Property(6, String.class, "Unit", false, "UNIT");
+        public final static Property Set = new Property(7, Integer.class, "Set", false, "SET");
+        public final static Property ToolNumber = new Property(8, Integer.class, "ToolNumber", false, "TOOLNUMBER");
+        public final static Property ToolUnit = new Property(9, String.class, "ToolUnit", false, "TOOLUNIT");
+
     }
 
 
@@ -41,60 +47,93 @@ public class FittingItemDao extends AbstractDao<FittingItem, Integer> {
     /** Creates the underlying database table. */
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
-        db.execSQL("CREATE TABLE " + constraint + "\"FITTINGDATA\" (" + //
-                "\"NUMBER\" Integer PRIMARY KEY NOT NULL ," +
+        db.execSQL("CREATE TABLE " + constraint + "\"FITTINGITEM\" (" + //
+                "\"NAME\" String PRIMARY KEY NOT NULL ," +
+                "\"NUMBER\" Integer , " +
                 "\"DURATIONTIME\" Long , " +
                 "\"RESTTIME\" Long , " +
                 "\"LOCALTIME\" Long , " +
-                "\"DES\" String);");
+                "\"DES\" String , " +
+                "\"UNIT\" String , " +
+                "\"SET\" Integer , " +
+                "\"TOOLNUMBER\" Integer , " +
+                "\"TOOLUNIT\" String);");
     }
 
     /** Drops the underlying database table. */
     public static void dropTable(Database db, boolean ifExists) {
-        String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"PRODUCT\"";
+        String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"FITTINGITEM\"";
         db.execSQL(sql);
     }
 
     @Override
     protected final void bindValues(DatabaseStatement stmt, FittingItem entity) {
         stmt.clearBindings();
+
+        String name = entity.getDes();
+        stmt.bindString(1, name);
  
         Integer number = entity.getNumber();
-        stmt.bindLong(1, number);
-
+        stmt.bindLong(2, number);
  
         Long durationTime = entity.getDurationTime();
-        stmt.bindLong(2, durationTime);
+        stmt.bindLong(3, durationTime);
 
         Long restTime = entity.getRestTime();
-        stmt.bindLong(3, restTime);
+        stmt.bindLong(4, restTime);
 
         Long localTime = entity.getLocalTime();
-        stmt.bindLong(4, localTime);
+        stmt.bindLong(5, localTime);
 
         String des = entity.getDes();
-        stmt.bindString(5, des);
+        stmt.bindString(6, des);
+
+        String unit = entity.getUnit();
+        stmt.bindString(7, unit);
+
+        Integer set = entity.getSet();
+        stmt.bindLong(8, set);
+
+        Integer toolNumber = entity.getToolNumber();
+        stmt.bindLong(9, toolNumber);
+
+        String toolUnit = entity.getToolUnit();
+        stmt.bindString(10, toolUnit);
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, FittingItem entity) {
         stmt.clearBindings();
 
-        Integer number = entity.getNumber();
-        stmt.bindLong(1, number);
+        String name = entity.getDes();
+        stmt.bindString(1, name);
 
+        Integer number = entity.getNumber();
+        stmt.bindLong(2, number);
 
         Long durationTime = entity.getDurationTime();
-        stmt.bindLong(2, durationTime);
+        stmt.bindLong(3, durationTime);
 
         Long restTime = entity.getRestTime();
-        stmt.bindLong(3, restTime);
+        stmt.bindLong(4, restTime);
 
         Long localTime = entity.getLocalTime();
-        stmt.bindLong(4, localTime);
+        stmt.bindLong(5, localTime);
 
         String des = entity.getDes();
-        stmt.bindString(5, des);
+        stmt.bindString(6, des);
+
+        String unit = entity.getUnit();
+        stmt.bindString(7, unit);
+
+        Integer set = entity.getSet();
+        stmt.bindLong(8, set);
+
+        Integer toolNumber = entity.getToolNumber();
+        stmt.bindLong(9, toolNumber);
+
+        String toolUnit = entity.getToolUnit();
+        stmt.bindString(10, toolUnit);
     }
 
     @Override
@@ -105,22 +144,32 @@ public class FittingItemDao extends AbstractDao<FittingItem, Integer> {
     @Override
     public FittingItem readEntity(Cursor cursor, int offset) {
         FittingItem entity = new FittingItem( //
-            cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0), // Id
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // Name
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // Id
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // Name
             cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // Name
             cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // Name
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // Name
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // Name
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // Name
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Name
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // Name
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // Name
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // Name
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, FittingItem entity, int offset) {
-        entity.setNumber(cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0));
-        entity.setDurationTime(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setRestTime(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
-        entity.setLocalTime(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setDes(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setName(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setNumber(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
+        entity.setDurationTime(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setRestTime(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setLocalTime(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setDes(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setUnit(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setSet(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setToolNumber(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setToolUnit(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
     }
     
     @Override
@@ -139,7 +188,7 @@ public class FittingItemDao extends AbstractDao<FittingItem, Integer> {
 
     @Override
     public boolean hasKey(FittingItem entity) {
-        return entity.getDes() != null;
+        return entity.getName() != null;
     }
 
     @Override

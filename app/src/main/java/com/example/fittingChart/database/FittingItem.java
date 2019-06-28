@@ -8,25 +8,37 @@ import org.greenrobot.greendao.annotation.Generated;
 public class FittingItem {
 //    Integer id;
     @Id
+    String name;
     Integer number;
     long durationTime;
     long restTime;
     long localTime;
     String des;
+    String unit;    //单位
+    Integer set;    //第几组
+    Integer toolNumber;  //器械数值，比如使用5kg的哑铃，则为5
+    String toolUnit;    //器械的单位，比如使用5kg的哑铃，则为kg
 
 
-    @Generated(hash = 1110836485)
-    public FittingItem(Integer number, long durationTime, long restTime, long localTime, String des) {
+    @Generated(hash = 651548569)
+    public FittingItem(String name, Integer number, long durationTime,
+            long restTime, long localTime, String des, String unit, Integer set,
+            Integer toolNumber, String toolUnit) {
+        this.name = name;
         this.number = number;
         this.durationTime = durationTime;
         this.restTime = restTime;
         this.localTime = localTime;
         this.des = des;
+        this.unit = unit;
+        this.set = set;
+        this.toolNumber = toolNumber;
+        this.toolUnit = toolUnit;
     }
-
-    @Generated(hash = 893068348)
+    @Generated(hash = 2127733768)
     public FittingItem() {
     }
+
 
     public String getDes(){
         return this.des;
@@ -68,5 +80,35 @@ public class FittingItem {
     }
     public void setNumber(Integer number) {
         this.number = number;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getUnit() {
+        return this.unit;
+    }
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+    public Integer getSet() {
+        return this.set;
+    }
+    public void setSet(Integer set) {
+        this.set = set;
+    }
+    public Integer getToolNumber() {
+        return this.toolNumber;
+    }
+    public void setToolNumber(Integer toolNumber) {
+        this.toolNumber = toolNumber;
+    }
+    public String getToolUnit() {
+        return this.toolUnit;
+    }
+    public void setToolUnit(String toolUnit) {
+        this.toolUnit = toolUnit;
     }
 }

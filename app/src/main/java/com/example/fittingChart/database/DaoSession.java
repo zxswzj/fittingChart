@@ -18,12 +18,16 @@ import org.greenrobot.greendao.internal.DaoConfig;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig userDaoConfig;
-    private final DaoConfig fittingDataDaoConfig;
+    private final DaoConfig fittingItemDaoConfig;
     private final DaoConfig showTableDaoConfig;
+    private final DaoConfig fittingTableDaoConfig;
+
 
     private final UserDao userDao;
-    private final FittingItemDao fittingDataDao;
+    private final FittingItemDao fittingItemDao;
     private final ShowTableDao showTableDao;
+    private final FittingTableDao fittingTableDao;
+
 
 
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>daoConfigMap) {
@@ -32,34 +36,47 @@ public class DaoSession extends AbstractDaoSession {
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
 
-        fittingDataDaoConfig = daoConfigMap.get(FittingItemDao.class).clone();
-        fittingDataDaoConfig.initIdentityScope(type);
+        fittingItemDaoConfig = daoConfigMap.get(FittingItemDao.class).clone();
+        fittingItemDaoConfig.initIdentityScope(type);
 
         showTableDaoConfig = daoConfigMap.get(ShowTableDao.class).clone();
         showTableDaoConfig.initIdentityScope(type);
 
+        fittingTableDaoConfig = daoConfigMap.get(FittingTableDao.class).clone();
+        fittingTableDaoConfig.initIdentityScope(type);
+
         userDao = new UserDao(userDaoConfig, this);
-        fittingDataDao = new FittingItemDao(fittingDataDaoConfig, this);
+        fittingItemDao = new FittingItemDao(fittingItemDaoConfig, this);
         showTableDao = new ShowTableDao(showTableDaoConfig, this);
+        fittingTableDao = new FittingTableDao(fittingTableDaoConfig, this);
+
 
         registerDao(User.class, userDao);
-        registerDao(FittingItem.class, fittingDataDao);
+        registerDao(FittingItem.class, fittingItemDao);
         registerDao(ShowTable.class, showTableDao);
+        registerDao(FittingTable.class, fittingTableDao);
+
     }
     
     public void clear() {
         userDaoConfig.clearIdentityScope();
-        fittingDataDaoConfig.clearIdentityScope();
+        fittingItemDaoConfig.clearIdentityScope();
         showTableDaoConfig.clearIdentityScope();
+        fittingTableDaoConfig.clearIdentityScope();
+
     }
 
     public UserDao getUserDao() {
         return userDao;
     }
-    public FittingItemDao getFittingDataDao() {
-        return fittingDataDao;
+    public FittingItemDao getFittingItemDao() {
+        return fittingItemDao;
     }
     public ShowTableDao getShowTableDao() {
         return showTableDao;
     }
+    public FittingTableDao getFittingTableDao() {
+        return fittingTableDao;
+    }
+
 }
