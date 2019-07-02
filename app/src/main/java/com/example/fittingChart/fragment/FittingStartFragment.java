@@ -20,11 +20,11 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.database.DaoSession;
 import com.example.fittingChart.database.FittingItem;
-import com.example.fittingChart.database.FittingItemDao;
 import com.example.fittingChart.database.FittingSwipeItemData;
 import com.example.fittingChart.database.GreenDaoHelper;
+import com.example.fittingChart.greendao.DaoSession;
+import com.example.fittingChart.greendao.FittingItemDao;
 import com.example.fittingChart.ui.SwipeList.MyFittingDataSwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
@@ -79,8 +79,8 @@ public class FittingStartFragment extends Fragment {
         Bundle bundle = getArguments();
         tableName = bundle.getString("tableName");
         tableDBName = bundle.getString("tableDBName");
-        session = GreenDaoHelper.getDaoSession(getContext());
-        fittingDataDao = session.getFittingItemDao();
+        //session = GreenDaoHelper.getDaoSession(getContext());
+//        fittingDataDao = session.getFittingItemDao();
     }
 
     @Override
@@ -182,8 +182,8 @@ public class FittingStartFragment extends Fragment {
                         alertDialog.show();
                     }
                     else{
-                        FittingItem fd = new FittingItem(222,333,444,555,"sdfs");
-                        fittingDataDao.insert(fd);
+//                        FittingItem fd = new FittingItem(222,333,444,555,"sdfs");
+//                        fittingDataDao.insert(fd);
                     }
                 }
             }

@@ -43,7 +43,7 @@ public class MyListViewAdapter extends BaseAdapter {
         tv_name.setText(fittingListItemData.getName());
         tv_dbName.setText(fittingListItemData.getDbName());
         tv_age.setText(fittingListItemData.getDes());
-        im_photo.setImageResource(fittingListItemData.getResourceID());
+//        im_photo.setImageResource(fittingListItemData.getResourceID());
 
         //返回含有数据的view
         return view;

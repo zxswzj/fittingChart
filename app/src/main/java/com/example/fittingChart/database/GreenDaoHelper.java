@@ -7,6 +7,10 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.fittingChart.greendao.DaoMaster;
+import com.example.fittingChart.greendao.DaoSession;
+import com.example.fittingChart.greendao.UserDao;
+
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.EncryptedDatabase;
 
@@ -161,7 +165,7 @@ public class GreenDaoHelper extends Application {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            MigrationHelper.migrate(db,UserDao.class);
+            MigrationHelper.migrate(db, UserDao.class);
             Log.e(UPGRADE,"upgrade run success");
         }
     }

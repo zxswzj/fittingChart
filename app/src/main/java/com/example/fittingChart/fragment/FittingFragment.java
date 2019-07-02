@@ -25,12 +25,10 @@ import android.widget.Toast;
 
 import com.example.fittingChart.R;
 import com.example.fittingChart.activity.FittingActivity;
-import com.example.fittingChart.database.App;
-import com.example.fittingChart.database.DaoSession;
+import com.example.fittingChart.database.AppApplication;
 import com.example.fittingChart.database.FittingItem;
-import com.example.fittingChart.database.FittingItemDao;
+import com.example.fittingChart.greendao.FittingItemDao;
 import com.example.fittingChart.database.FittingTable;
-import com.example.fittingChart.database.GreenDaoHelper;
 import com.example.fittingChart.ui.SwipeList.MySwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
@@ -39,7 +37,6 @@ import com.example.fittingChart.ui.SwipeList.SwipeMenuListView;
 import com.example.fittingChart.util.PinyinUtils;
 
 import org.greenrobot.greendao.query.Query;
-import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,6 @@ import java.util.List;
  */
 public class FittingFragment extends Fragment {
     String TAG ="TabLayout";
-    private DaoSession session;
     FittingItemDao fittingItemDao;
     Query query;
 
@@ -111,23 +107,22 @@ public class FittingFragment extends Fragment {
             tabLayout2.getTabAt(i).setText(tab2Name.get(i));
         }
 
-        DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
-        fittingItemDao = daoSession.getFittingItemDao();
+        fittingItemDao = AppApplication.getInstances().getDaoSession().getFittingItemDao();
         query = fittingItemDao.queryBuilder().where(
-                FittingItemDao.Properties.Name.eq("FUWOCHENG"), FittingItemDao.Properties.Number.gt(1970)).build();
+                FittingItemDao.Properties.Name.eq("FUWOCHENG")).build();
         List<FittingItem> ftdList1 = query.forCurrentThread().list();
 
         List<FittingItem> ftdList2 = query.forCurrentThread().list();
 
-        FittingTable d = new FittingTable("add","ADD","增加新的运动", (Long)R.drawable.icon_add);
-        ftdList1.add(d);
-        ftdList2.add(d);
-
-        mListAdapter1 = new MySwipeListAdapter(getContext(),ftdList1);
-        mListView1.setAdapter(mListAdapter1);
-
-        mListAdapter2 = new MySwipeListAdapter(getContext(),ftdList2);
-        mListView2.setAdapter(mListAdapter2);
+//        FittingTable d = new FittingTable("add","ADD","增加新的运动", (Long)R.drawable.icon_add);
+//        ftdList1.add(d);
+//        ftdList2.add(d);
+//
+//        mListAdapter1 = new MySwipeListAdapter(getContext(),ftdList1);
+//        mListView1.setAdapter(mListAdapter1);
+//
+//        mListAdapter2 = new MySwipeListAdapter(getContext(),ftdList2);
+//        mListView2.setAdapter(mListAdapter2);
 
         // 第1步：设置创建器，并且在其中生成我们需要的菜单项，将其添加进菜单中
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -202,8 +197,8 @@ public class FittingFragment extends Fragment {
                                         return;
                                     }
                                 }
-                                FittingTable ftd = new FittingTable(name, dbNamePinyin, "user input activity", R.drawable.pushup);
-                                FittingTable ftdAdd = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
+//                                FittingTable ftd = new FittingTable(name, dbNamePinyin, "user input activity", R.drawable.pushup);
+//                                FittingTable ftdAdd = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
 //                                dbAdapter.addFittingTableItem(table, ftd);
 //                                dbAdapter.createFitting(dbNamePinyin);
 //                                dbAdapter.close();

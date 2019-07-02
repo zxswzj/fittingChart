@@ -79,7 +79,7 @@ public class MySwipeListAdapter extends BaseSwipeListAdapter {
         FittingTable ftd = (FittingTable)getItem(position);
         // 加载应用的图标
 //        holder.iv_icon.setImageDrawable(item.loadIcon(getPackageManager()));
-        holder.iv_icon.setImageResource(ftd.getResourceID());
+        holder.iv_icon.setImageResource(ftd.getLayoutResourceID());
         // 加载应用的标题
 //        holder.tv_name.setText(item.loadLabel(getPackageManager()));
         holder.tv_name.setText(ftd.getName());

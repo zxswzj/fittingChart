@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.database.DaoSession;
 import com.example.fittingChart.database.FittingItem;
 import com.example.fittingChart.database.GreenDaoHelper;
 import com.example.fittingChart.database.ShowTable;
+import com.example.fittingChart.greendao.DaoSession;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -55,12 +55,12 @@ public class ChartFragment extends Fragment {
         Bundle bundle = getArguments();
         int fragmentID = bundle.getInt("fragmentID");
 
-        List<ShowTable> showTables = session.getShowTableDao().loadAll();
-        int tablesize = showTables.size();
-        if(tablesize != 0) {
-            String tablename = new String();
-            String tableDBName = new String();
-            int tablecount = 0;
+//        List<ShowTable> showTables = session.getShowTableDao().loadAll();
+//        int tablesize = showTables.size();
+//        if(tablesize != 0) {
+//            String tablename = new String();
+//            String tableDBName = new String();
+//            int tablecount = 0;
 //            switch ((fragmentID)){
 //                case R.id.fragment_record_fl1:
 //                    tablename = tables.get(0).getName();
@@ -119,8 +119,8 @@ public class ChartFragment extends Fragment {
 //                default:break;
 //            }
 
-            if(!tablename.isEmpty()){
-                tv.setText(tablename + "： 您已经运动" + tablecount + "次啦啊哈哈哈");
+//            if(!tablename.isEmpty()){
+//                tv.setText(tablename + "： 您已经运动" + tablecount + "次啦啊哈哈哈");
 //                ArrayList<FittingItem> fitting = dbAdapter.getAllFitting(tableDBName);
 //                List<Entry> entries = new ArrayList<>();
 //                for (int i = 0; i < fitting.size(); i++) {
@@ -132,8 +132,8 @@ public class ChartFragment extends Fragment {
 //                    LineData lineData = new LineData(dataSet);
 //                    lineChart.setData(lineData);
 //                }
-            }
-        }
+//            }
+//        }
 
         return view;
     }

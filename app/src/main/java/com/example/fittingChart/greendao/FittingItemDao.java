@@ -1,4 +1,4 @@
-package com.example.fittingChart;
+package com.example.fittingChart.greendao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;

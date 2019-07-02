@@ -13,11 +13,11 @@ public class FittingTable {
     String name;
     String dbName;
     String des;
-    Long layoutResourceID;
+    Integer layoutResourceID;
 
-    @Generated(hash = 1727028171)
+    @Generated(hash = 661525575)
     public FittingTable(String name, String dbName, String des,
-            Long layoutResourceID) {
+            Integer layoutResourceID) {
         this.name = name;
         this.dbName = dbName;
         this.des = des;
@@ -34,9 +34,6 @@ public class FittingTable {
     public void setDes(String des){
         this.des = des;
     }
-    public void setResourceID(Long layoutResourceID){
-        this.layoutResourceID = layoutResourceID;
-    }
     public String getDbName(){ return dbName; }
     public String getName(){
         return name;
@@ -44,13 +41,10 @@ public class FittingTable {
     public String getDes(){
         return des;
     }
-    public Long getResourceID(){
-        return layoutResourceID;
-    }
-    public Long getLayoutResourceID() {
+    public Integer getLayoutResourceID() {
         return this.layoutResourceID;
     }
-    public void setLayoutResourceID(Long layoutResourceID) {
+    public void setLayoutResourceID(Integer layoutResourceID) {
         this.layoutResourceID = layoutResourceID;
     }
 }

@@ -4,7 +4,6 @@ package com.example.fittingChart.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,24 +22,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fittingChart.R;
-import com.example.fittingChart.database.App;
-import com.example.fittingChart.database.DaoSession;
-import com.example.fittingChart.database.FittingItem;
-import com.example.fittingChart.database.FittingTableDao;
+import com.example.fittingChart.database.AppApplication;
+import com.example.fittingChart.greendao.DaoSession;
+import com.example.fittingChart.greendao.FittingTableDao;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-
-import org.greenrobot.greendao.query.Query;
-import org.greenrobot.greendao.query.WhereCondition;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,34 +114,34 @@ public class UserFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i("Fragment", "UserFragment.onActivityCreated");
 
-        daoSession = ((App) getActivity().getApplication()).getDaoSession();
-        fittingTableDao = daoSession.getFittingTableDao();
-        Query query = fittingTableDao.queryBuilder().build();
-        List<FittingItem> pushuplist = query.forCurrentThread().list();
+        daoSession = AppApplication.getInstances().getDaoSession();
+//        fittingTableDao = daoSession.getFittingTableDao();
+//        Query query = fittingTableDao.queryBuilder().build();
+//        List<FittingItem> pushuplist = query.forCurrentThread().list();
 
         List<Entry> entryCnt = new ArrayList<>();
         List<Entry> entryTime = new ArrayList<>();
-        for (int i = 0; i < pushuplist.size(); i++) {
-//            entryCnt.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getNumber()));
-//            entryTime.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getDurationTime()));
-        }
-        if(pushuplist.size() != 0){
-            LineDataSet dataSetCnt = new LineDataSet(entryCnt, "数量"); // add entries to dataset
-            LineDataSet dataSetTime = new LineDataSet(entryTime, "时间"); // add entries to dataset
-            dataSetCnt.setColor(Color.RED);
-
-            LineData lineData = new LineData(dataSetCnt,dataSetTime);
-            pushupchart.setData(lineData);
-            XAxis xAxis = pushupchart.getXAxis();
-            IAxisValueFormatter xFormatter = new IAxisValueFormatter() {
-                @Override
-                public String getFormattedValue(float value, AxisBase axis) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
-                    return sdf.format(value);
-                }
-            };
-            xAxis.setValueFormatter(xFormatter);
-        }
+//        for (int i = 0; i < pushuplist.size(); i++) {
+////            entryCnt.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getNumber()));
+////            entryTime.add(new Entry(pushuplist.get(i).getLocalTime(), pushuplist.get(i).getDurationTime()));
+//        }
+//        if(pushuplist.size() != 0){
+//            LineDataSet dataSetCnt = new LineDataSet(entryCnt, "数量"); // add entries to dataset
+//            LineDataSet dataSetTime = new LineDataSet(entryTime, "时间"); // add entries to dataset
+//            dataSetCnt.setColor(Color.RED);
+//
+//            LineData lineData = new LineData(dataSetCnt,dataSetTime);
+//            pushupchart.setData(lineData);
+//            XAxis xAxis = pushupchart.getXAxis();
+//            IAxisValueFormatter xFormatter = new IAxisValueFormatter() {
+//                @Override
+//                public String getFormattedValue(float value, AxisBase axis) {
+//                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+//                    return sdf.format(value);
+//                }
+//            };
+//            xAxis.setValueFormatter(xFormatter);
+//        }
 
 
         Bundle bundle = getArguments();
