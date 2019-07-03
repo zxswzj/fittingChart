@@ -12,20 +12,23 @@ import com.example.fittingChart.database.FittingItem;
 import com.example.fittingChart.database.FittingTable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MySwipeListAdapter extends BaseSwipeListAdapter {
 
     String TAG = "SwipeList";
     //ArrayList<String> mList;
-    ArrayList<FittingTable> mFittingTableDataList;
-    ArrayList<FittingItem> mFittingDataList;
+    List<FittingTable> mFittingTableDataList;
     Context mContext;
     int dataformat = 0;
 
-    public MySwipeListAdapter(Context context, ArrayList<FittingTable> list){
+    public MySwipeListAdapter(Context context){
         this.mContext = context;
-        this.mFittingTableDataList = list;
+    }
+
+    public void setList(List<FittingTable> list){
+        mFittingTableDataList = list;
     }
 
 //    public MySwipeListAdapter(Context context, ArrayList<FittingItem> list){

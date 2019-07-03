@@ -12,14 +12,16 @@ public class FittingTable {
     @Id
     String name;
     String dbName;
+    String category;
     String des;
     Integer layoutResourceID;
 
-    @Generated(hash = 661525575)
-    public FittingTable(String name, String dbName, String des,
+    @Generated(hash = 1595463647)
+    public FittingTable(String name, String dbName, String category, String des,
             Integer layoutResourceID) {
         this.name = name;
         this.dbName = dbName;
+        this.category = category;
         this.des = des;
         this.layoutResourceID = layoutResourceID;
     }
@@ -46,5 +48,11 @@ public class FittingTable {
     }
     public void setLayoutResourceID(Integer layoutResourceID) {
         this.layoutResourceID = layoutResourceID;
+    }
+    public String getCategory() {
+        return this.category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

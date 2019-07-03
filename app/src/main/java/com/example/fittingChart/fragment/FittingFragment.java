@@ -29,6 +29,7 @@ import com.example.fittingChart.database.AppApplication;
 import com.example.fittingChart.database.FittingItem;
 import com.example.fittingChart.greendao.FittingItemDao;
 import com.example.fittingChart.database.FittingTable;
+import com.example.fittingChart.greendao.FittingTableDao;
 import com.example.fittingChart.ui.SwipeList.MySwipeListAdapter;
 import com.example.fittingChart.ui.SwipeList.SwipeMenu;
 import com.example.fittingChart.ui.SwipeList.SwipeMenuCreator;
@@ -47,7 +48,7 @@ import java.util.List;
  */
 public class FittingFragment extends Fragment {
     String TAG ="TabLayout";
-    FittingItemDao fittingItemDao;
+    FittingTableDao fittingTableDao;
     Query query;
 
 
@@ -58,8 +59,8 @@ public class FittingFragment extends Fragment {
 //    ViewPager viewPager1,viewPager2;
 //    View view1,view2;
     //MyListFragment myListFragment = new MyListFragment();
-    ArrayList<FittingTable> ftdList1 = new ArrayList<>();
-    ArrayList<FittingTable> ftdList2 = new ArrayList<>();
+    List<FittingTable> ftdList1 = new ArrayList<>();
+    List<FittingTable> ftdList2 = new ArrayList<>();
 
     //ArrayList<String> mAppList = new ArrayList<>();
     private MySwipeListAdapter mListAdapter1;
@@ -107,19 +108,20 @@ public class FittingFragment extends Fragment {
             tabLayout2.getTabAt(i).setText(tab2Name.get(i));
         }
 
-        fittingItemDao = AppApplication.getInstances().getDaoSession().getFittingItemDao();
-        query = fittingItemDao.queryBuilder().where(
-                FittingItemDao.Properties.Name.eq("FUWOCHENG")).build();
-        List<FittingItem> ftdList1 = query.forCurrentThread().list();
+        fittingTableDao = AppApplication.getInstances().getDaoSession().getFittingTableDao();
+        query = fittingTableDao.queryBuilder().where(
+                FittingTableDao.Properties.Category.eq("CHEST")).build();
+        ftdList1 = query.forCurrentThread().list();
 
-        List<FittingItem> ftdList2 = query.forCurrentThread().list();
+        ftdList2 = query.forCurrentThread().list();
 
-//        FittingTable d = new FittingTable("add","ADD","增加新的运动", (Long)R.drawable.icon_add);
-//        ftdList1.add(d);
-//        ftdList2.add(d);
-//
-//        mListAdapter1 = new MySwipeListAdapter(getContext(),ftdList1);
-//        mListView1.setAdapter(mListAdapter1);
+        FittingTable d = new FittingTable("add","ADD","增加新的运动", "CHEST",R.drawable.icon_add);
+        ftdList1.add(d);
+        ftdList2.add(d);
+
+        mListAdapter1 = new MySwipeListAdapter(getContext());
+        mListAdapter1.setList(ftdList1);
+        mListView1.setAdapter(mListAdapter1);
 //
 //        mListAdapter2 = new MySwipeListAdapter(getContext(),ftdList2);
 //        mListView2.setAdapter(mListAdapter2);
@@ -416,7 +418,6 @@ public class FittingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.i(TAG, "FittingFragment.onTabSelected" + tab.getPosition() + tab.getText());
                 ArrayList<FittingTable> ftdList1Tmp = new ArrayList<>();
-//                dbAdapter.open();
 //                switch (tab.getPosition()){
 //                    case 0:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_breast");break;
 //                    case 1:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_belly");break;
@@ -426,11 +427,12 @@ public class FittingFragment extends Fragment {
 //                    case 5:ftdList1Tmp = dbAdapter.getAllFittingTable("fitting_leg");break;
 //                    default:break;
 //                }
-//                dbAdapter.close();
-//                FittingTable d = new FittingTable("add","ADD","增加新的运动", R.drawable.icon_add);
-//                ftdList1.clear();
-//                ftdList1.addAll(ftdList1Tmp);
-//                ftdList1.add(d);
+                FittingTable d = new FittingTable("add","ADD","增加新的运动", "CHEST", R.drawable.icon_add);
+                ftdList1.clear();
+                ftdList1.add(d);
+                ftdList1.add(d);
+                ftdList1.add(d);
+                mListAdapter1.setList(ftdList1);
                 mListAdapter1.notifyDataSetChanged();
             }
 

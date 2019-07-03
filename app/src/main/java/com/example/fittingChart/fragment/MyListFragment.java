@@ -52,7 +52,7 @@ public class MyListFragment extends Fragment {
 
         mListView = view.findViewById(R.id.listView);
 
-        mAdapter = new MySwipeListAdapter(getContext(),mAppList);
+        mAdapter = new MySwipeListAdapter(getContext());
         mListView.setAdapter(mAdapter);
 
         // 第1步：设置创建器，并且在其中生成我们需要的菜单项，将其添加进菜单中

@@ -1,13 +1,21 @@
 package com.example.fittingChart.database;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.fittingChart.R;
 import com.example.fittingChart.greendao.DaoMaster;
 import com.example.fittingChart.greendao.DaoSession;
+import com.example.fittingChart.greendao.FittingItemDao;
+import com.example.fittingChart.greendao.FittingTableDao;
+
+import java.util.List;
 
 public class AppApplication extends Application{
         public static AppApplication instances;
+
+        private SharedPreferences preferences;
         @Override
         public void onCreate() {
                 super.onCreate();
@@ -31,6 +39,18 @@ public class AppApplication extends Application{
                 // 注意：该数据库连接属于DaoMaster，所以多个 Session 指的是相同的数据库连接。
                 mDaoMaster = new DaoMaster(db);
                 mDaoSession = mDaoMaster.newSession();
+
+                getSharedPreferences
+                //初始化fittingTable
+                FittingTableDao fittingTableDao = mDaoSession.getFittingTableDao();
+                List<FittingTable> fittingTable = fittingTableDao.queryBuilder().build().list();
+                if(fittingTable.size() == 0){
+                        fittingTableDao.insert(new FittingTable("FUWOCHENG", "sdfds","CHEST", "des", R.drawable.bicycle));
+                        fittingTableDao.insert(new FittingTable("BANCHENGFUWOCHENG", "sdfds","CHEST", "des", R.drawable.dumbbell2));
+
+                        fittingTableDao.insert(new FittingTable("DAOLI", "sdfds","OTHERS", "des", R.drawable.dumbbell2));
+                }
+
         }
         public DaoSession getDaoSession() {
                 return mDaoSession;

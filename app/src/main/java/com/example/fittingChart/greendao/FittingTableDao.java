@@ -26,8 +26,9 @@ public class FittingTableDao extends AbstractDao<FittingTable, String> {
     public static class Properties {
         public final static Property Name = new Property(0, String.class, "name", true, "NAME");
         public final static Property DbName = new Property(1, String.class, "dbName", false, "DB_NAME");
-        public final static Property Des = new Property(2, String.class, "des", false, "DES");
-        public final static Property LayoutResourceID = new Property(3, Integer.class, "layoutResourceID", false, "LAYOUT_RESOURCE_ID");
+        public final static Property Category = new Property(2, String.class, "category", false, "CATEGORY");
+        public final static Property Des = new Property(3, String.class, "des", false, "DES");
+        public final static Property LayoutResourceID = new Property(4, Integer.class, "layoutResourceID", false, "LAYOUT_RESOURCE_ID");
     }
 
 
@@ -45,8 +46,9 @@ public class FittingTableDao extends AbstractDao<FittingTable, String> {
         db.execSQL("CREATE TABLE " + constraint + "\"FITTING_TABLE\" (" + //
                 "\"NAME\" TEXT PRIMARY KEY NOT NULL ," + // 0: name
                 "\"DB_NAME\" TEXT," + // 1: dbName
-                "\"DES\" TEXT," + // 2: des
-                "\"LAYOUT_RESOURCE_ID\" INTEGER);"); // 3: layoutResourceID
+                "\"CATEGORY\" TEXT," + // 2: category
+                "\"DES\" TEXT," + // 3: des
+                "\"LAYOUT_RESOURCE_ID\" INTEGER);"); // 4: layoutResourceID
     }
 
     /** Drops the underlying database table. */
@@ -69,14 +71,19 @@ public class FittingTableDao extends AbstractDao<FittingTable, String> {
             stmt.bindString(2, dbName);
         }
  
+        String category = entity.getCategory();
+        if (category != null) {
+            stmt.bindString(3, category);
+        }
+ 
         String des = entity.getDes();
         if (des != null) {
-            stmt.bindString(3, des);
+            stmt.bindString(4, des);
         }
  
         Integer layoutResourceID = entity.getLayoutResourceID();
         if (layoutResourceID != null) {
-            stmt.bindLong(4, layoutResourceID);
+            stmt.bindLong(5, layoutResourceID);
         }
     }
 
@@ -94,14 +101,19 @@ public class FittingTableDao extends AbstractDao<FittingTable, String> {
             stmt.bindString(2, dbName);
         }
  
+        String category = entity.getCategory();
+        if (category != null) {
+            stmt.bindString(3, category);
+        }
+ 
         String des = entity.getDes();
         if (des != null) {
-            stmt.bindString(3, des);
+            stmt.bindString(4, des);
         }
  
         Integer layoutResourceID = entity.getLayoutResourceID();
         if (layoutResourceID != null) {
-            stmt.bindLong(4, layoutResourceID);
+            stmt.bindLong(5, layoutResourceID);
         }
     }
 
@@ -115,8 +127,9 @@ public class FittingTableDao extends AbstractDao<FittingTable, String> {
         FittingTable entity = new FittingTable( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // name
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // dbName
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // des
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3) // layoutResourceID
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // category
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // des
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4) // layoutResourceID
         );
         return entity;
     }
@@ -125,8 +138,9 @@ public class FittingTableDao extends AbstractDao<FittingTable, String> {
     public void readEntity(Cursor cursor, FittingTable entity, int offset) {
         entity.setName(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setDbName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setDes(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setLayoutResourceID(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setCategory(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setDes(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setLayoutResourceID(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
      }
     
     @Override
